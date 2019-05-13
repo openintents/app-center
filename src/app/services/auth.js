@@ -5,7 +5,7 @@ const logAuth = process.env.NODE_ENV === 'development' && true // set to true to
 const clog = (...args) => logAuth && console.log(...args)
 // helpful for debugging
 
-const appConfig = new AppConfig(["store_write"], window.location.origin, "/app", "/manifest.webmanifest")
+const appConfig = new AppConfig(["store_write"], typeof window !== 'undefined' ? window.location.origin : "http://localhost:8000", "/app", "/manifest.webmanifest")
 const userSession = new UserSession({appConfig})
 
 export const isBrowser = () => typeof window !== 'undefined'

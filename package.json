@@ -1,6 +1,6 @@
 {
-  "name": "jamstack-hackathon-starter",
-  "description": "A starter to make JAMstack apps, not just sites with Gatsby + Netlify Functions + Netlify Identity",
+  "name": "blockstack-starter",
+  "description": "A starter to make decentralized apps, sites with Gatsby + Blockstack",
   "version": "1.0.0",
   "author": "swyx <swyx@dontemailme.com>",
   "dependencies": {
@@ -28,6 +28,7 @@
     "start:app": "npm run develop",
     "build": "run-p build:**",
     "build:app": "gatsby build",
+    "serve": "gatsby serve",
     "format": "prettier --write \"src/**/*.js\"",
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
   },
