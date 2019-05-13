@@ -1,54 +1,57 @@
-import netlifyIdentity from 'netlify-identity-widget'
+import {UserSession, AppConfig} from 'blockstack'
 
-// helpful for debugging netlify identity
-const logAuth = process.env.NODE_ENV === 'development' && false // set to true to turn on logging
+// helpful for debugging
+const logAuth = process.env.NODE_ENV === 'development' && true // set to true to turn on logging
 const clog = (...args) => logAuth && console.log(...args)
-// helpful for debugging netlify identity
+// helpful for debugging
+
+const appConfig = new AppConfig(["store_write"], window.location.origin, "/app", "/manifest.webmanifest")
+const userSession = new UserSession({appConfig})
 
 export const isBrowser = () => typeof window !== 'undefined'
-export const initAuth = () => {
-  if (isBrowser()) {
-    window.netlifyIdentity = netlifyIdentity
-    // You must run this once before trying to interact with the widget
-    netlifyIdentity.init()
-  }
-}
+
 export const getUser = () =>
-  isBrowser() && window.localStorage.getItem('netlifyUser')
-    ? JSON.parse(window.localStorage.getItem('netlifyUser'))
+  isBrowser() && userSession.isUserSignedIn() ?
+    userSession.loadUserData()
     : {}
 
-const setUser = user =>
-  window.localStorage.setItem('netlifyUser', JSON.stringify(user))
-
 export const handleLogin = callback => {
-  clog('isLoggedIn check', isLoggedIn())
-  if (isLoggedIn()) {
+  clog('isLoggedIn check', userSession.isUserSignedIn())
+  if (userSession.isUserSignedIn()) {
     clog('logged in')
     callback(getUser())
-  } else {
-    clog('logging in...')
-    netlifyIdentity.open()
-    netlifyIdentity.on('login', user => {
-      clog('logged in!', { user })
-      setUser(user)
-      callback(user)
+  } else if (userSession.isSignInPending()) {
+    userSession.handlePendingSignIn().then(userData => {
+      callback(userData)
     })
+  } else {
+    userSession.redirectToSignIn()
   }
 }
 
-export const isLoggedIn = () => {
-  if (!isBrowser()) return false
-  // const user = getUser()
-  const user = netlifyIdentity.currentUser()
-  clog('isLoggedIn check', { user })
-  return !!user
+export const checkIsSignedIn = () => {
+  if (!isBrowser()) {
+    clog('Not a browser')
+    return Promise.resolve(false)
+  }
+  if (userSession.isSignInPending()) {
+    return userSession.handlePendingSignIn().then(userData => true)
+  } else if (userSession.isUserSignedIn()) {
+    const user = userSession.loadUserData()
+    clog('isLoggedIn check', { user })
+    return Promise.resolve(!!user)
+  } else {
+    clog('isLoggedIn check - nothing')
+    return Promise.resolve(false)
+  }
 }
 
 export const logout = callback => {
-  netlifyIdentity.logout()
-  netlifyIdentity.on('logout', () => {
-    setUser({})
-    callback()
-  })
+  userSession.signUserOut("/app/login")
+  callback()
+}
+
+export const encryptContent = (message) => {
+  console.log("encrypting " + message)
+  return userSession.encryptContent(message)
 }

@@ -1,15 +1,26 @@
 import React from 'react'
 import { Link, navigate } from 'gatsby'
-import { getUser, isLoggedIn, logout } from '../services/auth'
+import { getUser, checkIsSignedIn, logout } from '../services/auth'
 
-export default () => {
+export default class NavBar extends React.Component {
+  state = {checking:true, signedIn:false}
+  componentDidMount = () => {
+      checkIsSignedIn().then(signedIn =>
+        this.setState({checking:false, signedIn})
+      )
+    }
+
+  render() {
   const content = { message: '', login: true }
-  const user = getUser()
-  if (isLoggedIn()) {
-    content.message = `Hello, ${user.user_metadata &&
-      user.user_metadata.full_name}`
+  const {checking, signedIn} = this.state
+  if (checking) {
+    content.message = "stacking blocks..."
+  } else if (signedIn) {
+      const user = getUser()
+      content.message = `Hello, ${user.decentralizedID &&
+        user.username && user.profile.name}`
   } else {
-    content.message = 'You are not logged in'
+      content.message = 'You are not logged in'
   }
   return (
     <div
@@ -29,7 +40,7 @@ export default () => {
         {` `}
         <Link to="/app/profile">Profile</Link>
         {` `}
-        {isLoggedIn() ? (
+        {signedIn ? (
           <a
             href="/"
             onClick={event => {
@@ -45,4 +56,5 @@ export default () => {
       </nav>
     </div>
   )
+}
 }

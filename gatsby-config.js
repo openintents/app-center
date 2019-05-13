@@ -2,25 +2,10 @@ var proxy = require('http-proxy-middleware')
 
 module.exports = {
   siteMetadata: {
-    title: 'JAMstack Hackathon Starter',
+    title: 'Blockstack Starter',
     description: `Kick off your next, great Gatsby app.`,
-    author: `@swyx`,
+    author: `@friedger`,
   },
-
-  // for avoiding CORS while developing Netlify Functions locally
-  // read more: https://www.gatsbyjs.org/docs/api-proxy/#advanced-proxying
-  developMiddleware: app => {
-    app.use(
-      '/.netlify/functions/',
-      proxy({
-        target: 'http://localhost:9000',
-        pathRewrite: {
-          '/.netlify/functions/': '',
-        },
-      })
-    )
-  },
-
   plugins: [
     `gatsby-plugin-react-helmet`,
     {
@@ -39,7 +24,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-default`,
+        name: `gatsby-starter-blockstack`,
         short_name: `starter`,
         start_url: `/`,
         background_color: `#663399`,

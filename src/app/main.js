@@ -1,39 +1,27 @@
 import React from 'react'
-import { getUser } from './services/auth'
+import { encryptContent } from './services/auth'
 
 class Main extends React.Component {
-  state = { loading: false, json: null }
-  handleClick = e => {
-    e.preventDefault()
-    const user = getUser()
-    this.setState({ loading: true })
-    fetch('/.netlify/functions/auth-hello', {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + user.token.access_token,
-      },
-    })
-      .then(response => response.json())
-      .then(json => this.setState({ loading: false, json }))
+
+  state = {message:"My message", encryptedMessage:""}
+
+  handleClick(event) {
+    const encryptedMessage = encryptContent(this.state.message)
+    this.setState({encryptedMessage})
+  }
+  handleChange(event) {
+    this.setState({message: event.target.value});
   }
 
   render() {
-    const { loading, json } = this.state
-    const user = getUser()
+    const {message, encryptedMessage} = this.state
     return (
       <>
         <h1>Your Main App</h1>
-        <ul>
-          <li>API: {user.api && user.api.apiURL}</li>
-          <li>ID: {user.id}</li>
-        </ul>
+        <input type="text" value={message} onChange={event => this.handleChange(event)} />
+        <button onClick={event => this.handleClick(event)}>Encrypt</button>
+        {encryptedMessage}
         <hr />
-
-        <button onClick={this.handleClick}>
-          {loading ? 'Loading...' : 'Call Lambda Function'}
-        </button>
-        <pre>{JSON.stringify(json, null, 2)}</pre>
       </>
     )
   }

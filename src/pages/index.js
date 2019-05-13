@@ -5,9 +5,6 @@ import Layout from '../components/layout'
 import Image from '../components/image'
 import SEO from '../components/seo'
 
-import { initAuth } from '../app/services/auth'
-initAuth()
-
 class IndexPage extends React.Component {
   state = { loading: false, msg: null }
   handleClick = e => {
