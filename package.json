@@ -2,7 +2,7 @@
   "name": "blockstack-starter",
   "description": "A starter to make decentralized apps, sites with Gatsby + Blockstack",
   "version": "1.0.0",
-  "author": "swyx <swyx@dontemailme.com>",
+  "author": "friedger <friedger@dontemailme.com>",
   "dependencies": {
     "blockstack": "^19.1.0",
     "gatsby": "^2.0.76",
