@@ -6,21 +6,11 @@ import Image from '../components/image'
 import SEO from '../components/seo'
 
 class IndexPage extends React.Component {
-  state = { loading: false, msg: null }
-  handleClick = e => {
-    e.preventDefault()
-
-    this.setState({ loading: true })
-    fetch('/.netlify/functions/hello')
-      .then(response => response.json())
-      .then(json => this.setState({ loading: false, msg: json.msg }))
-  }
 
   render() {
-    const { loading, msg } = this.state
     return (
       <Layout>
-        <SEO title="Home" keywords={[`gatsby`, `application`, `react`]} />
+        <SEO title="Home" keywords={[`gatsby`, `application`, `react`, `blockstack`]} />
         <div
           style={{
             display: 'flex',
@@ -29,7 +19,7 @@ class IndexPage extends React.Component {
         >
           <div>
             <p>
-              Welcome to your new Gatsby + Netlify Functions + Netlify Identity
+              Welcome to your new Gatsby + Blockstack
               site
             </p>
             <ul>
@@ -43,47 +33,25 @@ class IndexPage extends React.Component {
                 <ul>
                   <li>
                     <Link to="/app/">
-                      <b>Go to App (with Netlify Identity)</b>
+                      <b>Go to App (with Blockstack)</b>
                     </Link>{' '}
                   </li>
                 </ul>
               </li>
               <li>
                 You can{' '}
-                <a href="https://github.com/sw-yx/jamstack-hackathon-starter">
+                <a href="https://github.com/friedger/blockstack-starter">
                   view source here
                 </a>
               </li>
               <li>
-                or see{' '}
-                <a href="https://youtu.be/bueXJInQt2c">
-                  the Youtube walkthrough
-                </a>
-              </li>
-              <li>
                 or
-                <a href="https://app.netlify.com/start/deploy?repository=https://github.com/sw-yx/jamstack-hackathon-starter&stack=cms">
-                  <img
-                    src="https://www.netlify.com/img/deploy/button.svg"
-                    alt="Deploy to Netlify"
-                  />
+                <a href="https://docs.blockstack.org">
+                  read more about blockstack
                 </a>
               </li>
             </ul>
             <hr />
-            <p>
-              You can still access Netlify functions even on static "marketing
-              pages":{' '}
-            </p>
-            <button onClick={this.handleClick}>
-              {loading ? 'Loading...' : 'Call Lambda Function'}
-            </button>
-            <br />
-            <pre>
-              {msg
-                ? 'Here is the response: ' + msg
-                : 'click the button and watch this!'}
-            </pre>
           </div>
           <div
             style={{
