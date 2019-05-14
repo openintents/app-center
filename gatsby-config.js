@@ -2,8 +2,8 @@ var proxy = require('http-proxy-middleware')
 
 module.exports = {
   siteMetadata: {
-    title: 'Blockstack Starter',
-    description: `Kick off your next, great Gatsby app.`,
+    title: 'Blockstack App Mining Apps (April 2019)',
+    description: `Directory of apps participating in App Mining.`,
     author: `@friedger`,
   },
   plugins: [
@@ -33,6 +33,23 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
+    {
+      resolve: "gatsby-source-custom-api",
+      options: {
+          url: "https://app-co-api.herokuapp.com/api/app-mining-apps",
+          rootKey: "appco",
+                schemas: {
+                    appco: `
+                        apps: [apps]
+                    `,
+                    apps: `
+                        id: Int
+                        name: String
+                        openSourceUrl: String
+                    `
+                }
+      }
+  }
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.app/offline
     // 'gatsby-plugin-offline',

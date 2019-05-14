@@ -19,24 +19,14 @@ class IndexPage extends React.Component {
         >
           <div>
             <p>
-              Welcome to your new Gatsby + Blockstack
-              site
+              Information about participating apps
             </p>
             <ul>
               <li>
-                This site has statically generated marketing pages like this one
-                and <Link to="/page-2/">page 2.</Link>{' '}
+                <Link to="/appco-foss/">Open Source apps</Link>
               </li>
               <li>
-                It also has a dynamically generated clientside app guarded by
-                authentication:
-                <ul>
-                  <li>
-                    <Link to="/app/">
-                      <b>Go to App (with Blockstack)</b>
-                    </Link>{' '}
-                  </li>
-                </ul>
+                <Link to="/appco-noss/">Closed Source apps</Link>
               </li>
               <li>
                 You can{' '}
@@ -45,9 +35,9 @@ class IndexPage extends React.Component {
                 </a>
               </li>
               <li>
-                or
-                <a href="https://docs.blockstack.org">
-                  read more about blockstack
+                or {' '}
+                <a href="https://docs.blockstack.org/develop/mining_intro.html">
+                  read more about the App Mining program
                 </a>
               </li>
             </ul>
@@ -60,7 +50,17 @@ class IndexPage extends React.Component {
               paddingLeft: '3rem',
             }}
           >
-            <p>Now go build something great.</p>
+            <p>
+                Feedback section is still under development:
+                </p>
+                <ul>
+                  <li>
+                    <Link to="/app/">
+                      <b>Go to Feedback section (with Blockstack)</b>
+                    </Link>{' '}
+                  </li>
+                </ul>
+
             <div style={{ maxWidth: '300px', marginBottom: '1.45rem' }}>
               <Image />
             </div>
