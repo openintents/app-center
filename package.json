@@ -22,8 +22,8 @@
     "gatsby-transformer-excel": "^2.1.11",
     "gatsby-transformer-sharp": "^2.1.8",
     "node-fetch": "^2.5.0",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
     "react-helmet": "^5.2.0",
     "styled-components": "^4.2.0"
   },
