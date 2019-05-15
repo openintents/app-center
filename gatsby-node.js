@@ -2,7 +2,6 @@ const path = require('path')
 const fetch = require('node-fetch')
 
 getLastCommit = openSourceUrl => {
-  console.log('opensource', openSourceUrl)
   if (openSourceUrl.startsWith('https://github.com/')) {
     const parts = openSourceUrl.substr(19).split('/')
     if (parts.length > 1) {
@@ -10,13 +9,11 @@ getLastCommit = openSourceUrl => {
       const repo = parts[1]
       const url =
         'https://api.github.com/repos/' + owner + '/' + repo + '/commits'
-      console.log(url)
       return fetch(url)
         .then(response => response.json(), () => 'No json')
         .then(
           response => {
             if (response && response.length > 0) {
-              console.log(response[0].commit.author.date)
               return response[0].commit.author.date
             } else {
               return 'No commits found - ' + response.message
@@ -33,13 +30,11 @@ getLastCommit = openSourceUrl => {
     projectId = 5538365
     const url =
         'https://gitlab.com/api/v4/projects/' + projectId + '/repository/commits'
-      console.log(url)
       return fetch(url)
         .then(response => response.json(), () => 'No json')
         .then(
           response => {
             if (response && response.length > 0) {
-              console.log(response[0].authored_date)
               return response[0].authored_date
             } else {
               return 'No commits found - ' + response.message
@@ -64,8 +59,6 @@ exports.onCreateNode = async ({ node, getNode, actions }) => {
   ) {
     const lastCommit = getLastCommit(node.openSourceUrl)
     return lastCommit.then(r => {
-      console.log(node.name, r)
-
       createNodeField({
         node,
         name: `lastCommit`,
@@ -92,7 +85,6 @@ exports.createPages = async ({ graphql, actions }) => {
   `)
   return Promise.all(
     result.data.appco.apps.map(async node => {
-      console.log(node)
       await createPage({
         path: '/appco/' + node.appcoid,
         component: path.resolve('./src/pages/appcodetails.js'),

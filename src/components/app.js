@@ -11,11 +11,14 @@ export const commitFormat = new Intl.DateTimeFormat('en-US', {
 })
 const App = ({ data }) => {
   const earnings = numberFormat.format(data.lifetimeEarnings)
-  const lastCommitDate = Date.parse(data.fields.lastCommit)
-  if (isNaN(lastCommitDate)) {
-    var lastUpdate = data.fields.lastCommit
-  } else {
-    lastUpdate = commitFormat.format(lastCommitDate)
+  var lastUpdate = ''
+  if (data.openSourceUrl) {
+    const lastCommitDate = Date.parse(data.fields.lastCommit)
+    if (isNaN(lastCommitDate)) {
+      lastUpdate = data.fields.lastCommit
+    } else {
+      lastUpdate = commitFormat.format(lastCommitDate)
+    }
   }
 
   return (

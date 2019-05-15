@@ -19,7 +19,6 @@ const Rank = (data, key, label) => {
       return e.node.App_ID === data.apps.appcoid
     }
   })
-  console.log(index, data, key, data.apps.name, data.apps.appcoid)
   if (index >= 0) {
     return (
       <>
