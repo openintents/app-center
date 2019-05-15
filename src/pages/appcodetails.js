@@ -9,7 +9,7 @@ const StyledRoot = styled.div`
 `
 const StyledCell = styled(Grid)`
   text-align: center;
-  `
+`
 
 const Rank = (data, key, label) => {
   const index = data[key].edges.findIndex(e => {
@@ -51,13 +51,13 @@ const Post = ({ data }) => {
       <h1>{data.apps.name}</h1>
       <StyledRoot>
         <Grid container spacing={3}>
-          <StyledCell item xs={4} center>
+          <StyledCell item xs={4}>
             <b>Month</b>
           </StyledCell>
-          <StyledCell item xs={4} center>
+          <StyledCell item xs={4}>
             <b>Rank</b>
           </StyledCell>
-          <StyledCell item xs={4} center>
+          <StyledCell item xs={4}>
             <b>Final Score</b>
           </StyledCell>
           {Rank(data, 'apr2019', 'Apr 2019')}
