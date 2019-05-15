@@ -7,6 +7,7 @@ module.exports = {
     author: `@friedger`,
   },
   plugins: [
+    `gatsby-plugin-styled-components`,
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-plugin-create-client-paths`,
@@ -49,7 +50,15 @@ module.exports = {
                     `
                 }
       }
-  }
+  },
+  `gatsby-transformer-excel`,
+  {
+    resolve: `gatsby-source-filesystem`,
+    options: {
+      name: `data`,
+      path: `${__dirname}/src/data/`,
+    },
+  },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.app/offline
     // 'gatsby-plugin-offline',
