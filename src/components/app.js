@@ -9,7 +9,7 @@ export const commitFormat = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
   month: 'long',
 })
-const App = ({ data }) => {
+const App = ({ data, hideRewards, hideDetailsLink }) => {
   const earnings = numberFormat.format(data.lifetimeEarnings)
   var lastUpdate = ''
   if (data.openSourceUrl) {
@@ -23,15 +23,20 @@ const App = ({ data }) => {
 
   return (
     <>
-      <a href={`/appco/${data.appcoid}`}>{data.name}</a>
+      {!hideDetailsLink && <a href={`/appco/${data.appcoid}`}>{data.name}</a>}
+      {hideDetailsLink && <>{data.name}</>}
       {data.openSourceUrl && (
         <>
           {' '}
           (<a href={data.openSourceUrl}>{data.openSourceUrl}</a>)
         </>
       )}
-      <br />
-      rewards: {earnings}{' '}
+      {!hideRewards && (
+        <>
+          <br />
+          rewards: {earnings}{' '}
+        </>
+      )}
       {data.openSourceUrl && (
         <>
           <br />
@@ -39,7 +44,9 @@ const App = ({ data }) => {
         </>
       )}
       <br />
-      <a href={data.website}>Launch app</a>
+      {data.website && data.website.length > 0 && (
+        <a href={data.website}>Launch app</a>
+      )}
     </>
   )
 }
