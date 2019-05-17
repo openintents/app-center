@@ -87,7 +87,7 @@ exports.createPages = async ({ graphql, actions }) => {
     result.data.appco.apps.map(async node => {
       await createPage({
         path: '/appco/' + node.appcoid,
-        component: path.resolve('./src/pages/appcodetails.js'),
+        component: path.resolve('./src/templates/appcodetails.js'),
         context: {
           // Data passed to context is available
           // in page queries as GraphQL variables.

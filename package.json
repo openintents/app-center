@@ -7,6 +7,7 @@
     "@material-ui/core": "^4.0.0-beta.2",
     "babel-plugin-styled-components": "^1.10.0",
     "blockstack": "^19.1.0",
+    "formik": "^1.5.4",
     "gatsby": "^2.4.4",
     "gatsby-image": "^2.0.20",
     "gatsby-plugin-create-client-paths": "^2.0.2",

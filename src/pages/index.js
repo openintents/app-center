@@ -29,8 +29,14 @@ class IndexPage extends React.Component {
                 <Link to="/appco-noss/">Closed Source apps</Link>
               </li>
               <li>
+                <Link to="/appco-new/">New apps</Link>
+              </li>
+              <li>
+                <Link to="/appco-out/">Retired apps</Link>
+              </li>
+              <li>
                 You can{' '}
-                <a href="https://github.com/friedger/blockstack-starter">
+                <a href="https://gitlab.com/friedger/appcostats">
                   view source here
                 </a>
               </li>
