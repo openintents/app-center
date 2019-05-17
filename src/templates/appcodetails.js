@@ -59,8 +59,6 @@ const AppDetails = ({ data }) => {
           <StyledCell item xs={4}>
             <b>Final Score</b>
           </StyledCell>
-          {Rank(data, 'may2019', 'May 2019')}
-          <br />
           {Rank(data, 'apr2019', 'Apr 2019')}
           <br />
           {Rank(data, 'mar2019', 'Mar 2019')}
@@ -142,19 +140,6 @@ export const query = graphql`
       edges {
         node {
           App_ID
-          Final_Score
-        }
-      }
-    }
-
-    may2019: allAppminingresults2XlsxMay2019(
-      filter: { Final_Score: { ne: null } }
-      sort: { fields: [Final_Score], order: [DESC] }
-    ) {
-      totalCount
-      edges {
-        node {
-          App_ID:App_Id
           Final_Score
         }
       }
