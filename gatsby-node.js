@@ -95,6 +95,17 @@ exports.createPages = async ({ graphql, actions }) => {
           appname: node.name,
         },
       })
+
+      await createPage({
+        path: '/appco-edit/' + node.appcoid,
+        component: path.resolve('./src/templates/appcoeditor.js'),
+        context: {
+          // Data passed to context is available
+          // in page queries as GraphQL variables.
+          appcoid: node.appcoid,
+          appname: node.name,
+        },
+      })
     })
   )
 }

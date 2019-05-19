@@ -22,6 +22,7 @@ class Main extends React.Component {
         <button onClick={event => this.handleClick(event)}>Encrypt</button>
         {encryptedMessage}
         <hr />
+        <AppEditor></AppEditor>
       </>
     )
   }
