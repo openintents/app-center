@@ -21,7 +21,7 @@ const AppCo = ({ data }) => {
 
 export const query = graphql`
     query foss {
-        allApps(filter:{openSourceUrl:{nin:["", null]}}, sort:{fields:[fields___lastCommit, name], order:[DESC, ASC]}) {
+        allApps(filter:{openSourceUrl:{nin:["", null]}, miningReady:{eq:true}}, sort:{fields:[fields___lastCommit, name], order:[DESC, ASC]}) {
           totalCount
           edges {
             node {
