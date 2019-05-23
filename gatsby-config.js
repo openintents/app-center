@@ -2,7 +2,7 @@ var proxy = require('http-proxy-middleware')
 
 module.exports = {
   siteMetadata: {
-    title: 'Blockstack App Mining Apps (April 2019)',
+    title: 'Blockstack App Mining Apps (May 2019)',
     description: `Directory of apps participating in App Mining.`,
     author: `@friedger`,
   },
@@ -37,7 +37,7 @@ module.exports = {
     {
       resolve: "gatsby-source-custom-api",
       options: {
-          url: "https://app-co-api.herokuapp.com/api/app-mining-apps",
+          url: "https://api.app.co/api/app-mining-apps",
           rootKey: "appco",
                 schemas: {
                     appco: `
