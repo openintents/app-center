@@ -154,7 +154,7 @@ export const query = graphql`
       totalCount
       edges {
         node {
-          App_Id
+          App_ID:App_Id
           Final_Score
         }
       }

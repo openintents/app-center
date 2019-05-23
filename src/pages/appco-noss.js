@@ -21,7 +21,7 @@ const AppCo = ({ data }) => {
 
 export const query = graphql`
     query noss {
-        allApps(filter:{openSourceUrl:{in:["", null]}}, sort:{fields:[name]}) {
+        allApps(filter:{openSourceUrl:{in:["", null]}, miningReady:{eq:true}}, sort:{fields:[name]}) {
           totalCount
           edges {
             node {
