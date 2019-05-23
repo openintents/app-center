@@ -32,20 +32,20 @@ const AppCo = ({ data }) => {
 
 export const query = graphql`
   query out {
-    lastmonth:allAppminingresultsXlsxFebruary2019 {
+    lastmonth:allAppminingresultsXlsxApril2019 {
       totalCount
       edges {
         node {
-          appcoid: App_Id
-          name: Name
+          appcoid: App_ID
+          name: App_name
           Final_Score
         }
       }
     }
-    thismonth:allAppminingresultsXlsxMarch2019 {
+    thismonth:allAppminingresultsXlsxMay2019 {
       edges {
         node {
-          appcoid: App_ID
+          appcoid: App_Id
           name: App_Name
           Final_Score
         }
