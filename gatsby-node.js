@@ -57,6 +57,7 @@ exports.onCreateNode = async ({ node, getNode, actions }) => {
     node.openSourceUrl &&
     node.openSourceUrl !== ''
   ) {
+    //const lastCommit = Promise.resolve("N/A")
     const lastCommit = getLastCommit(node.openSourceUrl)
     return lastCommit.then(r => {
       createNodeField({

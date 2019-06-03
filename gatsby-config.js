@@ -2,8 +2,8 @@ var proxy = require('http-proxy-middleware')
 
 module.exports = {
   siteMetadata: {
-    title: 'Blockstack App Mining Apps (May 2019)',
-    description: `Directory of apps participating in App Mining.`,
+    title: 'OI App Center',
+    description: `Manage your apps, comments, ratings.`,
     author: `@friedger`,
   },
   plugins: [
@@ -31,7 +31,7 @@ module.exports = {
         background_color: `#663399`,
         theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        icon: `src/images/icon.png`, // This path is relative to the root of the site.
       },
     },
     {

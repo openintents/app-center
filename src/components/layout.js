@@ -31,7 +31,12 @@ const Layout = ({ children }) => (
           <footer>
             © {new Date().getFullYear()}, Built with
             {` `}
-            <a href="https://www.gatsbyjs.org">Gatsby</a> and <a href="https://blockstack.org">Blockstack</a>
+            <a href="https://www.gatsbyjs.org">Gatsby</a> and{' '}
+            <a href="https://blockstack.org">Blockstack</a>.
+              {' '}You can{' '}
+              <a href="https://gitlab.com/friedger/appcostats">
+                view the source here
+              </a>
           </footer>
         </div>
       </>

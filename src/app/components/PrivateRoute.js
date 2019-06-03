@@ -1,5 +1,5 @@
 import React from 'react'
-import { checkIsSignedIn } from '../services/auth'
+import { checkIsSignedIn } from '../services/blockstack'
 import { navigate } from 'gatsby'
 
 class PrivateRoute extends React.Component {

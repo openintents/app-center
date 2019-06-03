@@ -1,6 +1,6 @@
 import React from 'react'
 import { navigate } from 'gatsby'
-import { handleLogin } from './services/auth'
+import { handleLogin } from './services/blockstack'
 
 class Login extends React.Component {
   componentDidMount() {

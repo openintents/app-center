@@ -1,19 +1,24 @@
-import {UserSession, AppConfig} from 'blockstack'
+import { UserSession, AppConfig } from 'blockstack'
 
 // helpful for debugging
 const logAuth = process.env.NODE_ENV === 'development' && true // set to true to turn on logging
 const clog = (...args) => logAuth && console.log(...args)
 // helpful for debugging
 
-const appConfig = new AppConfig(["store_write"], typeof window !== 'undefined' ? window.location.origin : "http://localhost:8000", "/app", "/manifest.webmanifest")
-const userSession = new UserSession({appConfig})
+const appConfig = new AppConfig(
+  ['store_write'],
+  typeof window !== 'undefined'
+    ? window.location.origin
+    : 'http://localhost:8000',
+  '/app',
+  '/manifest.webmanifest'
+)
+const userSession = new UserSession({ appConfig })
 
 export const isBrowser = () => typeof window !== 'undefined'
 
 export const getUser = () =>
-  isBrowser() && userSession.isUserSignedIn() ?
-    userSession.loadUserData()
-    : {}
+  isBrowser() && userSession.isUserSignedIn() ? userSession.loadUserData() : {}
 
 export const handleLogin = callback => {
   clog('isLoggedIn check', userSession.isUserSignedIn())
@@ -47,11 +52,39 @@ export const checkIsSignedIn = () => {
 }
 
 export const logout = callback => {
-  userSession.signUserOut("/app/login")
+  userSession.signUserOut('/app/login')
   callback()
 }
 
-export const encryptContent = (message) => {
-  console.log("encrypting " + message)
+export const encryptContent = message => {
+  console.log('encrypting ' + message)
   return userSession.encryptContent(message)
+}
+
+export const loadMyData = () => {
+  return userSession.getFile('content').then(content => {
+    if (content) {
+      return JSON.parse(content)
+    } else {
+      return {}
+    }
+  })
+}
+
+export const saveAppData = (identifier, content) => {
+  return userSession.putFile(`apps/${identifier}`, JSON.stringify(content))
+}
+
+export const loadAppData = (identifier) => {
+  return userSession.getFile(`apps/${identifier}`).then(content => {
+    if (content) {
+      return JSON.parse(content)
+    } else {
+      return {}
+    }
+  })
+}
+
+export const saveMyData = content => {
+  return userSession.putFile('content', JSON.stringify(content))
 }

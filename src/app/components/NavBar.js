@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, navigate } from 'gatsby'
-import { getUser, checkIsSignedIn, logout } from '../services/auth'
+import { getUser, checkIsSignedIn, logout } from '../services/blockstack'
 
 export default class NavBar extends React.Component {
   state = {checking:true, signedIn:false}

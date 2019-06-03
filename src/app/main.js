@@ -1,29 +1,70 @@
 import React from 'react'
-import { encryptContent } from './services/auth'
+import { graphql, Link, StaticQuery } from 'gatsby'
+import { encryptContent, loadMyData } from './services/blockstack'
 
 class Main extends React.Component {
+  state = {
+    message: 'My message',
+    encryptedMessage: '',
+    myApps: {},
+    loading: true,
+  }
 
-  state = {message:"My message", encryptedMessage:""}
+  componentDidMount() {
+    loadMyData().then(content => {
+      this.setState({ myApps: content.myApps, loading: false })
+    })
+  }
 
   handleClick(event) {
     const encryptedMessage = encryptContent(this.state.message)
-    this.setState({encryptedMessage})
-  }
-  handleChange(event) {
-    this.setState({message: event.target.value});
+    this.setState({ encryptedMessage })
   }
 
+  handleChange(event) {
+    this.setState({ message: event.target.value })
+  }
+
+  renderApps(myApps, data) {
+    const apps = []
+    Object.keys(myApps).forEach(key => {
+      if (myApps[key]) {
+        const appEditLink = `/appco-edit/${key.substr(4)}`      
+        const app = data.allApps.edges.filter(edge => {
+          return edge.node.appcoid.toString() === key.substr(4)})[0].node
+        apps.push(
+          <li key={key}>
+            <Link to={appEditLink}>{app.name}</Link>
+          </li>
+        )
+      }
+    })
+    return apps
+  }
   render() {
-    const {message, encryptedMessage} = this.state
+    const { message, encryptedMessage, myApps } = this.state
+
+
     return (
-      <>
-        <h1>Your Main App</h1>
-        <input type="text" value={message} onChange={event => this.handleChange(event)} />
-        <button onClick={event => this.handleClick(event)}>Encrypt</button>
-        {encryptedMessage}
-        <hr />
-        <AppEditor></AppEditor>
-      </>
+      <StaticQuery
+        query={graphql`
+          query MainAppsQuery {
+            allApps(sort: { fields: [name] }) {
+              edges {
+                node {
+                  ...AppInformation
+                }
+              }
+            }
+          }
+        `}
+        render={data => (
+          <>
+            <h1>Your Apps</h1>
+            <ul>{this.renderApps(myApps, data)}</ul>
+          </>
+        )}
+      />
     )
   }
 }
