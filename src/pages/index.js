@@ -20,7 +20,7 @@ class IndexPage extends React.Component {
           }}
         >
           <div>
-            <p>App Mining Apps (May 2019)</p>
+            <p>Current Blockstack apps</p>
             <ul>
               <li>
                 <Link to="/appco-foss/">Open Source apps</Link>
@@ -28,18 +28,61 @@ class IndexPage extends React.Component {
               <li>
                 <Link to="/appco-noss/">Closed Source apps</Link>
               </li>
+            </ul>
+            <p>App Mining (May 2019)</p>
+            <ul>
               <li>
-                <Link to="/appco-new/">New apps</Link>
+                <Link to="/2019-05/appco-new/">New apps</Link>
               </li>
               <li>
-                <Link to="/appco-out/">Retired apps</Link>
-              </li>
-              <li>
-                <a href="https://docs.blockstack.org/develop/mining_intro.html">
-                  read more about the App Mining program
-                </a>
+                <Link to="/2019-05/appco-out/">Retired apps</Link>
               </li>
             </ul>
+            <p>App Mining (April 2019)</p>
+            <ul>
+              <li>
+                <Link to="/2019-04/appco-new/">New apps</Link>
+              </li>
+              <li>
+                <Link to="/2019-04/appco-out/">Retired apps</Link>
+              </li>
+            </ul>
+            <p>App Mining (March 2019)</p>
+            <ul>
+              <li>
+                <Link to="/2019-03/appco-new/">New apps</Link>
+              </li>
+              <li>
+                <Link to="/2019-03/appco-out/">Retired apps</Link>
+              </li>
+            </ul>
+            <p>App Mining (February 2019)</p>
+            <ul>
+              <li>
+                <Link to="/2019-02/appco-new/">New apps</Link>
+              </li>
+              <li>
+                <Link to="/2019-02/appco-out/">Retired apps</Link>
+              </li>
+            </ul>
+            <p>App Mining (January 2019)</p>
+            <ul>
+              <li>
+                <Link to="/2019-01/appco-new/">New apps</Link>
+              </li>
+              <li>
+                <Link to="/2019-01/appco-out/">Retired apps</Link>
+              </li>
+            </ul>
+            <p>App Mining (December 2018)</p>
+            <ul>
+              <li>
+                <Link to="/2018-12/appco-new/">New apps</Link>
+              </li>            
+            </ul>
+            <a href="https://docs.blockstack.org/develop/mining_intro.html">
+              Read more about the App Mining program
+            </a>
           </div>
           <div
             style={{

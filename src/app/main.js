@@ -27,23 +27,29 @@ class Main extends React.Component {
 
   renderApps(myApps, data) {
     const apps = []
-    Object.keys(myApps).forEach(key => {
-      if (myApps[key]) {
-        const appEditLink = `/appco-edit/${key.substr(4)}`      
-        const app = data.allApps.edges.filter(edge => {
-          return edge.node.appcoid.toString() === key.substr(4)})[0].node
-        apps.push(
-          <li key={key}>
-            <Link to={appEditLink}>{app.name}</Link>
-          </li>
-        )
-      }
-    })
+    if (myApps) {
+      Object.keys(myApps).forEach(key => {
+        if (myApps[key]) {
+          const appEditLink = `/appco-edit/${key.substr(4)}`
+          const app = data.allApps.edges.filter(edge => {
+            return edge.node.appcoid.toString() === key.substr(4)
+          })[0].node
+          apps.push(
+            <li key={key}>
+              <Link to={appEditLink}>{app.name}</Link>
+            </li>
+          )
+        }
+      })
+    } else {
+      apps.push(
+      <Link to='/app/profile'>Add apps in your profile</Link>
+      )
+    }
     return apps
   }
   render() {
     const { message, encryptedMessage, myApps } = this.state
-
 
     return (
       <StaticQuery

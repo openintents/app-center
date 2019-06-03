@@ -103,7 +103,8 @@ export default class Editor extends Component {
                 the stores.
               </p>
               <p>
-                OI App Center builds on top of work by the <a href="https://github.com/onepf">One Platform Foundation</a>.
+                OI App Center builds on top of work by the{' '}
+                <a href="https://github.com/onepf">One Platform Foundation</a>.
               </p>
             </div>
 
@@ -1318,12 +1319,24 @@ export default class Editor extends Component {
                           value=""
                           id="consent-googleandroidcontentguidelines"
                         />
-                        This application meets{' '}
+                        I agree to the {' '}
+                        <a href="https://app.co/terms" target="_blank">
+                          App.co Terms
+                        </a>
+                      </label>
+
+                      <label class="checkbox">
+                        <input
+                          type="checkbox"
+                          value=""
+                          id="consent-appcomining"
+                        />
+                        This application meets the{' '}
                         <a
-                          href="http://play.google.com/about/developer-content-policy.html"
+                          href="https://app.co/mining/terms"
                           target="_blank"
                         >
-                          Android Content Guidelines
+                          App Mining Terms
                         </a>
                       </label>
 
@@ -1368,26 +1381,11 @@ export default class Editor extends Component {
                         <input
                           type="checkbox"
                           value=""
-                          id="consent-slidemeagreement"
-                        />
-                        I agree with the complete{' '}
-                        <a
-                          href="http://slideme.org/developers/dda"
-                          target="_blank"
-                        >
-                          SlideME Developer/Publisher Distribution Agreement
-                        </a>
-                      </label>
-
-                      <label class="checkbox">
-                        <input
-                          type="checkbox"
-                          value=""
                           id="consent-freefromthirdpartycopytightedcontent"
                         />
                         I confirm that my application is free from third-party
                         copyrighted pictures, sounds, databases or other types
-                        of information.
+                        of information that I don't have a license for.
                       </label>
                     </div>
                   </div>
@@ -2138,7 +2136,8 @@ export default class Editor extends Component {
                           value=""
                           id="requirements-features-email"
                         />
-                        This application requires to read the user's email address.
+                        This application requires to read the user's email
+                        address.
                       </label>
 
                       <label class="checkbox">
@@ -2764,7 +2763,7 @@ export default class Editor extends Component {
                       class="btn btn-primary"
                     >
                       In-app Products XML
-                    </a>                    
+                    </a>
                   </div>
                 </fieldset>
               </section>
@@ -2779,10 +2778,7 @@ export default class Editor extends Component {
                       App Stores supporting Blockstack apps
                     </label>
                     <div class="controls">
-                      <a
-                        href="http://app.co"
-                        target="_blank"
-                      >
+                      <a href="http://app.co" target="_blank">
                         <img
                           class="img-rounded"
                           src="/img/appstores/appco.png"
@@ -2797,9 +2793,9 @@ export default class Editor extends Component {
                           width="250"
                           style={{ margin: '10px' }}
                         />
-                      </a>                      
+                      </a>
                     </div>
-                  </div>                  
+                  </div>
                 </fieldset>
               </section>
               {/*section-store-specific*/}

@@ -1,12 +1,12 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import App from '../components/app'
-import Layout from '../components/layout'
+import App from '../../components/app'
+import Layout from '../../components/layout'
 
 const AppCo = ({ data }) => {
   return (
     <Layout>
-      <h1>New Blockstack Apps</h1>
+      <h1>New Blockstack Apps (February 2019)</h1>
       <ul>
         <li>Total number: {data.thismonth.totalCount}</li>
       </ul>
@@ -34,15 +34,15 @@ const AppCo = ({ data }) => {
 }
 
 export const query = graphql`
-  query new {
-    thismonth:allAppminingresultsXlsxMay2019(
-      filter: { Score_Last_Round: { eq: null }, Average_Score: {ne: null} }
+  query new201902 {
+    thismonth:allAppminingresultsXlsxFebruary2019(
+      filter: { Score_Last_Round: { eq: null }, Average: {ne: null} }
     ) {
       totalCount
       edges {
         node {
           appcoid: App_Id
-          name: App_Name
+          name: Name
           Final_Score
         }
       }

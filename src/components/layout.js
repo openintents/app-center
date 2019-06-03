@@ -34,7 +34,7 @@ const Layout = ({ children }) => (
             <a href="https://www.gatsbyjs.org">Gatsby</a> and{' '}
             <a href="https://blockstack.org">Blockstack</a>.
               {' '}You can{' '}
-              <a href="https://gitlab.com/friedger/appcostats">
+              <a href="https://gitlab.com/friedger/app-center">
                 view the source here
               </a>
           </footer>

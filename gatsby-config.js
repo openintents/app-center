@@ -25,8 +25,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-blockstack`,
-        short_name: `starter`,
+        name: `OI App Center for Blockstack`,
+        short_name: `OI App Center`,
         start_url: `/`,
         background_color: `#663399`,
         theme_color: `#663399`,

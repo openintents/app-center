@@ -1,7 +1,7 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import App from '../components/app'
-import Layout from '../components/layout'
+import App from '../../components/app'
+import Layout from '../../components/layout'
 
 const AppCo = ({ data }) => {
   const retiredApps = data.lastmonth.edges
@@ -21,7 +21,7 @@ const AppCo = ({ data }) => {
 
   return (
     <Layout>
-      <h1>Retired Blockstack Apps</h1>
+      <h1>Retired Blockstack Apps (February 2019)</h1>
       <ul>
         <li>Total number: {retiredApps.length}</li>
       </ul>
@@ -31,22 +31,22 @@ const AppCo = ({ data }) => {
 }
 
 export const query = graphql`
-  query out {
-    lastmonth:allAppminingresultsXlsxApril2019 {
+  query out201902 {
+    lastmonth:allAppminingresultsXlsxJanuary2019 {
       totalCount
-      edges {
-        node {
-          appcoid: App_ID
-          name: App_name
-          Final_Score
-        }
-      }
-    }
-    thismonth:allAppminingresultsXlsxMay2019 {
       edges {
         node {
           appcoid: App_Id
           name: App_Name
+          Final_Score
+        }
+      }
+    }
+    thismonth:allAppminingresultsXlsxFebruary2019 {
+      edges {
+        node {
+          appcoid: App_Id
+          name: Name
           Final_Score
         }
       }
