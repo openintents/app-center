@@ -26,10 +26,19 @@ getLastCommit = openSourceUrl => {
     } else {
       return Promise.resolve('Unsupported github url')
     }
-  } else if (openSourceUrl.startsWith('https://gitlab.com/') && openSourceUrl.startsWith('https://gitlab.com/riot.ai/NoteRiot')) {
-    projectId = 5538365
-    const url =
-        'https://gitlab.com/api/v4/projects/' + projectId + '/repository/commits'
+  } else if (openSourceUrl.startsWith('https://gitlab.com/')) {
+    if (openSourceUrl.startsWith('https://gitlab.com/riot.ai/NoteRiot')) {
+      projectId = 5538365
+    } else if (openSourceUrl.startsWith('https://gitlab.com/friedger/app')) {
+      projectId = 12323770
+    } else {
+      projectId = 0
+    }
+    if (projectId != 0) {
+      const url =
+        'https://gitlab.com/api/v4/projects/' +
+        projectId +
+        '/repository/commits'
       return fetch(url)
         .then(response => response.json(), () => 'No json')
         .then(
@@ -44,7 +53,9 @@ getLastCommit = openSourceUrl => {
             return 'Error on commit requests'
           }
         )
-
+    } else {
+      return Promise.resolve('Unsupported gitlab repo')
+    }
   } else {
     return Promise.resolve('Unsupported source repo')
   }

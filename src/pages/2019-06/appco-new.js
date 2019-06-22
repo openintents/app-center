@@ -6,7 +6,7 @@ import Layout from '../../components/layout'
 const AppCo = ({ data }) => {
   return (
     <Layout>
-      <h1>New Blockstack Apps (May 2019)</h1>
+      <h1>New Blockstack Apps (June 2019)</h1>
       <ul>
         <li>Total number: {data.thismonth.totalCount}</li>
       </ul>
@@ -34,8 +34,8 @@ const AppCo = ({ data }) => {
 }
 
 export const query = graphql`
-  query new201905 {
-    thismonth:allAppminingresultsXlsxMay2019(
+  query new201906 {
+    thismonth:allAppminingresultsXlsxJune2019(
       filter: { Score_Last_Round: { eq: null }, Average_Score: {ne: null} }
     ) {
       totalCount

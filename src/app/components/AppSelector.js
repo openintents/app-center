@@ -7,9 +7,6 @@ import { Formik } from 'formik'
 const StyledRoot = styled.div`
   flexgrow: 1;
 `
-const StyledCell = styled(Grid)`
-  text-align: center;
-`
 
 const AppSelector = ({myApps, onSubmitApps}) => {
   console.log({myApps, onSubmitApps})

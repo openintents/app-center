@@ -36,7 +36,7 @@ const AppCo = ({ data }) => {
 export const query = graphql`
   query new201901 {
     thismonth:allAppminingresultsXlsxJanuary2019(
-      filter: { Score_Last_Round: { eq: 0 }, Average: {ne: null} }
+      filter: { Score_Last_Round: { eq: "0" }, Average: {ne: null} }
     ) {
       totalCount
       edges {

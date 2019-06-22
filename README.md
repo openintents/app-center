@@ -1,12 +1,6 @@
-## Make decentralized apps with Gatsby + Blockstack
+## OI App Center
 
-This is a fork of https://github.com/sw-yx/jamstack-hackathon-starter which shows how to use Blockstack with Gatsby. Start here for your next Blockstack hackathon or use this as a reference implementation.
-
-## How to start
-
-You can clone and deploy this sample project with one click:
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/friedger/blockstack-starter)
-
+The place with all your data about Blockstack apps.
 
 ## Further Documentation in nested READMEs
 

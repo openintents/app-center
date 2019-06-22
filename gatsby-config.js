@@ -35,30 +35,35 @@ module.exports = {
       },
     },
     {
-      resolve: "gatsby-source-custom-api",
+      resolve: 'gatsby-source-custom-api',
       options: {
-          url: "https://api.app.co/api/app-mining-apps",
-          rootKey: "appco",
-                schemas: {
-                    appco: `
+        url: 'https://api.app.co/api/app-mining-apps',
+        rootKey: 'appco',
+        schemas: {
+          appco: `
                         apps: [apps]
                     `,
-                    apps: `
+          apps: `
                         id: Int
                         name: String
                         openSourceUrl: String
-                    `
-                }
-      }
-  },
-  `gatsby-transformer-excel`,
-  {
-    resolve: `gatsby-source-filesystem`,
-    options: {
-      name: `data`,
-      path: `${__dirname}/src/data/`,
+                    `,
+        },
+      },
     },
-  },
+    {
+      resolve: `gatsby-transformer-excel`,
+      options: {
+        raw: false,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `data`,
+        path: `${__dirname}/src/data/`,
+      },
+    },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.app/offline
     // 'gatsby-plugin-offline',

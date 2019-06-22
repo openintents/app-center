@@ -21,7 +21,7 @@ const AppCo = ({ data }) => {
 
   return (
     <Layout>
-      <h1>Retired Blockstack Apps (May 2019)</h1>
+      <h1>Retired Blockstack Apps (June 2019)</h1>
       <ul>
         <li>Total number: {retiredApps.length}</li>
       </ul>
@@ -31,18 +31,20 @@ const AppCo = ({ data }) => {
 }
 
 export const query = graphql`
-  query out201905 {
-    lastmonth:allAppminingresultsXlsxApril2019 {
+  query out201906 {
+    lastmonth:allAppminingresultsXlsxMay2019 {
       totalCount
       edges {
         node {
-          appcoid: App_ID
-          name: App_name
+          appcoid: App_Id
+          name: App_Name
           Final_Score
         }
       }
     }
-    thismonth:allAppminingresultsXlsxMay2019 {
+    thismonth:allAppminingresultsXlsxJune2019 (
+      filter: { Final_Score: {ne: null} }
+      ){
       edges {
         node {
           appcoid: App_Id

@@ -29,6 +29,15 @@ class IndexPage extends React.Component {
                 <Link to="/appco-noss/">Closed Source apps</Link>
               </li>
             </ul>
+            <p>App Mining (June 2019)</p>
+            <ul>
+              <li>
+                <Link to="/2019-06/appco-new/">New apps</Link>
+              </li>
+              <li>
+                <Link to="/2019-06/appco-out/">Retired apps</Link>
+              </li>
+            </ul>
             <p>App Mining (May 2019)</p>
             <ul>
               <li>
