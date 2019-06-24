@@ -18,7 +18,10 @@ const renderTheta = theta => {
   return 'X'
 }
 const Rank = (data, key, label) => {
-  const index = data[key].edges.findIndex(e => {
+  const monthData = data[key].edges.sort((e1, e2) => {
+    return parseFloat(e2.node.Final_Score) - parseFloat(e1.node.Final_Score)
+  })
+  const index = monthData.findIndex(e => {
     if (e.node.hasOwnProperty('App_Name')) {
       return e.node.App_Name === data.apps.name
     } else {
@@ -26,7 +29,7 @@ const Rank = (data, key, label) => {
     }
   })
   if (index >= 0) {
-    const node = data[key].edges[index].node
+    const node = monthData[index].node
     return (
       <>
         <StyledCell item xs={4}>
