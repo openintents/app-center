@@ -1,12 +1,13 @@
-import { Link } from 'gatsby'
+import { StaticQuery, Link, graphql } from 'gatsby'
 import PropTypes from 'prop-types'
 import React from 'react'
-
-const Header = ({ siteTitle }) => (
+import Search from './search'
+const Header = ({ siteTitle, siteDescription, siteSearchIndex }) => (
   <div
     style={{
       background: `#5DBCD2`,
       marginBottom: `1.45rem`,
+      color: `white`,
     }}
   >
     <div
@@ -27,12 +28,15 @@ const Header = ({ siteTitle }) => (
           {siteTitle}
         </Link>
       </h1>
+      {siteDescription}
+      <Search searchIndex={siteSearchIndex.index} />
     </div>
   </div>
 )
 
 Header.propTypes = {
   siteTitle: PropTypes.string,
+  siteDescription: PropTypes.string,
 }
 
 Header.defaultProps = {

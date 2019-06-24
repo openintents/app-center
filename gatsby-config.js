@@ -3,7 +3,7 @@ var proxy = require('http-proxy-middleware')
 module.exports = {
   siteMetadata: {
     title: 'OI App Center',
-    description: `Manage your apps, comments, ratings.`,
+    description: `Manage your apps, comments, ratings in the Blockstack App ecosystem`,
     author: `@friedger`,
   },
   plugins: [
@@ -47,6 +47,8 @@ module.exports = {
                         id: Int
                         name: String
                         openSourceUrl: String
+                        description: String
+                        category: String
                     `,
         },
       },
@@ -62,6 +64,23 @@ module.exports = {
       options: {
         name: `data`,
         path: `${__dirname}/src/data/`,
+      },
+    },
+    {
+      resolve: `@gatsby-contrib/gatsby-plugin-elasticlunr-search`,
+      options: {
+        // Fields to index
+        fields: [`name`, `category`, `description`],
+        // How to resolve each field`s value for a supported node type
+        resolvers: {
+          // For any node of type app, list how to resolve the fields` values
+          apps: {
+            name: node => node.name,
+            category: node => node.category,
+            description: node => node.description,
+            appcoid: node => node.id__normalized,
+          }
+        },
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality

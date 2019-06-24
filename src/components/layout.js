@@ -8,17 +8,25 @@ import './layout.css'
 const Layout = ({ children }) => (
   <StaticQuery
     query={graphql`
-      query SiteTitleQuery {
+      query SiteHeaderQuery {
         site {
           siteMetadata {
             title
+            description
           }
+        }
+        siteSearchIndex {
+          index
         }
       }
     `}
     render={data => (
       <>
-        <Header siteTitle={data.site.siteMetadata.title} />
+        <Header
+          siteTitle={data.site.siteMetadata.title}
+          siteDescription={data.site.siteMetadata.description}
+          siteSearchIndex={data.siteSearchIndex}
+        />
         <div
           style={{
             margin: `0 auto`,
@@ -32,11 +40,10 @@ const Layout = ({ children }) => (
             © {new Date().getFullYear()}, Built with
             {` `}
             <a href="https://www.gatsbyjs.org">Gatsby</a> and{' '}
-            <a href="https://blockstack.org">Blockstack</a>.
-              {' '}You can{' '}
-              <a href="https://gitlab.com/friedger/app-center">
-                view the source here
-              </a>
+            <a href="https://blockstack.org">Blockstack</a>. You can{' '}
+            <a href="https://gitlab.com/friedger/app-center">
+              view the source here
+            </a>
           </footer>
         </div>
       </>
