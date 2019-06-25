@@ -149,7 +149,7 @@ class AppDetails extends Component {
   }
 
   handleChangeVisibility(event) {
-    this.setState({visibility:event.target.value});
+    this.setState({ visibility: event.target.value })
   }
 
   handleCloseUndo() {
@@ -169,7 +169,7 @@ class AppDetails extends Component {
       showUpdateDialog,
       actionMessage,
       undoFunction,
-      visibility
+      visibility,
     } = this.state
     const appActions = isClaimedApp ? (
       <>
@@ -203,9 +203,18 @@ class AppDetails extends Component {
           variant="outlined"
         >
           This is my app
+        </Button>{' '}
+        <Button
+          variant="outlined"
+          onClick={() => this.setState({ showUpdateDialog: true })}
+        >
+          Post comment
         </Button>
       </>
     )
+
+    const updateLabel = isClaimedApp ? 'Updates for this month' : 'My feedback'
+    const updateHelperText = isClaimedApp ? 'What is new? (~200 characters)': 'What did you like or dislike?'
     return (
       <Layout>
         <h1>{data.apps.name}</h1>
@@ -304,19 +313,22 @@ class AppDetails extends Component {
           onClose={this.handleCloseUpdate}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Publish Updates</DialogTitle>
+          <DialogTitle id="form-dialog-title">
+            {isClaimedApp && <>Publish Updates</>}
+            {!isClaimedApp && <>Add Comment</>}
+          </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Updates are shown to all users publicly or only to the app
-              developers
+              Updates and comments are shown to either all users publicly or
+              only to the app developers
             </DialogContentText>
 
             <FormLabel component="legend">Visibility</FormLabel>
             <RadioGroup
-              aria-label="Gender"
+              aria-label="Visibility"
               name="visibility"
               value={visibility}
-              onChange={(e) => this.handleChangeVisibility(e)}
+              onChange={e => this.handleChangeVisibility(e)}
             >
               <FormControlLabel
                 value="public"
@@ -328,17 +340,21 @@ class AppDetails extends Component {
                 control={<Radio />}
                 label="Visible for app owner only"
               />
+              <FormControlLabel
+                value="private"
+                control={<Radio />}
+                label="Visible only for me"
+              />
             </RadioGroup>
             <TextField
-              
               margin="normal"
               id="userUpdate"
-              label="Updates for this month"
+              label={updateLabel}
               type="text"
               fullWidth
               multiline
               rows="3"
-              helperText="What is new?"
+              helperText={updateHelperText}
               variant="outlined"
             />
           </DialogContent>
