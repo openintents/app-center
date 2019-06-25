@@ -1,8 +1,25 @@
-import React from 'react'
-import { graphql } from 'gatsby'
+import React, { Component } from 'react'
+import { graphql, navigate } from 'gatsby'
 import Layout from '../components/layout'
 import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
+import { isSignedIn, loadMyData, saveMyData } from '../app/services/blockstack'
+import {
+  Button,
+  Snackbar,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  TextField,
+  DialogActions,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from '@material-ui/core'
+import CloseIcon from '@material-ui/icons/Close'
 
 const StyledRoot = styled.div`
   flexgrow: 1;
@@ -12,10 +29,8 @@ const StyledCell = styled(Grid)`
 `
 
 const renderTheta = theta => {
-  if (theta) {
-    return Number.parseFloat(theta).toFixed(2)
-  }
-  return 'X'
+  const thetaString = theta ? Number.parseFloat(theta).toFixed(2) : 'X'
+  return <small>{thetaString}</small>
 }
 const Rank = (data, key, label) => {
   const monthData = data[key].edges.sort((e1, e2) => {
@@ -32,28 +47,28 @@ const Rank = (data, key, label) => {
     const node = monthData[index].node
     return (
       <>
-        <StyledCell item xs={4}>
+        <StyledCell item md={4} xs={4}>
           {label}
         </StyledCell>
-        <StyledCell item xs={2}>
+        <StyledCell item md={2} xs={4}>
           <b>{index + 1}</b>/{data[key].totalCount}
         </StyledCell>
-        <StyledCell item xs={1}>
+        <StyledCell item md={1} xs={4}>
           <b>{Number.parseFloat(node.Final_Score).toFixed(2)}</b>
         </StyledCell>
-        <StyledCell item xs={1}>
+        <StyledCell item md={1} xs={2}>
           {renderTheta(node.DE_Theta)}
         </StyledCell>
-        <StyledCell item xs={1}>
+        <StyledCell item md={1} xs={2}>
           {renderTheta(node.PH_Theta)}
         </StyledCell>
-        <StyledCell item xs={1}>
+        <StyledCell item md={1} xs={2}>
           {renderTheta(node.NIL_Theta)}
         </StyledCell>
-        <StyledCell item xs={1}>
+        <StyledCell item md={1} xs={2}>
           {renderTheta(node.TMUI_Theta)}
         </StyledCell>
-        <StyledCell item xs={1}>
+        <StyledCell item md={1} xs={2}>
           {renderTheta(node.Awario_Theta)}
         </StyledCell>
       </>
@@ -68,55 +83,279 @@ const Rank = (data, key, label) => {
     </>
   )
 }
-const AppDetails = ({ data }) => {
-  return (
-    <Layout>
-      <h1>{data.apps.name}</h1>
-      <StyledRoot>
-        <Grid container spacing={3}>
-          <StyledCell item xs={4}>
-            <b>Month</b>
-          </StyledCell>
-          <StyledCell item xs={2}>
-            <b>Rank</b>
-          </StyledCell>
-          <StyledCell item xs={1}>
-            <b>Final Score</b>
-          </StyledCell>
-          <StyledCell item xs={1}>
-            DE
-          </StyledCell>
-          <StyledCell item xs={1}>
-            PH{' '}
-          </StyledCell>
-          <StyledCell item xs={1}>
-            NIL
-          </StyledCell>
-          <StyledCell item xs={1}>
-            TMUI{' '}
-          </StyledCell>
-          <StyledCell item xs={1}>
-            Awario
-          </StyledCell>
-          {Rank(data, 'june2019', 'June 2019')}
-          <br />
-          {Rank(data, 'may2019', 'May 2019')}
-          <br />
-          {Rank(data, 'apr2019', 'Apr 2019')}
-          <br />
-          {Rank(data, 'mar2019', 'Mar 2019')}
-          <br />
-          {Rank(data, 'feb2019', 'Feb 2019')}
-          <br />
-          {Rank(data, 'jan2019', 'Jan 2019')}
-          <br />
-          {Rank(data, 'dec2018', 'Dec 2018')}
-          <br />
-        </Grid>
-      </StyledRoot>
-      <hr />
-    </Layout>
-  )
+
+class AppDetails extends Component {
+  state = { isClaimedApp: false }
+
+  componentDidMount() {
+    if (isSignedIn()) {
+      const { data } = this.props
+      loadMyData().then(content => {
+        const isClaimedApp =
+          content.myApps.hasOwnProperty(`app-${data.apps.appcoid}`) &&
+          content.myApps[`app-${data.apps.appcoid}`]
+
+        this.setState({ isClaimedApp, isSignedIn: true })
+      })
+    } else {
+      this.setState({ isSignedIn: false })
+    }
+  }
+
+  claimApp() {
+    if (this.state.isSignedIn) {
+      this.setState({ isClaimingApp: true })
+      loadMyData().then(content => {
+        content.myApps[`app-${this.props.data.apps.appcoid}`] = true
+        saveMyData(content).then(() => {
+          this.setState({
+            isClaimedApp: true,
+            isClaimingApp: false,
+            showUndoAction: true,
+            undoFunction: () => {
+              this.removeApp()
+              this.handleCloseUndo()
+            },
+            actionMessage: 'App has been added.',
+          })
+        })
+      })
+    } else {
+      navigate('/app/login')
+    }
+  }
+
+  removeApp() {
+    if (this.state.isSignedIn) {
+      this.setState({ isClaimingApp: true })
+      loadMyData().then(content => {
+        content.myApps[`app-${this.props.data.apps.appcoid}`] = false
+        saveMyData(content).then(() => {
+          this.setState({
+            isClaimedApp: false,
+            isClaimingApp: false,
+            showUndoAction: true,
+            undoFunction: () => {
+              this.claimApp()
+              this.handleCloseUndo()
+            },
+            actionMessage: 'App has been removed.',
+          })
+        })
+      })
+    } else {
+      navigate('/app/login')
+    }
+  }
+
+  handleChangeVisibility(event) {
+    this.setState({visibility:event.target.value});
+  }
+
+  handleCloseUndo() {
+    this.setState({ showUndoAction: false })
+  }
+
+  handleCloseUpdate() {
+    this.setState({ showUpdateDialog: false })
+  }
+
+  render() {
+    const { data } = this.props
+    const {
+      isClaimedApp,
+      isClaimingApp,
+      showUndoAction,
+      showUpdateDialog,
+      actionMessage,
+      undoFunction,
+      visibility
+    } = this.state
+    const appActions = isClaimedApp ? (
+      <>
+        <Button
+          variant="outlined"
+          onClick={() => navigate(`/appco-edit/${data.apps.appcoid}`)}
+        >
+          Edit details
+        </Button>{' '}
+        <Button
+          variant="outlined"
+          onClick={() => this.setState({ showUpdateDialog: true })}
+        >
+          Post progress update
+        </Button>{' '}
+        <Button
+          variant="outlined"
+          disabled={isClaimingApp}
+          onClick={() => this.removeApp()}
+        >
+          Remove from my apps
+        </Button>
+      </>
+    ) : (
+      <>
+        <Button
+          disabled={isClaimingApp}
+          onClick={() => {
+            this.claimApp()
+          }}
+          variant="outlined"
+        >
+          This is my app
+        </Button>
+      </>
+    )
+    return (
+      <Layout>
+        <h1>{data.apps.name}</h1>
+        <StyledRoot>
+          <Grid container spacing={0}>
+            <StyledCell item md={4} xs={4}>
+              <b>Month</b>
+            </StyledCell>
+            <StyledCell item md={2} xs={4}>
+              <b>Rank</b>
+            </StyledCell>
+            <StyledCell item md={1} xs={4}>
+              <b>Final Score</b>
+            </StyledCell>
+            <StyledCell item md={1} xs={2}>
+              <small>DE</small>
+            </StyledCell>
+            <StyledCell item md={1} xs={2}>
+              <small>PH</small>
+            </StyledCell>
+            <StyledCell item md={1} xs={2}>
+              <small>NIL</small>
+            </StyledCell>
+            <StyledCell item md={1} xs={2}>
+              <small>TMUI</small>
+            </StyledCell>
+            <StyledCell item md={1} xs={2}>
+              <small>AW</small>
+            </StyledCell>
+            <StyledCell item xs={12}>
+              <hr />
+            </StyledCell>
+            {Rank(data, 'june2019', 'June 2019')}
+            <StyledCell item xs={12}>
+              <hr />
+            </StyledCell>
+            {Rank(data, 'may2019', 'May 2019')}
+            <StyledCell item xs={12}>
+              <hr />
+            </StyledCell>
+            {Rank(data, 'apr2019', 'Apr 2019')}
+            <StyledCell item xs={12}>
+              <hr />
+            </StyledCell>
+            {Rank(data, 'mar2019', 'Mar 2019')}
+            <StyledCell item xs={12}>
+              <hr />
+            </StyledCell>
+            {Rank(data, 'feb2019', 'Feb 2019')}
+            <StyledCell item xs={12}>
+              <hr />
+            </StyledCell>
+            {Rank(data, 'jan2019', 'Jan 2019')}
+            <StyledCell item xs={12}>
+              <hr />
+            </StyledCell>
+            {Rank(data, 'dec2018', 'Dec 2018')}
+          </Grid>
+        </StyledRoot>
+        <hr />
+        {appActions}
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={showUndoAction}
+          autoHideDuration={1000}
+          onClose={() => this.handleCloseUndo()}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">{actionMessage}</span>}
+          action={[
+            <Button
+              key="undo"
+              color="secondary"
+              size="small"
+              onClick={undoFunction}
+            >
+              UNDO
+            </Button>,
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              onClick={() => this.handleCloseUndo()}
+            >
+              <CloseIcon />
+            </IconButton>,
+          ]}
+        />
+
+        <Dialog
+          open={showUpdateDialog}
+          onClose={this.handleCloseUpdate}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Publish Updates</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Updates are shown to all users publicly or only to the app
+              developers
+            </DialogContentText>
+
+            <FormLabel component="legend">Visibility</FormLabel>
+            <RadioGroup
+              aria-label="Gender"
+              name="visibility"
+              value={visibility}
+              onChange={(e) => this.handleChangeVisibility(e)}
+            >
+              <FormControlLabel
+                value="public"
+                control={<Radio />}
+                label="Visible for all"
+              />
+              <FormControlLabel
+                value="devs"
+                control={<Radio />}
+                label="Visible for app owner only"
+              />
+            </RadioGroup>
+            <TextField
+              
+              margin="normal"
+              id="userUpdate"
+              label="Updates for this month"
+              type="text"
+              fullWidth
+              multiline
+              rows="3"
+              helperText="What is new?"
+              variant="outlined"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => this.handleCloseUpdate()} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={() => this.handleCloseUpdate()} color="primary">
+              Post
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <hr />
+      </Layout>
+    )
+  }
 }
 
 export const query = graphql`
@@ -180,8 +419,8 @@ export const query = graphql`
           App_ID
           Final_Score
           PH_Theta
-          DE_Theta    
-          TMUI_Theta      
+          DE_Theta
+          TMUI_Theta
         }
       }
     }

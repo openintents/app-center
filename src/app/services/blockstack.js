@@ -20,6 +20,8 @@ export const isBrowser = () => typeof window !== 'undefined'
 export const getUser = () =>
   isBrowser() && userSession.isUserSignedIn() ? userSession.loadUserData() : {}
 
+export const isSignedIn = () => isBrowser() && userSession.isUserSignedIn
+
 export const handleLogin = callback => {
   clog('isLoggedIn check', userSession.isUserSignedIn())
   if (userSession.isUserSignedIn()) {
@@ -75,7 +77,7 @@ export const saveAppData = (identifier, content) => {
   return userSession.putFile(`apps/${identifier}`, JSON.stringify(content))
 }
 
-export const loadAppData = (identifier) => {
+export const loadAppData = identifier => {
   return userSession.getFile(`apps/${identifier}`).then(content => {
     if (content) {
       return JSON.parse(content)

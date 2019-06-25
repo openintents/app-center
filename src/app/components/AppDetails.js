@@ -3,6 +3,7 @@ import { useStaticQuery, graphql } from 'gatsby'
 import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
 import { Formik } from 'formik'
+import { Button } from '@material-ui/core';
 
 const StyledRoot = styled.div`
   flexgrow: 1;
@@ -44,9 +45,9 @@ const AppDetails = ({appDetails, onSubmitAppDetails}) => {
     return (
       <form onSubmit={handleSubmit}>
         {apps}
-        <button type="submit" disabled={isSubmitting}>
+        <Button variant="outlined" type="submit" disabled={isSubmitting}>
           Save
-        </button>
+        </Button>
       </form>
     )
   }

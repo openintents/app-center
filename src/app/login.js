@@ -1,6 +1,7 @@
 import React from 'react'
 import { navigate } from 'gatsby'
 import { handleLogin } from './services/blockstack'
+import { Button } from '@material-ui/core';
 
 class Login extends React.Component {
   componentDidMount() {
@@ -15,7 +16,7 @@ class Login extends React.Component {
     return (
       <>
         <h1>Log in</h1>
-        <button onClick={this.handleSubmit}>log in</button>
+        <Button variant="outlined" onClick={this.handleSubmit}>log in</Button>
       </>
     )
   }

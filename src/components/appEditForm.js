@@ -1,4 +1,5 @@
 import { Formik } from 'formik'
+import { Button } from '@material-ui/core';
 
 export const AppEditForm = (app, edits) => {
 return (<Formik
@@ -48,9 +49,9 @@ return (<Formik
           value={values.password}
         />
         {errors.password && touched.password && errors.password}
-        <button type="submit" disabled={isSubmitting}>
+        <Button type="submit" disabled={isSubmitting}>
           Submit
-        </button>
+        </Button>
       </form>
     )}
   </Formik>)

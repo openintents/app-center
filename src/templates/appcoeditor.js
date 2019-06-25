@@ -3,7 +3,7 @@ import { graphql } from 'gatsby'
 import Layout from '../components/layout'
 import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
-import { loadAppData } from '../app/services/blockstack'
+import { loadAppData, isSignedIn } from '../app/services/blockstack'
 import Editor from '../lib/editor'
 
 const StyledRoot = styled.div`
@@ -30,7 +30,8 @@ const monthsLabels = [
   'May 2019',
 ]
 class AppEditor extends Component {
-  state = {appEdits:{}}
+  state = { appEdits: {} }
+
   componentDidMount() {
     loadAppData(`app-${this.props.data.apps.appcoid}`).then(appEdits => {
       this.setState({ appEdits })
@@ -60,7 +61,7 @@ class AppEditor extends Component {
       <Layout>
         <h1>{data.apps.name}</h1>
         <StyledRoot>
-          <Editor app={data.apps} edits={this.state.appEdits}/>      
+          <Editor app={data.apps} edits={this.state.appEdits} />
         </StyledRoot>
         <hr />
       </Layout>

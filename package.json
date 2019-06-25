@@ -6,6 +6,7 @@
   "dependencies": {
     "@gatsby-contrib/gatsby-plugin-elasticlunr-search": "^2.3.0",
     "@material-ui/core": "^4.0.0-beta.2",
+    "@material-ui/icons": "^4.2.1",
     "babel-plugin-styled-components": "^1.10.0",
     "blockstack": "^19.1.0",
     "bootstrap": "^4.3.1",
@@ -27,6 +28,7 @@
     "gatsby-transformer-excel": "^2.1.11",
     "gatsby-transformer-sharp": "^2.1.8",
     "node-fetch": "^2.5.0",
+    "radiks": "^0.2.1",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-helmet": "^5.2.0",
