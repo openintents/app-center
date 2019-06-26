@@ -1,6 +1,6 @@
 import { Model, User } from 'radiks';
 
-class UserComment extends Model {
+export class UserComment extends Model {
   static className = 'AppUpdate';
   static schema = { // all fields are encrypted by default
     object: {
@@ -8,6 +8,5 @@ class UserComment extends Model {
         decrypted: true
     },
     comment: String,
-    date: Date,
   }
 };

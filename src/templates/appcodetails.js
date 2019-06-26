@@ -3,7 +3,12 @@ import { graphql, navigate } from 'gatsby'
 import Layout from '../components/layout'
 import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
-import { isSignedIn, loadMyData, saveMyData } from '../app/services/blockstack'
+import {
+  isSignedIn,
+  loadMyData,
+  saveMyData,
+  postUserUpdate,
+} from '../app/services/blockstack'
 import {
   Button,
   Snackbar,
@@ -20,6 +25,7 @@ import {
   Radio,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
+import { UserComment } from '../components/model'
 
 const StyledRoot = styled.div`
   flexgrow: 1;
@@ -85,7 +91,13 @@ const Rank = (data, key, label) => {
 }
 
 class AppDetails extends Component {
-  state = { isClaimedApp: false }
+  state = {
+    isClaimedApp: false,
+    visibility: 'private',
+    userUpdate: '',
+    showUndoAction: false,
+    showUpdateDialog: false,
+  }
 
   componentDidMount() {
     if (isSignedIn()) {
@@ -160,6 +172,17 @@ class AppDetails extends Component {
     this.setState({ showUpdateDialog: false })
   }
 
+  postComment() {
+    const { userUpdate, visibility } = this.state
+    postUserUpdate(
+      visibility,
+      new UserComment({
+        comment: userUpdate,
+        object: this.props.data.apps.website,
+      })
+    )
+  }
+
   render() {
     const { data } = this.props
     const {
@@ -170,6 +193,7 @@ class AppDetails extends Component {
       actionMessage,
       undoFunction,
       visibility,
+      userUpdate,
     } = this.state
     const appActions = isClaimedApp ? (
       <>
@@ -214,7 +238,9 @@ class AppDetails extends Component {
     )
 
     const updateLabel = isClaimedApp ? 'Updates for this month' : 'My feedback'
-    const updateHelperText = isClaimedApp ? 'What is new? (~200 characters)': 'What did you like or dislike?'
+    const updateHelperText = isClaimedApp
+      ? 'What is new? (~200 characters)'
+      : 'What did you like or dislike?'
     return (
       <Layout>
         <h1>{data.apps.name}</h1>
@@ -323,7 +349,6 @@ class AppDetails extends Component {
               only to the app developers
             </DialogContentText>
 
-            <FormLabel component="legend">Visibility</FormLabel>
             <RadioGroup
               aria-label="Visibility"
               name="visibility"
@@ -349,20 +374,24 @@ class AppDetails extends Component {
             <TextField
               margin="normal"
               id="userUpdate"
-              label={updateLabel}
               type="text"
               fullWidth
               multiline
               rows="3"
               helperText={updateHelperText}
               variant="outlined"
+              value={userUpdate}
+              onChange={e => {
+                console.log({ value: e.target.value })
+                this.setState({ userUpdate: e.target.value })
+              }}
             />
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.handleCloseUpdate()} color="primary">
               Cancel
             </Button>
-            <Button onClick={() => this.handleCloseUpdate()} color="primary">
+            <Button onClick={() => this.postComment()} color="primary">
               Post
             </Button>
           </DialogActions>

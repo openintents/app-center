@@ -1,4 +1,5 @@
 import { UserSession, AppConfig } from 'blockstack'
+import { configure } from 'radiks'
 
 // helpful for debugging
 const logAuth = process.env.NODE_ENV === 'development' && true // set to true to turn on logging
@@ -14,6 +15,11 @@ const appConfig = new AppConfig(
   '/manifest.webmanifest'
 )
 const userSession = new UserSession({ appConfig })
+
+configure({
+  apiServer: 'http://localhost:1260',
+  userSession,
+})
 
 export const isBrowser = () => typeof window !== 'undefined'
 
@@ -89,4 +95,9 @@ export const loadAppData = identifier => {
 
 export const saveMyData = content => {
   return userSession.putFile('content', JSON.stringify(content))
+}
+
+export const postUserUpdate = async (visibility, userComment) => {
+  await userComment.save()
+  return null
 }
