@@ -17,7 +17,7 @@ const appConfig = new AppConfig(
 const uSession = new UserSession({ appConfig })
 
 configure({
-  apiServer: 'http://localhost:1260',
+  apiServer: process.env.RADIKS_SERVER || 'http://localhost:1260',
   userSession: uSession,
 })
 

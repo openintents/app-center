@@ -19,7 +19,6 @@ console.log("listening to port ", port);
 setup({
     mongoDBUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/radiks-server'
 }).then((RadiksController) => {
-
     app.use('/radiks', RadiksController);
     console.log("testinggg")
 });

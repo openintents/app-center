@@ -46,7 +46,7 @@
   "license": "MIT",
   "scripts": {
     "babel-node": "babel-node --config-file ./babel-server.config.js",
-    "heroku-postbuild": "gatsby build",
+    "heroku-postbuild": "gatsby -v",
     "develop": "gatsby develop",
     "build": "run-p build:**",
     "build:app": "gatsby build",
