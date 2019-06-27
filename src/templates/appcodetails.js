@@ -19,13 +19,20 @@ import {
   DialogContentText,
   TextField,
   DialogActions,
-  FormLabel,
   RadioGroup,
   FormControlLabel,
   Radio,
+  Card,
+  CardContent,
+  AppBar,
+  Tabs,
+  Tab,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
-import { UserComment } from '../components/model'
+import { UserComment, OwnerComment } from '../components/model'
+import { User } from 'radiks'
+import { monthStrings, months, monthsLabels } from '../components/constants'
+import { loadUserData } from 'blockstack'
 
 const StyledRoot = styled.div`
   flexgrow: 1;
@@ -38,7 +45,7 @@ const renderTheta = theta => {
   const thetaString = theta ? Number.parseFloat(theta).toFixed(2) : 'X'
   return <small>{thetaString}</small>
 }
-const Rank = (data, key, label) => {
+const Rank = (data, key) => {
   const monthData = data[key].edges.sort((e1, e2) => {
     return parseFloat(e2.node.Final_Score) - parseFloat(e1.node.Final_Score)
   })
@@ -54,7 +61,7 @@ const Rank = (data, key, label) => {
     return (
       <>
         <StyledCell item md={4} xs={4}>
-          {label}
+          {monthsLabels[key]}
         </StyledCell>
         <StyledCell item md={2} xs={4}>
           <b>{index + 1}</b>/{data[key].totalCount}
@@ -83,10 +90,67 @@ const Rank = (data, key, label) => {
   return (
     <>
       <StyledCell item xs={4}>
-        {label}
+        {monthsLabels[key]}
       </StyledCell>
       <StyledCell item xs={8} />
     </>
+  )
+}
+
+const Comments = (data, comments) => {
+  if (comments.length === 0) {
+    return <>No comments yet</>
+  } else {
+    return comments.map((c, key) => {
+      return (
+        <Card key={key}>
+          <CardContent>
+            {c.attrs.comment}
+            <br />
+            <small>
+              {c.attrs.createdBy || 'A user'}
+              {' - '}
+              {new Date(c.attrs.createdAt).toLocaleDateString()}
+            </small>
+          </CardContent>
+        </Card>
+      )
+    })
+  }
+}
+
+const MonthlyUpdates = (data, comments, month) => {
+  console.log(comments, month)
+  if (comments.length === 0 || !comments.hasOwnProperty(month)) {
+    return <>No Updates for {monthStrings[month]}</>
+  } else {
+    return comments[month].map((c, key) => {
+      return (
+        <Card key={key}>
+          <CardContent>
+            {c.attrs.comment}
+            <br />
+            <small>
+              {c.attrs.createdBy || 'A user'}
+              {' - '}
+              {new Date(c.attrs.createdAt).toLocaleDateString()}
+            </small>
+          </CardContent>
+        </Card>
+      )
+    })
+  }
+}
+
+function LinkTab(props) {
+  return (
+    <Tab
+      component="a"
+      onClick={event => {
+        event.preventDefault()
+      }}
+      {...props}
+    />
   )
 }
 
@@ -97,6 +161,11 @@ class AppDetails extends Component {
     userUpdate: '',
     showUndoAction: false,
     showUpdateDialog: false,
+    comments: [],
+    monthlyUpdates: {},
+    tabIndex: 0,
+    userData: null,
+    loadingData: true,
   }
 
   componentDidMount() {
@@ -109,8 +178,51 @@ class AppDetails extends Component {
 
         this.setState({ isClaimedApp, isSignedIn: true })
       })
+
+      this.setState({
+        loadingComments: true,
+        loadingUpdates: true,
+        userData: loadUserData(),
+      })
+      User.createWithCurrentUser().then(() => {
+        OwnerComment.fetchList({ object: data.apps.website }).then(comments => {
+          console.log('owner comments', comments)
+          const monthlyUpdates = {}
+          let createdAtDate, dateKey
+          comments.forEach(comment => {
+            const { createdAt } = comment.attrs
+            createdAtDate = new Date(createdAt)
+            console.log(
+              createdAtDate,
+              createdAtDate.getUTCMonth(),
+              monthStrings[createdAtDate.getUTCMonth()]
+            )
+            dateKey =
+              monthStrings[createdAtDate.getUTCMonth()] +
+              createdAtDate.getUTCFullYear().toString()
+            console.log(dateKey)
+            if (!monthlyUpdates.hasOwnProperty(dateKey)) {
+              monthlyUpdates[dateKey] = []
+            }
+            monthlyUpdates[dateKey].push(comment)
+          })
+          this.setState({
+            monthlyUpdates,
+            loadingUpdates: false,
+            loadingData: this.state.loadingComments,
+          })
+        })
+
+        UserComment.fetchList({ object: data.apps.website }).then(comments => {
+          this.setState({
+            comments,
+            loadingComments: false,
+            loadingData: this.state.loadingUpdates,
+          })
+        })
+      })
     } else {
-      this.setState({ isSignedIn: false })
+      this.setState({ isSignedIn: false, loadingData: false })
     }
   }
 
@@ -172,15 +284,34 @@ class AppDetails extends Component {
     this.setState({ showUpdateDialog: false })
   }
 
-  postComment() {
-    const { userUpdate, visibility } = this.state
-    postUserUpdate(
+  async postComment() {
+    const { userUpdate, visibility, userData } = this.state
+    await postUserUpdate(
       visibility,
       new UserComment({
         comment: userUpdate,
         object: this.props.data.apps.website,
+        createdBy: userData.name,
       })
     )
+    this.setState({ showUpdateDialog: false })
+  }
+
+  async postUpdate() {
+    const { userUpdate, visibility, userData } = this.state
+    await postUserUpdate(
+      visibility,
+      new OwnerComment({
+        comment: userUpdate,
+        object: this.props.data.apps.website,
+        createdBy: userData.name,
+      })
+    )
+    this.setState({ showUpdateDialog: false })
+  }
+
+  handleChangeTabIndex(e, tabIndex) {
+    this.setState({ tabIndex })
   }
 
   render() {
@@ -194,6 +325,9 @@ class AppDetails extends Component {
       undoFunction,
       visibility,
       userUpdate,
+      monthlyUpdates,
+      comments,
+      tabIndex,
     } = this.state
     const appActions = isClaimedApp ? (
       <>
@@ -237,71 +371,81 @@ class AppDetails extends Component {
       </>
     )
 
-    const updateLabel = isClaimedApp ? 'Updates for this month' : 'My feedback'
-    const updateHelperText = isClaimedApp
-      ? 'What is new? (~200 characters)'
-      : 'What did you like or dislike?'
+    const monthlyScoresInGrid = []
+    for (var key = 0; key < months.length; key++) {
+      if (key < months.length - 1) {
+        monthlyScoresInGrid.push(
+          <React.Fragment key={key}>
+            {Rank(data, months[months.length - key - 1])}
+            <StyledCell key={`hr-${key}`} item xs={12}>
+              <hr />
+            </StyledCell>
+          </React.Fragment>
+        )
+      } else {
+        monthlyScoresInGrid.push(
+          <React.Fragment key={key}>
+            {Rank(data, months[months.length - key - 1])}
+          </React.Fragment>
+        )
+      }
+    }
     return (
       <Layout>
-        <h1>{data.apps.name}</h1>
+        <h1>
+          {data.apps.name} {appActions}
+        </h1>
+
         <StyledRoot>
-          <Grid container spacing={0}>
-            <StyledCell item md={4} xs={4}>
-              <b>Month</b>
-            </StyledCell>
-            <StyledCell item md={2} xs={4}>
-              <b>Rank</b>
-            </StyledCell>
-            <StyledCell item md={1} xs={4}>
-              <b>Final Score</b>
-            </StyledCell>
-            <StyledCell item md={1} xs={2}>
-              <small>DE</small>
-            </StyledCell>
-            <StyledCell item md={1} xs={2}>
-              <small>PH</small>
-            </StyledCell>
-            <StyledCell item md={1} xs={2}>
-              <small>NIL</small>
-            </StyledCell>
-            <StyledCell item md={1} xs={2}>
-              <small>TMUI</small>
-            </StyledCell>
-            <StyledCell item md={1} xs={2}>
-              <small>AW</small>
-            </StyledCell>
-            <StyledCell item xs={12}>
-              <hr />
-            </StyledCell>
-            {Rank(data, 'june2019', 'June 2019')}
-            <StyledCell item xs={12}>
-              <hr />
-            </StyledCell>
-            {Rank(data, 'may2019', 'May 2019')}
-            <StyledCell item xs={12}>
-              <hr />
-            </StyledCell>
-            {Rank(data, 'apr2019', 'Apr 2019')}
-            <StyledCell item xs={12}>
-              <hr />
-            </StyledCell>
-            {Rank(data, 'mar2019', 'Mar 2019')}
-            <StyledCell item xs={12}>
-              <hr />
-            </StyledCell>
-            {Rank(data, 'feb2019', 'Feb 2019')}
-            <StyledCell item xs={12}>
-              <hr />
-            </StyledCell>
-            {Rank(data, 'jan2019', 'Jan 2019')}
-            <StyledCell item xs={12}>
-              <hr />
-            </StyledCell>
-            {Rank(data, 'dec2018', 'Dec 2018')}
-          </Grid>
+          <AppBar position="static">
+            <Tabs
+              variant="fullWidth"
+              value={tabIndex}
+              onChange={(e, tabIndex) => this.handleChangeTabIndex(e, tabIndex)}
+            >
+              <LinkTab label="Scores" href="/scores" />
+              <LinkTab label="Updates" href="/updates" />
+              <LinkTab label="Comments" href="/comments" />
+            </Tabs>
+          </AppBar>
+          {tabIndex === 0 && (
+            <Grid container spacing={0}>
+              <StyledCell item md={4} xs={4}>
+                <b>Month</b>
+              </StyledCell>
+              <StyledCell item md={2} xs={4}>
+                <b>Rank</b>
+              </StyledCell>
+              <StyledCell item md={1} xs={4}>
+                <b>Final Score</b>
+              </StyledCell>
+              <StyledCell item md={1} xs={2}>
+                <small>DE</small>
+              </StyledCell>
+              <StyledCell item md={1} xs={2}>
+                <small>PH</small>
+              </StyledCell>
+              <StyledCell item md={1} xs={2}>
+                <small>NIL</small>
+              </StyledCell>
+              <StyledCell item md={1} xs={2}>
+                <small>TMUI</small>
+              </StyledCell>
+              <StyledCell item md={1} xs={2}>
+                <small>AW</small>
+              </StyledCell>
+              <StyledCell item xs={12}>
+                <hr />
+              </StyledCell>
+              {monthlyScoresInGrid}
+            </Grid>
+          )}
+
+          {tabIndex === 1 && (
+            <>{MonthlyUpdates(data, monthlyUpdates, 'jun2019')}</>
+          )}
+          {tabIndex === 2 && <>{Comments(data, comments)}</>}
         </StyledRoot>
-        <hr />
-        {appActions}
         <Snackbar
           anchorOrigin={{
             vertical: 'bottom',
@@ -334,68 +478,112 @@ class AppDetails extends Component {
           ]}
         />
 
-        <Dialog
-          open={showUpdateDialog}
-          onClose={this.handleCloseUpdate}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">
-            {isClaimedApp && <>Publish Updates</>}
-            {!isClaimedApp && <>Add Comment</>}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Updates and comments are shown to either all users publicly or
-              only to the app developers
-            </DialogContentText>
+        {!isClaimedApp && (
+          <Dialog
+            open={showUpdateDialog}
+            onClose={this.handleCloseUpdate}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title">
+              {isClaimedApp && <>Publish Updates</>}
+              {!isClaimedApp && <>Add Comment</>}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Updates and comments are shown to either all users publicly or
+                only to the app developers
+              </DialogContentText>
 
-            <RadioGroup
-              aria-label="Visibility"
-              name="visibility"
-              value={visibility}
-              onChange={e => this.handleChangeVisibility(e)}
-            >
-              <FormControlLabel
-                value="public"
-                control={<Radio />}
-                label="Visible for all"
+              <RadioGroup
+                aria-label="Visibility"
+                name="visibility"
+                value={visibility}
+                onChange={e => this.handleChangeVisibility(e)}
+              >
+                <FormControlLabel
+                  value="public"
+                  control={<Radio />}
+                  label="Visible for all"
+                />
+                <FormControlLabel
+                  value="devs"
+                  control={<Radio />}
+                  label="Visible for app owner only"
+                />
+                <FormControlLabel
+                  value="private"
+                  control={<Radio />}
+                  label="Visible only for me"
+                />
+              </RadioGroup>
+              <TextField
+                margin="normal"
+                id="userUpdate"
+                type="text"
+                fullWidth
+                multiline
+                rows="3"
+                helperText="What did you like or dislike?"
+                variant="outlined"
+                value={userUpdate}
+                onChange={e => {
+                  this.setState({ userUpdate: e.target.value })
+                }}
               />
-              <FormControlLabel
-                value="devs"
-                control={<Radio />}
-                label="Visible for app owner only"
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => this.handleCloseUpdate()} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={() => this.postComment()} color="primary">
+                Post
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
+
+        {isClaimedApp && (
+          <Dialog
+            open={showUpdateDialog}
+            onClose={this.handleCloseUpdate}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title">Publish Updates</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Updates are shown to all users onced published
+              </DialogContentText>
+              <TextField
+                margin="normal"
+                id="userUpdate"
+                type="text"
+                fullWidth
+                multiline
+                rows="3"
+                helperText="What is new? (~200 characters)"
+                variant="standard"
+                value={userUpdate}
+                onChange={e => {
+                  this.setState({ userUpdate: e.target.value })
+                }}
               />
-              <FormControlLabel
-                value="private"
-                control={<Radio />}
-                label="Visible only for me"
-              />
-            </RadioGroup>
-            <TextField
-              margin="normal"
-              id="userUpdate"
-              type="text"
-              fullWidth
-              multiline
-              rows="3"
-              helperText={updateHelperText}
-              variant="outlined"
-              value={userUpdate}
-              onChange={e => {
-                console.log({ value: e.target.value })
-                this.setState({ userUpdate: e.target.value })
-              }}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => this.handleCloseUpdate()} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={() => this.postComment()} color="primary">
-              Post
-            </Button>
-          </DialogActions>
-        </Dialog>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={() => this.handleCloseUpdate()}
+                color="secondary"
+              >
+                Cancel
+              </Button>
+              <Button onClick={() => this.postUpdate()} color="secondary">
+                Save Draft
+              </Button>
+              <Button onClick={() => this.postUpdate()} color="primary">
+                Publish
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
 
         <hr />
       </Layout>
@@ -504,7 +692,7 @@ export const query = graphql`
       }
     }
 
-    june2019: allAppminingresultsXlsxJune2019(
+    jun2019: allAppminingresultsXlsxJune2019(
       filter: { Final_Score: { ne: null } }
       sort: { fields: [Final_Score], order: [DESC] }
     ) {

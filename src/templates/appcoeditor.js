@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
 import { loadAppData, isSignedIn } from '../app/services/blockstack'
 import Editor from '../lib/editor'
+import { monthsLabels, months } from '../components/constants';
 
 const StyledRoot = styled.div`
   flexgrow: 1;
@@ -13,22 +14,6 @@ const StyledCell = styled(Grid)`
   text-align: center;
 `
 
-const months = [
-  'dec2018',
-  'jan2019',
-  'feb2019',
-  'mar2019',
-  'apr2019',
-  'may2019',
-]
-const monthsLabels = [
-  'Dec 2018',
-  'Jan 2019',
-  'Feb 2019',
-  'Mar 2019',
-  'Apr 2019',
-  'May 2019',
-]
 class AppEditor extends Component {
   state = { appEdits: {} }
 
@@ -46,7 +31,7 @@ class AppEditor extends Component {
         return (
           <>
             <StyledCell item xs={4}>
-              {monthsLabels}
+              {monthsLabels[month]}
             </StyledCell>
             <StyledCell item xs={8}>
               {userContent.updates[months]}
@@ -62,6 +47,7 @@ class AppEditor extends Component {
         <h1>{data.apps.name}</h1>
         <StyledRoot>
           <Editor app={data.apps} edits={this.state.appEdits} />
+          {updates}
         </StyledRoot>
         <hr />
       </Layout>

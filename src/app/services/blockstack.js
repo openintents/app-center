@@ -1,5 +1,5 @@
 import { UserSession, AppConfig } from 'blockstack'
-import { configure } from 'radiks'
+import { configure, getConfig, User } from 'radiks'
 
 // helpful for debugging
 const logAuth = process.env.NODE_ENV === 'development' && true // set to true to turn on logging
@@ -14,28 +14,37 @@ const appConfig = new AppConfig(
   '/app',
   '/manifest.webmanifest'
 )
-const userSession = new UserSession({ appConfig })
+const uSession = new UserSession({ appConfig })
 
 configure({
   apiServer: 'http://localhost:1260',
-  userSession,
+  userSession: uSession,
 })
 
 export const isBrowser = () => typeof window !== 'undefined'
 
-export const getUser = () =>
-  isBrowser() && userSession.isUserSignedIn() ? userSession.loadUserData() : {}
+export const getUser = () => {
+  const { userSession } = getConfig();
+  return isBrowser() && userSession.isUserSignedIn() ? userSession.loadUserData() : {}
+}
 
-export const isSignedIn = () => isBrowser() && userSession.isUserSignedIn
+export const isSignedIn = () => {
+  const { userSession } = getConfig();
+  return isBrowser() && userSession.isUserSignedIn
+}
 
 export const handleLogin = callback => {
+  const { userSession } = getConfig();
   clog('isLoggedIn check', userSession.isUserSignedIn())
   if (userSession.isUserSignedIn()) {
     clog('logged in')
     callback(getUser())
   } else if (userSession.isSignInPending()) {
-    userSession.handlePendingSignIn().then(userData => {
-      callback(userData)
+    userSession.handlePendingSignIn().then(userData => {      
+      User.createWithCurrentUser().then( () => {
+        console.log("user created")
+        callback(userData)
+      })
     })
   } else {
     userSession.redirectToSignIn()
@@ -47,6 +56,7 @@ export const checkIsSignedIn = () => {
     clog('Not a browser')
     return Promise.resolve(false)
   }
+  const { userSession } = getConfig();
   if (userSession.isSignInPending()) {
     return userSession.handlePendingSignIn().then(userData => true)
   } else if (userSession.isUserSignedIn()) {
@@ -60,16 +70,19 @@ export const checkIsSignedIn = () => {
 }
 
 export const logout = callback => {
+  const { userSession } = getConfig();
   userSession.signUserOut('/app/login')
   callback()
 }
 
 export const encryptContent = message => {
+  const { userSession } = getConfig();
   console.log('encrypting ' + message)
   return userSession.encryptContent(message)
 }
 
 export const loadMyData = () => {
+  const { userSession } = getConfig();
   return userSession.getFile('content').then(content => {
     if (content) {
       return JSON.parse(content)
@@ -80,10 +93,12 @@ export const loadMyData = () => {
 }
 
 export const saveAppData = (identifier, content) => {
+  const { userSession } = getConfig();
   return userSession.putFile(`apps/${identifier}`, JSON.stringify(content))
 }
 
 export const loadAppData = identifier => {
+  const { userSession } = getConfig();
   return userSession.getFile(`apps/${identifier}`).then(content => {
     if (content) {
       return JSON.parse(content)
@@ -94,6 +109,7 @@ export const loadAppData = identifier => {
 }
 
 export const saveMyData = content => {
+  const { userSession } = getConfig();
   return userSession.putFile('content', JSON.stringify(content))
 }
 
