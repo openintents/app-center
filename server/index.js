@@ -17,10 +17,9 @@ var server = require('http').Server(app),
 console.log("listening to port ", port);
    
 setup({
-    mongoDBUrl: 'mongodb://localhost:27017/my-custom-database'
+    mongoDBUrl: MONGODB_URI || 'mongodb://localhost:27017/radiks-server'
 }).then((RadiksController) => {
 
     app.use('/radiks', RadiksController);
-    app.use('/', )
     console.log("testinggg")
 });
