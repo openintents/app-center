@@ -2,18 +2,20 @@ import React from 'react'
 import { Router } from '@reach/router'
 import Layout from '../components/layout'
 import NavBar from './components/NavBar'
-import Profile from './profile'
+import MyApps from './myapps'
 import Main from './main'
 import PrivateRoute from './components/PrivateRoute'
 import Login from './login'
+import MyComments from './mycomments';
 
 const App = () => {
   return (
     <Layout>
       <NavBar />
       <Router>
-        <PrivateRoute path="/app/profile" component={Profile} />
-        <PublicRoute path="/app">
+        <PrivateRoute path="/data/apps" component={MyApps} />
+        <PrivateRoute path="/data/comments" component={MyComments} />
+        <PublicRoute path="/data">
           <PrivateRoute path="/" component={Main} />
           <Login path="/login" />
         </PublicRoute>

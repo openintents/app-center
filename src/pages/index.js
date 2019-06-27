@@ -10,7 +10,7 @@ class IndexPage extends React.Component {
     return (
       <Layout>
         <SEO
-          title="Home"
+          title="OI App Center"
           keywords={[`app center`, `application`, `blockstack`]}
         />
         <div
@@ -87,7 +87,7 @@ class IndexPage extends React.Component {
             <ul>
               <li>
                 <Link to="/2018-12/appco-new/">New apps</Link>
-              </li>            
+              </li>
             </ul>
             <a href="https://docs.blockstack.org/develop/mining_intro.html">
               Read more about the App Mining program
@@ -100,24 +100,23 @@ class IndexPage extends React.Component {
               paddingLeft: '3rem',
             }}
           >
-            <p>Your Apps</p>
-            <ul>
+            <p>
+              <b>Personal Data</b>
+              <br />
+              (requires login with Blockstack)
+            </p>
+            <ul>              
               <li>
-                <Link to="/app/">
-                  <b>Manage apps</b>
-                  <br />
+                <Link to="/data/comments">
+                  <b>Manage your comments</b>
                 </Link>{' '}
-                (requires login with Blockstack)
               </li>
               <li>
-                <b>Manage comments</b>
-                <br />
-                (coming soon)
-              </li>
-              <li>
-                <b>Manage rating</b>
-                <br />
-                (coming soon)
+                <Link to="/data/comments">
+                  <b>Manage your apps</b>
+                </Link>{' '}
+                <br/>
+                (For app publishers only)
               </li>
             </ul>
           </div>

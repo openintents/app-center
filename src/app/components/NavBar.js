@@ -35,23 +35,24 @@ export default class NavBar extends React.Component {
       <span>{content.message}</span>
 
       <nav>
-        <span>Navigate the app: </span>
-        <Link to="/app/">Main</Link>
+        <Link to="/data/">Overview</Link>
         {` `}
-        <Link to="/app/profile">Profile</Link>
+        <Link to="/data/comments">My Comments</Link>
+        {` `}
+        <Link to="/data/apps">My Apps</Link>
         {` `}
         {signedIn ? (
           <a
             href="/"
             onClick={event => {
               event.preventDefault()
-              logout(() => navigate(`/app/login`))
+              logout(() => navigate(`/data/login`))
             }}
           >
             Logout
           </a>
         ) : (
-          <Link to="/app/login">Login</Link>
+          <Link to="/data/login">Login</Link>
         )}
       </nav>
     </div>

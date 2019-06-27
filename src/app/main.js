@@ -1,18 +1,41 @@
 import React from 'react'
 import { graphql, Link, StaticQuery } from 'gatsby'
 import { encryptContent, loadMyData } from './services/blockstack'
+import { UserComment, OwnerComment } from '../components/model'
+import { Typography, ListItem, ListItemText, List } from '@material-ui/core'
 
 class Main extends React.Component {
   state = {
-    message: 'My message',
-    encryptedMessage: '',
     myApps: {},
+    myComments: [],
+    myUpdates: [],
+    loadingApps: true,
+    loadingComments: true,
+    loadingUpdates: true,
     loading: true,
   }
 
   componentDidMount() {
     loadMyData().then(content => {
-      this.setState({ myApps: content.myApps, loading: false })
+      this.setState({
+        myApps: content.myApps,
+        loadingApps: false,
+        loading: this.state.loadingComments && this.state.loadingUpdates,
+      })
+    })
+    UserComment.fetchOwnList().then(myComments => {
+      this.setState({
+        myComments,
+        loadingComments: false,
+        loading: this.state.loadingApps && this.state.loadingUpdates,
+      })
+    })
+    OwnerComment.fetchOwnList().then(myUpdates => {
+      this.setState({
+        myUpdates,
+        loadingUpdates: false,
+        loading: this.state.loadingApps && this.state.loadingComments,
+      })
     })
   }
 
@@ -35,21 +58,110 @@ class Main extends React.Component {
             return edge.node.appcoid.toString() === key.substr(4)
           })[0].node
           apps.push(
-            <li key={key}>
-              <Link to={appEditLink}>{app.name}</Link>
-            </li>
+            <ListItem key={app.appcoid}>
+              <ListItemText
+                primary={
+                  <>
+                    <Link to={appEditLink}>{app.name}</Link>
+                  </>
+                }
+              />
+            </ListItem>
           )
         }
       })
     } else {
       apps.push(
-      <Link to='/app/profile'>Add apps in your profile</Link>
+        <ListItem>
+          <ListItemText
+            primary={
+              <>
+                <Link to="/data/apps">Add your apps</Link>
+              </>
+            }
+          />
+        </ListItem>
       )
     }
-    return apps
+    return <List>{apps}</List>
   }
+
+  renderComments(myComments, data) {
+    const comments = []
+    if (myComments) {
+      myComments.forEach(c => {
+        const apps = data.allApps.edges.filter(
+          e => e.node.website === c.attrs.object
+        )
+        if (apps.length === 1) {
+          comments.push(
+            <ListItem key={c._id}>
+              <ListItemText
+                primary={<>{c.attrs.comment}</>}
+                secondary={<>For {apps[0].node.name}</>}
+              />
+            </ListItem>
+          )
+        } else {
+          comments.push(
+            <ListItem key={c._id}>
+              <ListItemText primary={<>{c.attrs.comment}</>} />
+            </ListItem>
+          )
+        }
+      })
+    } else {
+      comments.push(
+        <ListItem>
+          <ListItemText
+            primary={
+              <>
+                <Link to="/appco-foss">Add comments to a few apps</Link>
+              </>
+            }
+          />
+        </ListItem>
+      )
+    }
+    return <List>{comments}</List>
+  }
+
+  renderUpdates(myUpdates, data) {
+    const updates = []
+    if (myUpdates) {
+      myUpdates.forEach(c => {
+        const apps = data.allApps.edges.filter(
+          e => e.node.website === c.attrs.object
+        )
+        if (apps.length === 1) {
+          updates.push(
+            <ListItem key={c._id}>
+              <ListItemText
+                primary={<>{c.attrs.comment}</>}
+                secondary={<>For {apps[0].node.name}</>}
+              />
+            </ListItem>
+          )
+        } else {
+          updates.push(
+            <ListItem key={c._id}>
+              <ListItemText primary={<>{c.attrs.comment}</>} />
+            </ListItem>
+          )
+        }
+      })
+    } else {
+      updates.push(
+        <ListItem>
+          <ListItemText primary="Add updates to your apps" />
+        </ListItem>
+      )
+    }
+    return <List>{updates}</List>
+  }
+
   render() {
-    const { message, encryptedMessage, myApps } = this.state
+    const { myApps, myComments, myUpdates } = this.state
 
     return (
       <StaticQuery
@@ -66,8 +178,13 @@ class Main extends React.Component {
         `}
         render={data => (
           <>
-            <h1>Your Apps</h1>
-            <ul>{this.renderApps(myApps, data)}</ul>
+            <Typography variant="h3">Your Data</Typography>
+            <Typography variant="h4">Your Comments</Typography>
+            {this.renderComments(myComments, data)}
+            <Typography variant="h4">Your Apps</Typography>
+            {this.renderApps(myApps, data)}
+            <Typography variant="h4">Your App Updates</Typography>
+            {this.renderUpdates(myUpdates, data)}
           </>
         )}
       />

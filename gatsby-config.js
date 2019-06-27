@@ -3,7 +3,7 @@ var proxy = require('http-proxy-middleware')
 module.exports = {
   siteMetadata: {
     title: 'OI App Center',
-    description: `Manage your apps, comments, ratings in the Blockstack App ecosystem`,
+    description: `Explore the Blockstack app ecosystem`,
     author: `@friedger`,
   },
   plugins: [
@@ -11,7 +11,7 @@ module.exports = {
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-plugin-create-client-paths`,
-      options: { prefixes: [`/app/*`] },
+      options: { prefixes: [`/data/*`] },
     },
     {
       resolve: `gatsby-source-filesystem`,

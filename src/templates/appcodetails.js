@@ -8,6 +8,7 @@ import {
   loadMyData,
   saveMyData,
   postUserUpdate,
+  getUser,
 } from '../app/services/blockstack'
 import {
   Button,
@@ -27,12 +28,14 @@ import {
   AppBar,
   Tabs,
   Tab,
+  Container,
+  Typography,
+  Box,
+  Divider,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import { UserComment, OwnerComment } from '../components/model'
-import { User } from 'radiks'
 import { monthStrings, months, monthsLabels } from '../components/constants'
-import { loadUserData } from 'blockstack'
 
 const StyledRoot = styled.div`
   flexgrow: 1;
@@ -97,13 +100,22 @@ const Rank = (data, key) => {
   )
 }
 
-const Comments = (data, comments) => {
+const Comments = (data, comments, isSignedIn) => {
+  if (!isSignedIn) {
+    return (
+      <Container>
+        <Button variant="outlined" onClick={() => navigate('app/login')}>
+          Sign In to view comments
+        </Button>
+      </Container>
+    )
+  }
   if (comments.length === 0) {
     return <>No comments yet</>
   } else {
     return comments.map((c, key) => {
       return (
-        <Card key={key}>
+        <Card key={c._id}>
           <CardContent>
             {c.attrs.comment}
             <br />
@@ -119,26 +131,40 @@ const Comments = (data, comments) => {
   }
 }
 
-const MonthlyUpdates = (data, comments, month) => {
-  console.log(comments, month)
-  if (comments.length === 0 || !comments.hasOwnProperty(month)) {
-    return <>No Updates for {monthStrings[month]}</>
+const MonthlyUpdates = (data, comments, isSignedIn) => {
+  if (!isSignedIn) {
+    return (
+      <Container>
+        <Button variant="outlined" onClick={() => navigate('app/login')}>
+          Sign In to view updates
+        </Button>
+      </Container>
+    )
+  }
+  if (Object.keys(comments).length === 0) {
+    return <Typography>No Updates for {monthStrings[month]}</Typography>
   } else {
-    return comments[month].map((c, key) => {
-      return (
-        <Card key={key}>
-          <CardContent>
-            {c.attrs.comment}
-            <br />
-            <small>
-              {c.attrs.createdBy || 'A user'}
-              {' - '}
-              {new Date(c.attrs.createdAt).toLocaleDateString()}
-            </small>
-          </CardContent>
-        </Card>
+    const allMonths = []
+    for (var month in comments) {
+      console.log(month)
+      allMonths.push(<Typography>{monthsLabels[month]}</Typography>)
+      allMonths.push(
+        <Container key={month}>
+          {comments[month].map((c, key) => {
+            return (
+              <React.Fragment key={c._id}>
+                <Typography component="div">
+                  <Box>{c.attrs.comment}</Box>
+                  <Box fontSize="small">{c.attrs.createdBy || 'A user'}</Box>
+                </Typography>
+                {key < comments[month].length - 1 && <Divider light />}
+              </React.Fragment>
+            )
+          })}
+        </Container>
       )
-    })
+    }
+    return allMonths
   }
 }
 
@@ -176,54 +202,54 @@ class AppDetails extends Component {
           content.myApps.hasOwnProperty(`app-${data.apps.appcoid}`) &&
           content.myApps[`app-${data.apps.appcoid}`]
 
-        this.setState({ isClaimedApp, isSignedIn: true })
+        this.setState({ isClaimedApp, isSignedIn: true, userData: getUser() })
       })
-
-      this.setState({
-        loadingComments: true,
-        loadingUpdates: true,
-        userData: loadUserData(),
-      })
-      User.createWithCurrentUser().then(() => {
-        OwnerComment.fetchList({ object: data.apps.website }).then(comments => {
-          console.log('owner comments', comments)
-          const monthlyUpdates = {}
-          let createdAtDate, dateKey
-          comments.forEach(comment => {
-            const { createdAt } = comment.attrs
-            createdAtDate = new Date(createdAt)
-            console.log(
-              createdAtDate,
-              createdAtDate.getUTCMonth(),
-              monthStrings[createdAtDate.getUTCMonth()]
-            )
-            dateKey =
-              monthStrings[createdAtDate.getUTCMonth()] +
-              createdAtDate.getUTCFullYear().toString()
-            console.log(dateKey)
-            if (!monthlyUpdates.hasOwnProperty(dateKey)) {
-              monthlyUpdates[dateKey] = []
-            }
-            monthlyUpdates[dateKey].push(comment)
-          })
-          this.setState({
-            monthlyUpdates,
-            loadingUpdates: false,
-            loadingData: this.state.loadingComments,
-          })
-        })
-
-        UserComment.fetchList({ object: data.apps.website }).then(comments => {
-          this.setState({
-            comments,
-            loadingComments: false,
-            loadingData: this.state.loadingUpdates,
-          })
-        })
-      })
+      this.loadComments()
     } else {
-      this.setState({ isSignedIn: false, loadingData: false })
+      this.setState({ isSignedIn: false })
     }
+  }
+
+  loadComments() {
+    const { data } = this.props
+    this.setState({
+      loadingComments: true,
+      loadingUpdates: true,
+    })
+    OwnerComment.fetchList({ object: data.apps.website }, ).then(comments => {
+      const monthlyUpdates = {}
+      let createdAtDate, dateKey
+      comments.forEach(comment => {
+        const { createdAt } = comment.attrs
+        createdAtDate = new Date(createdAt)
+        console.log(
+          createdAtDate,
+          createdAtDate.getUTCMonth(),
+          monthStrings[createdAtDate.getUTCMonth()]
+        )
+        dateKey =
+          monthStrings[createdAtDate.getUTCMonth()] +
+          createdAtDate.getUTCFullYear().toString()
+        console.log(dateKey)
+        if (!monthlyUpdates.hasOwnProperty(dateKey)) {
+          monthlyUpdates[dateKey] = []
+        }
+        monthlyUpdates[dateKey].push(comment)
+      })
+      this.setState({
+        monthlyUpdates,
+        loadingUpdates: false,
+        loadingData: this.state.loadingComments,
+      })
+    })
+
+    UserComment.fetchList({ object: data.apps.website }).then(comments => {
+      this.setState({
+        comments,
+        loadingComments: false,
+        loadingData: this.state.loadingUpdates,
+      })
+    })
   }
 
   claimApp() {
@@ -245,7 +271,7 @@ class AppDetails extends Component {
         })
       })
     } else {
-      navigate('/app/login')
+      navigate('/data/login')
     }
   }
 
@@ -268,7 +294,7 @@ class AppDetails extends Component {
         })
       })
     } else {
-      navigate('/app/login')
+      navigate('/data/login')
     }
   }
 
@@ -298,9 +324,9 @@ class AppDetails extends Component {
   }
 
   async postUpdate() {
-    const { userUpdate, visibility, userData } = this.state
+    const { userUpdate, userData } = this.state
     await postUserUpdate(
-      visibility,
+      "public",
       new OwnerComment({
         comment: userUpdate,
         object: this.props.data.apps.website,
@@ -308,6 +334,18 @@ class AppDetails extends Component {
       })
     )
     this.setState({ showUpdateDialog: false })
+  }
+
+  async saveDraftUpdate() {
+    const { userUpdate, userData } = this.state
+    await postUserUpdate(
+      "private",
+      new OwnerComment({
+        comment: userUpdate,
+        object: this.props.data.apps.website,
+        createdBy: userData.name,
+      })
+    )
   }
 
   handleChangeTabIndex(e, tabIndex) {
@@ -328,6 +366,7 @@ class AppDetails extends Component {
       monthlyUpdates,
       comments,
       tabIndex,
+      isSignedIn,
     } = this.state
     const appActions = isClaimedApp ? (
       <>
@@ -360,11 +399,17 @@ class AppDetails extends Component {
           }}
           variant="outlined"
         >
-          This is my app
+          Claim this app
         </Button>{' '}
         <Button
           variant="outlined"
-          onClick={() => this.setState({ showUpdateDialog: true })}
+          onClick={() => {
+            if (this.state.isSignedIn) {
+              this.setState({ showUpdateDialog: true })
+            } else {
+              navigate('/data/login')
+            }
+          }}
         >
           Post comment
         </Button>
@@ -408,6 +453,7 @@ class AppDetails extends Component {
               <LinkTab label="Comments" href="/comments" />
             </Tabs>
           </AppBar>
+          <br />
           {tabIndex === 0 && (
             <Grid container spacing={0}>
               <StyledCell item md={4} xs={4}>
@@ -442,9 +488,9 @@ class AppDetails extends Component {
           )}
 
           {tabIndex === 1 && (
-            <>{MonthlyUpdates(data, monthlyUpdates, 'jun2019')}</>
+            <>{MonthlyUpdates(data, monthlyUpdates, isSignedIn)}</>
           )}
-          {tabIndex === 2 && <>{Comments(data, comments)}</>}
+          {tabIndex === 2 && <>{Comments(data, comments, isSignedIn)}</>}
         </StyledRoot>
         <Snackbar
           anchorOrigin={{
@@ -490,8 +536,8 @@ class AppDetails extends Component {
             </DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Updates and comments are shown to either all users publicly or
-                only to the app developers
+                Comments can be shown to either all users publicly or
+                kept privately.
               </DialogContentText>
 
               <RadioGroup
@@ -505,11 +551,7 @@ class AppDetails extends Component {
                   control={<Radio />}
                   label="Visible for all"
                 />
-                <FormControlLabel
-                  value="devs"
-                  control={<Radio />}
-                  label="Visible for app owner only"
-                />
+                
                 <FormControlLabel
                   value="private"
                   control={<Radio />}
@@ -575,7 +617,7 @@ class AppDetails extends Component {
               >
                 Cancel
               </Button>
-              <Button onClick={() => this.postUpdate()} color="secondary">
+              <Button onClick={() => this.saveDraftUpdate()} color="secondary">
                 Save Draft
               </Button>
               <Button onClick={() => this.postUpdate()} color="primary">

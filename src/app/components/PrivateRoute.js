@@ -8,14 +8,14 @@ class PrivateRoute extends React.Component {
   componentDidMount = () => {
     const { location } = this.props
     checkIsSignedIn().then(signedIn => {
-      if (location.pathname !== `/app/login`) {
+      if (location.pathname !== `/data/login`) {
         if (!signedIn) {
           // If the user is not logged in, redirect to the login page.
-          navigate(`/app/login`)
+          navigate(`/data/login`)
           return null
         } else {
           if (location.search && location.search.startsWith("?authResponse=")) {
-            navigate(`/app`)
+            navigate(`/data`)
           }
         }
       }

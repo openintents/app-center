@@ -2,7 +2,7 @@ import React from 'react'
 import { getUser, saveMyData, loadMyData } from './services/blockstack'
 import AppSelector from './components/AppSelector'
 
-class Profile extends React.Component {
+class MyApps extends React.Component {
   state = {
     myApps: {},
     loading: true,
@@ -24,17 +24,16 @@ class Profile extends React.Component {
 
     return (
       <>
-        <h1>Your profile</h1>
-        <ul>
-          <li>Name: {user.username && user.profile.name}</li>
-          <li>E-mail: {user.email}</li>
-        </ul>
+        {loading && <>Loading...</>}
         {!loading && (
-          <AppSelector myApps={myApps} onSubmitApps={(values) => this.saveMyApps(values)} />
+          <AppSelector
+            myApps={myApps}
+            onSubmitApps={values => this.saveMyApps(values)}
+          />
         )}
       </>
     )
   }
 }
 
-export default Profile
+export default MyApps

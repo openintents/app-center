@@ -1,11 +1,4 @@
 import React, { Component } from 'react'
-import './css/appdfeditor.css'
-import './css/bootstrap-panel.css'
-import './css/bootstrap-responsive.css'
-import './css/bootstrap-switch.css'
-import './css/bootstrap.css'
-import './css/bsdocs.css'
-import './css/datepicker.css'
 export default class Editor extends Component {
   render() {
     return (
