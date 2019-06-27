@@ -7,6 +7,7 @@
     "@gatsby-contrib/gatsby-plugin-elasticlunr-search": "^2.3.0",
     "@material-ui/core": "^4.0.0-beta.2",
     "@material-ui/icons": "^4.2.1",
+    "babel-cli": "^6.26.0",
     "babel-plugin-styled-components": "^1.10.0",
     "blockstack": "^19.1.0",
     "bootstrap": "^4.3.1",
@@ -29,6 +30,7 @@
     "gatsby-transformer-sharp": "^2.1.8",
     "node-fetch": "^2.5.0",
     "radiks": "^0.2.1",
+    "radiks-server": "^0.1.12",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-helmet": "^5.2.0",
@@ -39,14 +41,15 @@
   ],
   "license": "MIT",
   "scripts": {
+    "babel-node": "babel-node --config-file ./babel-server.config.js",
+    "heroku-postbuild": "gatsby build",
     "develop": "gatsby develop",
-    "start": "run-p start:**",
-    "start:app": "npm run develop",
     "build": "run-p build:**",
     "build:app": "gatsby build",
     "serve": "gatsby serve",
     "format": "prettier --write \"src/**/*.js\"",
-    "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
+    "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\"",
+    "start": "NODE_ENV=production yarn babel-node server"
   },
   "devDependencies": {
     "http-proxy-middleware": "^0.19.0",
