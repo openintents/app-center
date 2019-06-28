@@ -36,6 +36,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close'
 import { UserComment, OwnerComment } from '../components/model'
 import { monthStrings, months, monthsLabels } from '../components/constants'
+import { User } from 'radiks/lib';
 
 const StyledRoot = styled.div`
   flexgrow: 1;
