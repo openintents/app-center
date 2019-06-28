@@ -147,7 +147,9 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
     const allMonths = []
     for (var month in comments) {
       console.log(month)
-      allMonths.push(<Typography key={`title-${month}`}>{monthsLabels[month]}</Typography>)
+      allMonths.push(
+        <Typography key={`title-${month}`}>{monthsLabels[month]}</Typography>
+      )
       allMonths.push(
         <Container key={`list-${month}`}>
           {comments[month].map((c, key) => {
@@ -196,15 +198,18 @@ class AppDetails extends Component {
 
   componentDidMount() {
     if (isSignedIn()) {
-      const { data } = this.props
-      loadMyData().then(content => {
-        const isClaimedApp =
-          content.myApps && content.myApps.hasOwnProperty(`app-${data.apps.appcoid}`) &&
-          content.myApps[`app-${data.apps.appcoid}`]
+      User.createWithCurrentUser().then(user => {
+        const { data } = this.props
+        loadMyData().then(content => {
+          const isClaimedApp =
+            content.myApps &&
+            content.myApps.hasOwnProperty(`app-${data.apps.appcoid}`) &&
+            content.myApps[`app-${data.apps.appcoid}`]
 
-        this.setState({ isClaimedApp, isSignedIn: true, userData: getUser() })
+          this.setState({ isClaimedApp, isSignedIn: true, userData: getUser() })
+        })
+        this.loadComments()
       })
-      this.loadComments()
     } else {
       this.setState({ isSignedIn: false })
     }
@@ -216,7 +221,7 @@ class AppDetails extends Component {
       loadingComments: true,
       loadingUpdates: true,
     })
-    OwnerComment.fetchList({ object: data.apps.website }, ).then(comments => {
+    OwnerComment.fetchList({ object: data.apps.website }).then(comments => {
       const monthlyUpdates = {}
       let createdAtDate, dateKey
       comments.forEach(comment => {
@@ -321,13 +326,13 @@ class AppDetails extends Component {
       })
     )
     await this.loadComments()
-    this.setState({ showUpdateDialog: false })    
+    this.setState({ showUpdateDialog: false })
   }
 
   async postUpdate() {
     const { userUpdate, userData } = this.state
     await postUserUpdate(
-      "public",
+      'public',
       new OwnerComment({
         comment: userUpdate,
         object: this.props.data.apps.website,
@@ -341,7 +346,7 @@ class AppDetails extends Component {
   async saveDraftUpdate() {
     const { userUpdate, userData } = this.state
     await postUserUpdate(
-      "private",
+      'private',
       new OwnerComment({
         comment: userUpdate,
         object: this.props.data.apps.website,
@@ -538,8 +543,8 @@ class AppDetails extends Component {
             </DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Comments can be shown to either all users publicly or
-                kept privately.
+                Comments can be shown to either all users publicly or kept
+                privately.
               </DialogContentText>
 
               <RadioGroup
@@ -553,7 +558,7 @@ class AppDetails extends Component {
                   control={<Radio />}
                   label="Visible for all"
                 />
-                
+
                 <FormControlLabel
                   value="private"
                   control={<Radio />}
