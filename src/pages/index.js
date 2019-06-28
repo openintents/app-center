@@ -107,12 +107,12 @@ class IndexPage extends React.Component {
             </p>
             <ul>              
               <li>
-                <Link to="/data/comments">
+                <Link to="/data/#comments">
                   <b>Manage your comments</b>
                 </Link>{' '}
               </li>
               <li>
-                <Link to="/data/comments">
+                <Link to="/data/#apps">
                   <b>Manage your apps</b>
                 </Link>{' '}
                 <br/>
