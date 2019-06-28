@@ -3,6 +3,9 @@ const fetch = require('node-fetch')
 
 getLastCommit = openSourceUrl => {
   if (openSourceUrl.startsWith('https://github.com/')) {
+    if (openSourceUrl.startsWith('https://github.com/radicleart')) {
+      openSourceUrl = "https://github.com/radicleart/brightblock-dbid"
+    }
     const parts = openSourceUrl.substr(19).split('/')
     if (parts.length > 1) {
       const owner = parts[0]
