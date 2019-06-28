@@ -147,9 +147,9 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
     const allMonths = []
     for (var month in comments) {
       console.log(month)
-      allMonths.push(<Typography>{monthsLabels[month]}</Typography>)
+      allMonths.push(<Typography key={`title-${month}`}>{monthsLabels[month]}</Typography>)
       allMonths.push(
-        <Container key={month}>
+        <Container key={`list-${month}`}>
           {comments[month].map((c, key) => {
             return (
               <React.Fragment key={c._id}>
@@ -527,7 +527,7 @@ class AppDetails extends Component {
         {!isClaimedApp && (
           <Dialog
             open={showUpdateDialog}
-            onClose={this.handleCloseUpdate}
+            onClose={() => this.handleCloseUpdate()}
             aria-labelledby="form-dialog-title"
           >
             <DialogTitle id="form-dialog-title">
@@ -587,7 +587,7 @@ class AppDetails extends Component {
         {isClaimedApp && (
           <Dialog
             open={showUpdateDialog}
-            onClose={this.handleCloseUpdate}
+            onClose={() => this.handleCloseUpdate()}
             aria-labelledby="form-dialog-title"
           >
             <DialogTitle id="form-dialog-title">Publish Updates</DialogTitle>

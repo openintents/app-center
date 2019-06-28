@@ -63,9 +63,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sw-yx/jamstack-hackathon-starter"
+    "url": "https://gitlab.com/friedger/app-center"
   },
   "bugs": {
-    "url": "https://github.com/sw-yx/jamstack-hackathon-starter/issues"
+    "url": "https://gitlab.com/friedger/app-center/issues"
   }
 }

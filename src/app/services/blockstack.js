@@ -73,7 +73,7 @@ export const checkIsSignedIn = () => {
 
 export const logout = callback => {
   const { userSession } = getConfig()
-  userSession.signUserOut('/app/login')
+  userSession.signUserOut('/data/login')
   callback()
 }
 

@@ -20,5 +20,6 @@ setup({
     mongoDBUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/radiks-server'
 }).then((RadiksController) => {
     app.use('/radiks', RadiksController);
+    app.use(express.static('public'))
     console.log("testinggg")
 });

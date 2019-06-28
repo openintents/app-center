@@ -72,7 +72,7 @@ class Main extends React.Component {
       })
     } else {
       apps.push(
-        <ListItem>
+        <ListItem key="empty">
           <ListItemText
             primary={
               <>
@@ -88,7 +88,7 @@ class Main extends React.Component {
 
   renderComments(myComments, data) {
     const comments = []
-    if (myComments) {
+    if (myComments && comments.length > 0) {
       myComments.forEach(c => {
         const apps = data.allApps.edges.filter(
           e => e.node.website === c.attrs.object
@@ -112,7 +112,7 @@ class Main extends React.Component {
       })
     } else {
       comments.push(
-        <ListItem>
+        <ListItem key="empty">
           <ListItemText
             primary={
               <>
@@ -129,15 +129,25 @@ class Main extends React.Component {
   renderUpdates(myUpdates, data) {
     const updates = []
     if (myUpdates) {
+      console.log(myUpdates)
       myUpdates.forEach(c => {
         const apps = data.allApps.edges.filter(
           e => e.node.website === c.attrs.object
         )
+        let comment
+        if (
+          typeof c.attrs.comment === 'string' ||
+          c.attrs.comment instanceof String
+        ) {
+          comment = c.attrs.comment
+        } else {
+          comment = '** Decryption failed. **'
+        }
         if (apps.length === 1) {
           updates.push(
             <ListItem key={c._id}>
               <ListItemText
-                primary={<>{c.attrs.comment}</>}
+                primary={<>{comment}</>}
                 secondary={<>For {apps[0].node.name}</>}
               />
             </ListItem>
@@ -145,7 +155,7 @@ class Main extends React.Component {
         } else {
           updates.push(
             <ListItem key={c._id}>
-              <ListItemText primary={<>{c.attrs.comment}</>} />
+              <ListItemText primary={<>{comment}</>} />
             </ListItem>
           )
         }
@@ -178,7 +188,7 @@ class Main extends React.Component {
         `}
         render={data => (
           <>
-            <Typography variant="h3">Your Data</Typography>
+            <Typography variant="h3">Overview</Typography>
             <Typography variant="h4">Your Comments</Typography>
             {this.renderComments(myComments, data)}
             <Typography variant="h4">Your Apps</Typography>

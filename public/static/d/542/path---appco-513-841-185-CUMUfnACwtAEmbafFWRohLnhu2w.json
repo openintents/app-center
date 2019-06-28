@@ -1,1 +1,0 @@
-{"errors":[{"message":"Variable \"$appcoid\" got invalid value \"1092\"; Expected type Int; Int cannot represent non-integer value: \"1092\"","locations":[{"line":2,"column":3}]}],"pageContext":{"isCreatedByStatefulCreatePages":false,"appcoid":"1092","appname":"Dappy Wallet"}}
