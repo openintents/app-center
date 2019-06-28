@@ -49,7 +49,7 @@
     "heroku-postbuild": "gatsby -v",
     "develop": "cross-env GATSBY_RADIKS_SERVER=https://app-center.herokuapp.com gatsby develop",
     "build": "run-p build:**",
-    "build:app": "gatsby build",
+    "build:app": "cross-env GATSBY_RADIKS_SERVER=https://app-center.herokuapp.com gatsby build",
     "serve": "gatsby serve",
     "format": "prettier --write \"src/**/*.js\"",
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\"",

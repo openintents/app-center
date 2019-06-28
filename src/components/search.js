@@ -19,7 +19,13 @@ export default class Search extends Component {
         <ul>
           {this.state.results.map(page => (
             <li key={page.id}>
-              <Link to={"/appco/" + page.appcoid}>{page.name}</Link>
+              <Link to={"/appco/" + page.appcoid}
+              style={{
+                color: `white`,
+                fontWeight: 'bold',
+                textDecoration: `none`,
+              }}
+              >{page.name}</Link>
               {": " + page.category} {" : " + page.description}
             </li>
           ))}
