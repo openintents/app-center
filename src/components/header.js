@@ -5,7 +5,7 @@ import Search from './search'
 const Header = ({ siteTitle, siteDescription, siteSearchIndex }) => (
   <div
     style={{
-      background: `#5DBCD2`,
+      background: `#3f51b5`,
       marginBottom: `1.45rem`,
       color: `white`,
     }}
