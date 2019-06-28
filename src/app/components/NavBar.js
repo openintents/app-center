@@ -17,8 +17,14 @@ export default class NavBar extends React.Component {
     content.message = "stacking blocks..."
   } else if (signedIn) {
       const user = getUser()
-      content.message = `Hello, ${user.decentralizedID &&
-        user.username && user.profile.name}`
+      let name = user.profile && user.profile.name
+      if (!name) {
+        name = user.username
+      }
+      if (!name){
+        name = user.decentralizedId
+      } 
+      content.message = `Hello, ${name} (${user.username})`
   } else {
       content.message = 'You are not logged in'
   }

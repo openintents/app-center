@@ -1,4 +1,4 @@
-import { Model, User } from 'radiks'
+import { Model } from 'radiks'
 
 class ModelExt extends Model {
   savePrivately() {
@@ -27,13 +27,15 @@ export class UserComment extends ModelExt {
       type: String,
       decrypted: true,
     },
-    comment: String,
+    comment: {
+      type: String,
+      decrypted: true,
+    },
     createdBy: {
       type: String,
       decrypted: true,
     },
   }
-  
 }
 
 export class OwnerComment extends ModelExt {
@@ -43,12 +45,18 @@ export class OwnerComment extends ModelExt {
       type: String,
       decrypted: true,
     },
-    comment: String,
+    comment: {
+      type: String,
+      decrypted: true,
+    },
     createdBy: {
       type: String,
       decrypted: true,
     },
-    verified: Boolean,
+    verified: {
+      type: Boolean,
+      decrypted: true,
+    },
   }
   static defaults = {
     verified: false,

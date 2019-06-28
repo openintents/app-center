@@ -142,7 +142,7 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
     )
   }
   if (Object.keys(comments).length === 0) {
-    return <Typography>No Updates for {monthStrings[month]}</Typography>
+    return <Typography>No updates yet.</Typography>
   } else {
     const allMonths = []
     for (var month in comments) {
@@ -199,7 +199,7 @@ class AppDetails extends Component {
       const { data } = this.props
       loadMyData().then(content => {
         const isClaimedApp =
-          content.myApps.hasOwnProperty(`app-${data.apps.appcoid}`) &&
+          content.myApps && content.myApps.hasOwnProperty(`app-${data.apps.appcoid}`) &&
           content.myApps[`app-${data.apps.appcoid}`]
 
         this.setState({ isClaimedApp, isSignedIn: true, userData: getUser() })
@@ -320,7 +320,8 @@ class AppDetails extends Component {
         createdBy: userData.name,
       })
     )
-    this.setState({ showUpdateDialog: false })
+    await this.loadComments()
+    this.setState({ showUpdateDialog: false })    
   }
 
   async postUpdate() {
@@ -333,6 +334,7 @@ class AppDetails extends Component {
         createdBy: userData.name,
       })
     )
+    await this.loadComments()
     this.setState({ showUpdateDialog: false })
   }
 

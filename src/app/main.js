@@ -53,7 +53,7 @@ class Main extends React.Component {
     if (myApps) {
       Object.keys(myApps).forEach(key => {
         if (myApps[key]) {
-          const appEditLink = `/appco-edit/${key.substr(4)}`
+          const appEditLink = `/appco/${key.substr(4)}`
           const app = data.allApps.edges.filter(edge => {
             return edge.node.appcoid.toString() === key.substr(4)
           })[0].node
