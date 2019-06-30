@@ -9,6 +9,7 @@ import {
   saveMyData,
   postUserUpdate,
   getUser,
+  checkIsSignedIn,
 } from '../app/services/blockstack'
 import {
   Button,
@@ -36,7 +37,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close'
 import { UserComment, OwnerComment } from '../components/model'
 import { monthStrings, months, monthsLabels } from '../components/constants'
-import { User } from 'radiks/lib';
+import { User } from 'radiks/lib'
 
 const StyledRoot = styled.div`
   flexgrow: 1;
@@ -198,8 +199,10 @@ class AppDetails extends Component {
   }
 
   componentDidMount() {
-    if (isSignedIn()) {
-      User.createWithCurrentUser().then(user => {
+    checkIsSignedIn().then(isSignedIn => {
+      if (isSignedIn) {
+        console.log('createWithCurrentUser')
+        console.log('createWithCurrentUser3')
         const { data } = this.props
         loadMyData().then(content => {
           const isClaimedApp =
@@ -207,13 +210,19 @@ class AppDetails extends Component {
             content.myApps.hasOwnProperty(`app-${data.apps.appcoid}`) &&
             content.myApps[`app-${data.apps.appcoid}`]
 
-          this.setState({ isClaimedApp, isSignedIn: true, userData: getUser() })
+          this.setState({
+            isClaimedApp,
+            isSignedIn: true,
+            userData: getUser(),
+          })
         })
         this.loadComments()
-      })
-    } else {
-      this.setState({ isSignedIn: false })
-    }
+
+        console.log('createWithCurrentUser2')
+      } else {
+        this.setState({ isSignedIn: false })
+      }
+    })
   }
 
   loadComments() {
@@ -378,12 +387,6 @@ class AppDetails extends Component {
     } = this.state
     const appActions = isClaimedApp ? (
       <>
-        <Button
-          variant="outlined"
-          onClick={() => navigate(`/appco-edit/${data.apps.appcoid}`)}
-        >
-          Edit details
-        </Button>{' '}
         <Button
           variant="outlined"
           onClick={() => this.setState({ showUpdateDialog: true })}

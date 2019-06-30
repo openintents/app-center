@@ -88,7 +88,8 @@ class Main extends React.Component {
 
   renderComments(myComments, data) {
     const comments = []
-    if (myComments && comments.length > 0) {
+
+    if (myComments && myComments.length > 0) {
       myComments.forEach(c => {
         const apps = data.allApps.edges.filter(
           e => e.node.website === c.attrs.object

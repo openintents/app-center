@@ -37,6 +37,7 @@ export const isSignedIn = () => {
 
 export const handleLogin = callback => {
   const { userSession } = getConfig()
+  console.log('handleLogin')
   clog('isLoggedIn check', userSession.isUserSignedIn())
   if (userSession.isUserSignedIn()) {
     clog('logged in')
@@ -53,6 +54,11 @@ export const handleLogin = callback => {
   }
 }
 
+export const redirectToSignIn = () => {
+  const { userSession } = getConfig()
+  userSession.redirectToSignIn()
+}
+
 export const checkIsSignedIn = () => {
   if (!isBrowser()) {
     clog('Not a browser')
@@ -60,7 +66,7 @@ export const checkIsSignedIn = () => {
   }
   const { userSession } = getConfig()
   if (userSession.isSignInPending()) {
-    return userSession.handlePendingSignIn().then(userData => true)
+    return userSession.handlePendingSignIn().then(() => true)
   } else if (userSession.isUserSignedIn()) {
     const user = userSession.loadUserData()
     clog('isLoggedIn check', { user })
@@ -116,13 +122,13 @@ export const saveMyData = content => {
 }
 
 export const postUserUpdate = async (visibility, userComment) => {
-  if (visibility === "public") {
+  if (visibility === 'public') {
     await userComment.save()
-  } else if (visibility === "private") {
-    await userComment.savePrivately();
-  } else if (visibility === "devs") {
-    throw new Error("not yet implemented")
+  } else if (visibility === 'private') {
+    await userComment.savePrivately()
+  } else if (visibility === 'devs') {
+    throw new Error('not yet implemented')
   }
-  
+
   return null
 }

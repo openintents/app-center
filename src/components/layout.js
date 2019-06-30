@@ -4,6 +4,7 @@ import { StaticQuery, graphql } from 'gatsby'
 
 import Header from './header'
 import './layout.css'
+import { Typography } from '@material-ui/core';
 
 const Layout = ({ children }) => (
   <StaticQuery
@@ -37,6 +38,7 @@ const Layout = ({ children }) => (
         >
           {children}
           <footer>
+            <Typography variant="body2" style={{fontSize:"small"}} >
             © {new Date().getFullYear()}, Built with
             {` `}
             <a href="https://www.gatsbyjs.org">Gatsby</a> and{' '}
@@ -44,6 +46,7 @@ const Layout = ({ children }) => (
             <a href="https://gitlab.com/friedger/app-center">
               view the source here
             </a>
+            </Typography>
           </footer>
         </div>
       </>
