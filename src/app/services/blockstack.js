@@ -1,5 +1,5 @@
 import { UserSession, AppConfig } from 'blockstack'
-import { configure, getConfig, User } from 'radiks'
+import { configure, getConfig, User, GroupMembership } from 'radiks'
 
 // helpful for debugging
 const logAuth = process.env.NODE_ENV === 'development' && true // set to true to turn on logging
@@ -79,6 +79,7 @@ export const checkIsSignedIn = () => {
 
 export const logout = callback => {
   const { userSession } = getConfig()
+  GroupMembership.clearStorage()
   userSession.signUserOut('/data/login')
   callback()
 }

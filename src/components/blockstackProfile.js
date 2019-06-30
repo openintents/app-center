@@ -31,7 +31,7 @@ class BlockstackProfile extends Component {
     const { isSignedIn, userData } = this.state
     if (isSignedIn) {
       let avatars, avatar
-      if (userData.profile && userData.profile) {
+      if (userData.profile && userData.profile.image) {
         avatars = userData.profile.image.filter(i => i.name === 'avatar')
       }
       if (avatars && avatars.length > 0) {
