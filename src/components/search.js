@@ -1,9 +1,19 @@
 import React, { Component } from 'react'
 import { Index } from 'elasticlunr'
-import { Link } from 'gatsby'
-import { List, ListItem, Typography } from '@material-ui/core'
-
+import { Link, graphql, StaticQuery } from 'gatsby'
+import {
+  List,
+  ListItem,
+  Typography,
+  Grid,
+  TextField,
+  createMuiTheme,
+} from '@material-ui/core'
+import Img from 'gatsby-image'
+import { ThemeProvider } from '@material-ui/styles'
+import { white } from '@material-ui/core/colors'
 // Search component
+
 export default class Search extends Component {
   constructor(props) {
     super(props)
@@ -15,33 +25,80 @@ export default class Search extends Component {
 
   render() {
     return (
-      <div>
-        <input
-          type="text"
-          value={this.state.query}
-          onChange={this.search}
-          placeholder="Search apps by name, .."
-        />
-        <List>
-          {this.state.results.map(page => (
-            <ListItem key={page.id}>
-              <Typography>
-                <Link
-                  to={'/appco/' + page.appcoid}
-                  style={{
-                    color: `white`,
-                    fontWeight: 'bold',
-                    textDecoration: `none`,
-                  }}
-                >
-                  {page.name}
-                </Link>
-                {': ' + page.category} {' : ' + page.description}
-              </Typography>
-            </ListItem>
-          ))}
-        </List>
-      </div>
+      <StaticQuery
+        query={graphql`
+          query SearchQuery {
+            allApps {
+              edges {
+                node {
+                  appcoid: id__normalized
+                  localFile {
+                    id
+                    childImageSharp {
+                      fixed(width: 24, height: 24) {
+                        ...GatsbyImageSharpFixed
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `}
+        render={data => {
+          return (
+            <div>
+              <input
+                type="text"
+                value={this.state.query}
+                onChange={this.search}
+                placeholder="Search apps by name, .."
+              />
+              <List>
+                {this.state.results.map(page => {
+                  const appNodes = data.allApps.edges.filter(
+                    e => e.node.appcoid === page.appcoid
+                  )
+                  const icon =
+                    appNodes.length > 0 &&
+                    appNodes[0].node.localFile &&
+                    appNodes[0].node.localFile.childImageSharp ? (
+                      <Img
+                        fixed={appNodes[0].node.localFile.childImageSharp.fixed}
+                      />
+                    ) : (
+                      <div width="24px" height="24px" />
+                    )
+                  return (
+                    <ListItem key={page.id}>
+                      <Link
+                        to={'/appco/' + page.appcoid}
+                        style={{
+                          color: `white`,
+                          fontWeight: 'bold',
+                          textDecoration: `none`,
+                        }}
+                      >
+                        <Grid container>
+                          <Grid item xs={1}>
+                            {icon}
+                          </Grid>
+                          <Grid item xs={11}>
+                            <Typography>
+                              <b>{page.name}</b>
+                              {': ' + page.category} {' : ' + page.description}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </Link>
+                    </ListItem>
+                  )
+                })}
+              </List>
+            </div>
+          )
+        }}
+      />
     )
   }
   getOrCreateIndex = () =>

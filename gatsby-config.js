@@ -49,14 +49,9 @@ module.exports = {
                         openSourceUrl: String
                         description: String
                         category: String
+                        imgixImageUrl: String
                     `,
         },
-      },
-    },
-    {
-      resolve: `gatsby-transformer-excel`,
-      options: {
-        raw: false,
       },
     },
     {
@@ -64,6 +59,12 @@ module.exports = {
       options: {
         name: `data`,
         path: `${__dirname}/src/data/`,
+      },
+    },
+    {
+      resolve: `gatsby-transformer-excel`,
+      options: {
+        raw: false,
       },
     },
     {
@@ -79,7 +80,7 @@ module.exports = {
             category: node => node.category,
             description: node => node.description,
             appcoid: node => node.id__normalized,
-          }
+          },
         },
       },
     },

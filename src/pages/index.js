@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'gatsby'
 
 import Layout from '../components/layout'
-import Image from '../components/image'
 import SEO from '../components/seo'
 
 class IndexPage extends React.Component {
@@ -105,7 +104,7 @@ class IndexPage extends React.Component {
               <br />
               (requires login with Blockstack)
             </p>
-            <ul>              
+            <ul>
               <li>
                 <Link to="/data/#comments">
                   <b>Manage your comments</b>
@@ -115,7 +114,7 @@ class IndexPage extends React.Component {
                 <Link to="/data/#apps">
                   <b>Manage your apps</b>
                 </Link>{' '}
-                <br/>
+                <br />
                 (For app publishers only)
               </li>
             </ul>

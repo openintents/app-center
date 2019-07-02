@@ -38,6 +38,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import { UserComment, OwnerComment } from '../components/model'
 import { monthStrings, months, monthsLabels } from '../components/constants'
 import { User } from 'radiks/lib'
+import Img from 'gatsby-image'
 
 const StyledRoot = styled.div`
   flexgrow: 1;
@@ -446,12 +447,20 @@ class AppDetails extends Component {
         )
       }
     }
+    const icon = data.apps.localFile ? (
+      <Img fixed={data.apps.localFile.childImageSharp.fixed} />
+    ) : null
     return (
       <Layout>
-        <h1>
-          {data.apps.name} {appActions}
-        </h1>
-
+        <Grid container alignItems="center" spacing={2}>
+          <Grid item>{icon}</Grid>
+          <Grid item>
+            <Typography variant="h3" align="center">
+              {data.apps.name}
+            </Typography>
+          </Grid>
+          <Grid item>{appActions}</Grid>
+        </Grid>
         <StyledRoot>
           <AppBar position="static">
             <Tabs
@@ -648,6 +657,13 @@ export const query = graphql`
   query($appcoid: Int) {
     apps(id__normalized: { eq: $appcoid }) {
       ...AppInformation
+      localFile {
+        childImageSharp {
+          fixed(width: 80, height: 80) {
+            ...GatsbyImageSharpFixed
+          }
+        }
+      }
     }
     dec2018: allAppminingresultsXlsxDecember2018(
       filter: { Final_Score: { ne: null } }

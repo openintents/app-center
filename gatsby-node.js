@@ -1,10 +1,11 @@
 const path = require('path')
 const fetch = require('node-fetch')
+const { createRemoteFileNode } = require(`gatsby-source-filesystem`)
 
 getLastCommit = openSourceUrl => {
   if (openSourceUrl.startsWith('https://github.com/')) {
     if (openSourceUrl.startsWith('https://github.com/radicleart')) {
-      openSourceUrl = "https://github.com/radicleart/brightblock-dbid"
+      openSourceUrl = 'https://github.com/radicleart/brightblock-dbid'
     }
     const parts = openSourceUrl.substr(19).split('/')
     if (parts.length > 1) {
@@ -64,23 +65,39 @@ getLastCommit = openSourceUrl => {
   }
 }
 
-exports.onCreateNode = async ({ node, getNode, actions }) => {
-  const { createNodeField } = actions
-  if (
-    node.internal.type === `apps` &&
-    node.openSourceUrl &&
-    node.openSourceUrl !== ''
-  ) {
-    //const lastCommit = Promise.resolve("N/A")
-    const lastCommit = getLastCommit(node.openSourceUrl)
-    return lastCommit.then(r => {
-      createNodeField({
-        node,
-        name: `lastCommit`,
-        value: r,
-        type: 'String',
-      })
+exports.onCreateNode = async ({ node, getNode, actions, cache, store, _auth, createNodeId }) => {
+  const { createNodeField, createNode } = actions
+  if (node.internal.type === `apps`) {
+    return createRemoteFileNode({
+      url: node.imgixImageUrl,
+      parentNodeId: node.id,
+      store,
+      cache,
+      createNode,
+      createNodeId,
+      auth: _auth,
     })
+      .then(fileNode => {
+        if (fileNode) {
+          node.localFile___NODE = fileNode.id
+        }
+
+        if (node.openSourceUrl && node.openSourceUrl !== '') {
+          //const lastCommit = Promise.resolve('N/A')
+          const lastCommit = getLastCommit(node.openSourceUrl)
+          return lastCommit.then(r => {
+            createNodeField({
+              node,
+              name: `lastCommit`,
+              value: r,
+              type: 'String',
+            })
+          })
+        }
+      })
+      .catch(e => {
+        throw e
+      })
   } else {
     return Promise.resolve()
   }
@@ -107,7 +124,7 @@ exports.createPages = async ({ graphql, actions }) => {
           // Data passed to context is available
           // in page queries as GraphQL variables.
           appcoid: node.appcoid,
-          appname: node.name,
+          appname: node.name,      
         },
       })
 
@@ -118,7 +135,7 @@ exports.createPages = async ({ graphql, actions }) => {
           // Data passed to context is available
           // in page queries as GraphQL variables.
           appcoid: node.appcoid,
-          appname: node.name,
+          appname: node.name
         },
       })
     })

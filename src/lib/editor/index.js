@@ -1,412 +1,93 @@
 import React, { Component } from 'react'
+import Typography from '@material-ui/core/Typography'
+import {
+  Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  TextField,
+  DialogActions,
+  Button,
+} from '@material-ui/core'
+
+const sections = [
+  'Domain Name',
+  'Category',
+  'Description',
+  'Price',
+  'Customer Support',
+  'Consent',
+  'Content Rating and Descriptors',
+  'Availability',
+  'Requirements',
+  'Testing Instructions',
+  'Store Specifics',
+  'In-App Products',
+  'Verify',
+  'Submit',
+]
+
 export default class Editor extends Component {
   render() {
     return (
       <div class="container-fluid">
         <div class="row-fluid">
-          <div class="span3">
-            <div class="bs-docs-sidebar">
-              <ul class="nav nav-list bs-docs-sidenav">
-                <li>
-                  <a href="#section-domain-name">
-                    <i class="icon-chevron-right" />
-                    Domain name
-                  </a>
-                </li>
-                <li>
-                  <a href="#section-categorization">
-                    <i class="icon-chevron-right" /> Category
-                  </a>
-                </li>
-                <li>
-                  <a href="#section-description">
-                    <i class="icon-chevron-right" /> Description
-                  </a>
-                </li>
-                <li>
-                  <a href="#section-price">
-                    <i class="icon-chevron-right" /> Price
-                  </a>
-                </li>
-                <li>
-                  <a href="#section-customer-support">
-                    <i class="icon-chevron-right" /> Customer Support
-                  </a>
-                </li>
-                <li>
-                  <a href="#section-consent">
-                    <i class="icon-chevron-right" /> Consent
-                  </a>
-                </li>
-                <li>
-                  <a href="#section-content-description">
-                    <i class="icon-chevron-right" /> Content Rating and
-                    Descriptors
-                  </a>
-                </li>
-                <li>
-                  <a href="#section-availability">
-                    <i class="icon-chevron-right" /> Availability
-                  </a>
-                </li>
-                <li>
-                  <a href="#section-requirements">
-                    <i class="icon-chevron-right" /> Requirements
-                  </a>
-                </li>
-                <li>
-                  <a href="#section-testing-instructions">
-                    <i class="icon-chevron-right" /> Testing Instructions
-                  </a>
-                </li>
-                <li>
-                  <a href="#section-store-specific">
-                    <i class="icon-chevron-right" /> Store Specific
-                  </a>
-                </li>
-                <li>
-                  <a href="#section-inapp-products">
-                    <i class="icon-chevron-right" /> In-app Products
-                  </a>
-                </li>
-                <li>
-                  <a href="#section-verify">
-                    <i class="icon-chevron-right" /> Verify
-                  </a>
-                </li>
-                <li>
-                  <a href="#section-submit-appdf">
-                    <i class="icon-chevron-right" /> Submit Meta Data
-                  </a>
-                </li>
-              </ul>
-            </div>
-            {/*/.well */}
-          </div>
-          {/*/span*/}
           <div class="span9">
             <div class="hero-unit">
-              <h1>App Details</h1>
-              <p>
+              <Typography variant="h1">App Details</Typography>
+              <Box>
                 Submitting an application to several app stores can be
                 time-consuming. Futhermore, you do not own your app meta data.
                 Store your meta data in one file that includes a description,
                 screenshots, app icon, promo images, etc., This file will be
                 stored on your own storage. Then simply upload this data to all
                 the stores.
-              </p>
-              <p>
+              </Box>
+              <Box>
                 OI App Center builds on top of work by the{' '}
                 <a href="https://github.com/onepf">One Platform Foundation</a>.
-              </p>
+              </Box>
             </div>
 
             {/*MODALS START*/}
-            <div
-              id="requirements-store-add-modal"
-              class="modal hide fade"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="requirements-store-add-modal-label"
-              aria-hidden="true"
-            >
-              <div class="modal-header">
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-hidden="true"
-                >
-                  ×
-                </button>
-                <h3 id="requirements-store-add-modal-label">Add store</h3>
-              </div>
-              <div class="modal-body">
-                <div class="control-group">
-                  <label class="control-label" for="storespecific-input-modal">
-                    Application store name
-                  </label>
-                  <div class="controls">
-                    <div class="">
-                      <input
-                        type="text"
-                        id="storespecific-input-modal"
-                        data-validation-callback-callback="appdfEditor.validationCallbackStoreSpecify"
-                        autocomplete="off"
-                        data-provide="typeahead"
-                        data-items="20"
-                      />
-                    </div>
-                    <p class="help-block">
-                      You can add custom fields for a particular application
-                      store or rewrite any of the application description
-                      fields. XML format is described in the{' '}
-                      <a
-                        href="https://github.com/onepf/AppDF/blob/master/specification/appds_spec_1_0.md"
-                        target="_blank"
-                      >
-                        AppDF specification
-                      </a>
-                      .
-                    </p>
-                  </div>
-                </div>
-                {/*control-group*/}
-                <div class="control-group">
-                  <label
-                    class="control-label"
-                    for="storespecific-name-default-modal"
-                  >
-                    Store data
-                  </label>
-                  <div class="controls">
-                    <textarea
-                      class="input-x-xlarge"
-                      rows="8"
-                      id="storespecific-xml-default-modal"
-                    />
-                    <p class="help-block">
-                      Store specific data in XML format. You can also rewrite
-                      any of the application description fields in this XML.
-                    </p>
-                  </div>
-                </div>
-                {/*./control-group */}
-              </div>
-              <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">
-                  Cancel
-                </button>
-                <button class="btn btn-primary">Add store</button>
-              </div>
-            </div>
-            {/*Modal*/}
+            <Dialog>
+              <DialogTitle>Add Store</DialogTitle>
+              <DialogContent>
+                Application store name
+                <TextField />
+                <Box>
+                  You can add custom fields for a particular application store
+                  or rewrite any of the application description fields.
+                </Box>
+                Store data
+                <TextField multiline="3" />
+                <Box>
+                  Store specific data in XML format. You can also rewrite any of
+                  the application description fields in this XML.
+                </Box>
+              </DialogContent>
+              <DialogActions>
+                <Button>Cancel</Button>
+                <Button>Add store data</Button>
+              </DialogActions>
+            </Dialog>
 
-            <div
-              id="import-descriptionxml-modal"
-              class="modal hide fade"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="import-descriptionxml-modal-label"
-              aria-hidden="true"
-            >
-              <div class="modal-header">
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-hidden="true"
-                >
-                  ×
-                </button>
-                <h3 id="import-descriptionxml-modal-label">
-                  Import Description.XML
-                </h3>
-              </div>
-              <div class="modal-body">
-                <textarea
-                  id="import-descriptionxml-modal-text"
-                  class="input-x-xlarge"
-                  rows="5"
-                />
-                <br />
-                <div
-                  class="alert alert-success hide"
-                  id="import-descriptionxml-modal-status"
-                >
-                  <b>Importing Description.XML. Please wait...</b>
-                  <div class="progress">
-                    <div
-                      id="load-descriptionxml-modal-progressbar"
-                      class="bar"
-                      style={{ width: 0 }}
-                    />
-                  </div>
-                </div>
-                <div
-                  class="alert alert-error hide"
-                  id="import-descriptionxml-modal-errors"
-                >
-                  <b>Import errors:</b>
-                  <ul />
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">
-                  Cancel
-                </button>
-                <button class="btn btn-primary">Import</button>
-              </div>
-            </div>
-            {/*Modal*/}
+            <Dialog>
+              <DialogTitle>Add Video</DialogTitle>
+              <DialogContent>
+                URL 
+                <TextField />
+                <Box>
+                  Enter the video url and press 'Verify'
+                </Box>
+                <Button>Verify</Button>
+              </DialogContent>
+              <DialogActions>
+                <Button>Cancel</Button>
+                <Button>Add Video</Button>
+              </DialogActions>
+            </Dialog>
 
-            <div
-              id="load-appdf-modal"
-              class="modal hide fade"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="load-appdf-modal-label"
-              aria-hidden="true"
-            >
-              <div class="modal-header">
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-hidden="true"
-                >
-                  ×
-                </button>
-                <h3 id="load-appdf-modal-label">Open AppDF File</h3>
-              </div>
-              <div class="modal-body">
-                <div>
-                  <input
-                    type="file"
-                    id="load-appdf-modal-file"
-                    class="hide ie_show"
-                    name="appdf-file"
-                  />
-                  <div class="input-append ie_hide">
-                    <input
-                      id="load-appdf-modal-prettyfile"
-                      class="input-xlarge"
-                      type="text"
-                      readonly="readonly"
-                    />
-                    <button class="btn load-appdf-modal-browse">Browse</button>
-                  </div>
-                </div>
-                <div
-                  class="alert alert-success hide"
-                  id="load-appdf-modal-status"
-                >
-                  <b>Loading application file. Please wait...</b>
-                  <div class="progress">
-                    <div
-                      id="load-appdf-modal-progressbar"
-                      class="bar"
-                      style={{ width: 0 }}
-                    />
-                  </div>
-                </div>
-                <div
-                  class="alert alert-error hide"
-                  id="load-appdf-modal-errors"
-                >
-                  <b>Import errors:</b>
-                  <ul />
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">
-                  Cancel
-                </button>
-                <button
-                  class="btn btn-primary"
-                  id="load-appdf-modal-open-button"
-                >
-                  Open
-                </button>
-                <button
-                  class="btn btn-primary hide"
-                  id="load-appdf-modal-open-unfinished-button"
-                >
-                  Open unfinished
-                </button>
-              </div>
-            </div>
-            {/*Modal*/}
-
-            <div
-              id="description-videos-youtubevideo-dialog"
-              class="modal hide fade"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="description-videos-youtubevideo-dialog-label"
-              aria-hidden="true"
-            >
-              <div class="modal-header">
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-hidden="true"
-                >
-                  ×
-                </button>
-                <h3 id="description-videos-youtubevideo-dialog-label">
-                  YouTube Video
-                </h3>
-              </div>
-              <div class="modal-body">
-                URL:
-                <div class="input-append ie_hide">
-                  <input
-                    id="description-videos-youtubevideo-dialog-url"
-                    class="input-xlarge"
-                    type="text"
-                  />
-                  <button class="btn description-videos-youtubevideo-dialog-check">
-                    Check
-                  </button>
-                </div>
-                <p id="description-videos-youtubevideo-dialog-info">
-                  Copy/pase YouTube video URL into the edit field and press the
-                  "Check" button to make sure that URL is correct.
-                </p>
-                <iframe
-                  width="420"
-                  height="315"
-                  id="description-videos-youtubevideo-dialog-video"
-                  src=""
-                  frameborder="0"
-                  allowfullscreen
-                  class="hide"
-                />
-              </div>
-              <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">
-                  Cancel
-                </button>
-                <button class="btn btn-primary">OK</button>
-              </div>
-            </div>
-            {/*Modal*/}
-
-            <div
-              id="add-localization-modal"
-              class="modal hide fade"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="add-localization-modal-label"
-              aria-hidden="true"
-            >
-              <div class="modal-header">
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-hidden="true"
-                >
-                  ×
-                </button>
-                <h3 id="add-localization-modal-label">Add Localization</h3>
-              </div>
-              <div class="modal-body">
-                <p>
-                  Language:
-                  <select id="add-localization-modal-language" />
-                </p>
-              </div>
-              <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">
-                  Cancel
-                </button>
-                <button class="btn btn-primary">Add Localization</button>
-              </div>
-            </div>
-            {/*Model*/}
             {/*MODALS END*/}
 
             <form class="form-horizontal" action="" method="POST" novalidate>
@@ -1312,7 +993,7 @@ export default class Editor extends Component {
                           value=""
                           id="consent-googleandroidcontentguidelines"
                         />
-                        I agree to the {' '}
+                        I agree to the{' '}
                         <a href="https://app.co/terms" target="_blank">
                           App.co Terms
                         </a>
@@ -1325,10 +1006,7 @@ export default class Editor extends Component {
                           id="consent-appcomining"
                         />
                         This application meets the{' '}
-                        <a
-                          href="https://app.co/mining/terms"
-                          target="_blank"
-                        >
+                        <a href="https://app.co/mining/terms" target="_blank">
                           App Mining Terms
                         </a>
                       </label>
