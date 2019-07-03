@@ -1,5 +1,5 @@
 import React from 'react'
-import { getUser, saveMyData, loadMyData } from './services/blockstack'
+import { saveMyData, loadMyData } from './services/blockstack'
 import AppSelector from './components/AppSelector'
 
 class MyApps extends React.Component {
@@ -19,7 +19,6 @@ class MyApps extends React.Component {
   }
 
   render() {
-    const user = getUser()
     const { myApps, loading } = this.state
 
     return (

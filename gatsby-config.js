@@ -49,7 +49,7 @@ module.exports = {
                         openSourceUrl: String
                         description: String
                         category: String
-                        imgixImageUrl: String
+                        imageUrl: String
                     `,
         },
       },

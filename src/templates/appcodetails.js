@@ -4,7 +4,6 @@ import Layout from '../components/layout'
 import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
 import {
-  isSignedIn,
   loadMyData,
   saveMyData,
   postUserUpdate,
@@ -37,7 +36,6 @@ import {
 import CloseIcon from '@material-ui/icons/Close'
 import { UserComment, OwnerComment } from '../components/model'
 import { monthStrings, months, monthsLabels } from '../components/constants'
-import { User } from 'radiks/lib'
 import Img from 'gatsby-image'
 
 const StyledRoot = styled.div`
@@ -107,7 +105,7 @@ const Comments = (data, comments, isSignedIn) => {
   if (!isSignedIn) {
     return (
       <Container>
-        <Button variant="outlined" onClick={() => navigate('app/login')}>
+        <Button variant="outlined" onClick={() => navigate('data')}>
           Sign In to view comments
         </Button>
       </Container>
@@ -138,7 +136,7 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
   if (!isSignedIn) {
     return (
       <Container>
-        <Button variant="outlined" onClick={() => navigate('app/login')}>
+        <Button variant="outlined" onClick={() => navigate('data')}>
           Sign In to view updates
         </Button>
       </Container>
@@ -148,6 +146,17 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
     return <Typography>No updates yet.</Typography>
   } else {
     const allMonths = []
+    const renderComment = (month) => (c, key) => {
+      return (
+        <React.Fragment key={c._id}>
+          <Typography component="div">
+            <Box>{c.attrs.comment}</Box>
+            <Box fontSize="small">{c.attrs.createdBy || 'A user'}</Box>
+          </Typography>
+          {key < comments[month].length - 1 && <Divider light />}
+        </React.Fragment>
+      )
+    }
     for (var month in comments) {
       console.log(month)
       allMonths.push(
@@ -155,17 +164,7 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
       )
       allMonths.push(
         <Container key={`list-${month}`}>
-          {comments[month].map((c, key) => {
-            return (
-              <React.Fragment key={c._id}>
-                <Typography component="div">
-                  <Box>{c.attrs.comment}</Box>
-                  <Box fontSize="small">{c.attrs.createdBy || 'A user'}</Box>
-                </Typography>
-                {key < comments[month].length - 1 && <Divider light />}
-              </React.Fragment>
-            )
-          })}
+          {comments[month].map(renderComment(month))}
         </Container>
       )
     }
@@ -404,15 +403,7 @@ class AppDetails extends Component {
       </>
     ) : (
       <>
-        <Button
-          disabled={isClaimingApp}
-          onClick={() => {
-            this.claimApp()
-          }}
-          variant="outlined"
-        >
-          Claim this app
-        </Button>{' '}
+       
         <Button
           variant="outlined"
           onClick={() => {
@@ -424,6 +415,15 @@ class AppDetails extends Component {
           }}
         >
           Post comment
+        </Button>{' '}
+        <Button
+          disabled={isClaimingApp}
+          onClick={() => {
+            this.claimApp()
+          }}
+          variant="outlined"
+        >
+          Claim this app
         </Button>
       </>
     )
@@ -447,9 +447,10 @@ class AppDetails extends Component {
         )
       }
     }
-    const icon = data.apps.localFile ? (
-      <Img fixed={data.apps.localFile.childImageSharp.fixed} />
-    ) : null
+    const icon =
+      data.apps.localFile && data.apps.localFile.childImageSharp ? (
+        <Img fixed={data.apps.localFile.childImageSharp.fixed} />
+      ) : null
     return (
       <Layout>
         <Grid container alignItems="center" spacing={2}>

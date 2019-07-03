@@ -1,6 +1,6 @@
 import React from 'react'
 import { graphql, Link, StaticQuery } from 'gatsby'
-import { getUser, loadMyData } from './services/blockstack'
+import { loadMyData } from './services/blockstack'
 import {
   Typography,
   ListItem,
@@ -13,7 +13,6 @@ import {
 } from '@material-ui/core'
 import { UserComment, OwnerComment } from '../components/model'
 import DeleteIcon from '@material-ui/icons/Delete'
-import EditIdcon from '@material-ui/icons/Edit'
 
 class MyComments extends React.Component {
   state = {
@@ -101,7 +100,6 @@ class MyComments extends React.Component {
   }
 
   render() {
-    const user = getUser()
     const { myComments, myUpdates, loading } = this.state
 
     return (
@@ -122,13 +120,13 @@ class MyComments extends React.Component {
             {loading && <>Loading...</>}
             {!loading && (
               <>
-              <Typography variant="h3">Comments</Typography>
+                <Typography variant="h3">Comments</Typography>
                 {this.renderComments(myComments, data)}
                 <Divider light />
                 {this.renderComments(myUpdates, data)}
               </>
             )}
-            <Dialog></Dialog>
+            <Dialog />
           </>
         )}
       />

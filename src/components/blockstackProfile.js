@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import {
-  isSignedIn,
   getUser,
-  handleLogin,
   redirectToSignIn,
   checkIsSignedIn,
 } from '../app/services/blockstack'

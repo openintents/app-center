@@ -1,6 +1,5 @@
 import React from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
-import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
 import { Formik } from 'formik'
 import { Button } from '@material-ui/core';

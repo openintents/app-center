@@ -1,17 +1,8 @@
 import React, { Component } from 'react'
 import { Index } from 'elasticlunr'
 import { Link, graphql, StaticQuery } from 'gatsby'
-import {
-  List,
-  ListItem,
-  Typography,
-  Grid,
-  TextField,
-  createMuiTheme,
-} from '@material-ui/core'
+import { List, ListItem, Typography, Grid } from '@material-ui/core'
 import Img from 'gatsby-image'
-import { ThemeProvider } from '@material-ui/styles'
-import { white } from '@material-ui/core/colors'
 // Search component
 
 export default class Search extends Component {

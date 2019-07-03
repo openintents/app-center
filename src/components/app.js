@@ -1,5 +1,17 @@
 import React from 'react'
-import { graphql } from 'gatsby'
+import { graphql, navigate } from 'gatsby'
+import {
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  ListItemAvatar,
+  Avatar,
+  Typography,
+  IconButton,
+} from '@material-ui/core'
+import AppIcon from '@material-ui/icons/Apps'
+import GetAppIcon from '@material-ui/icons/Launch'
+import Img from 'gatsby-image'
 
 export const numberFormat = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -9,7 +21,7 @@ export const commitFormat = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
   month: 'long',
 })
-const App = ({ data, hideRewards, hideDetailsLink }) => {
+const App = ({ data, hideRewards, showSourceLink }) => {
   const earnings = numberFormat.format(data.lifetimeEarnings)
   var lastUpdate = ''
   if (data.openSourceUrl) {
@@ -22,32 +34,72 @@ const App = ({ data, hideRewards, hideDetailsLink }) => {
   }
 
   return (
-    <>
-      {!hideDetailsLink && <a href={`/appco/${data.appcoid}`}>{data.name}</a>}
-      {hideDetailsLink && <>{data.name}</>}
-      {data.openSourceUrl && (
-        <>
-          {' '}
-          (<a href={data.openSourceUrl}>{data.openSourceUrl}</a>)
-        </>
+    <ListItem
+      dense
+      alignItems="flex-start"
+      button={!data.hideDetailsLink}
+      onClick={() => {
+        if (!data.hideDetailsLink) {
+          navigate(`/appco/${data.appcoid}`)
+        }
+      }}
+    >
+      {data.localFile && data.localFile.childImageSharp && (
+        <ListItemAvatar>
+          <Avatar>
+            <Img fixed={data.localFile.childImageSharp.fixed} />
+          </Avatar>
+        </ListItemAvatar>
       )}
-      {!hideRewards && (
-        <>
-          <br />
-          rewards: {earnings}{' '}
-        </>
+      {(!data.localFile || !data.localFile.childImageSharp) && (
+        <ListItemAvatar>
+          <Avatar>
+            <AppIcon />
+          </Avatar>
+        </ListItemAvatar>
       )}
-      {data.openSourceUrl && (
-        <>
-          <br />
-          last update: {lastUpdate}
-        </>
+
+      <ListItemText
+        primary={<b>{data.name}</b>}
+        secondary={
+          <React.Fragment>
+            <Typography component="span" variant="body2" color="textPrimary">
+              {showSourceLink && data.openSourceUrl && (
+                <>
+                  <a href={data.openSourceUrl}>{data.openSourceUrl}</a>
+                  <br />
+                </>
+              )}
+              {data.description}
+            </Typography>
+            <Typography component="span" variant="body2">
+              {!hideRewards && (
+                <>
+                  <br />
+                  rewards: {earnings}{' '}
+                </>
+              )}
+              {showSourceLink && data.openSourceUrl && (
+                <>
+                  <br />
+                  last update: {lastUpdate}
+                </>
+              )}
+            </Typography>
+          </React.Fragment>
+        }
+      />
+
+      {!data.hideDetailsLink && data.website && data.website.length > 0 && (
+        <ListItemSecondaryAction>
+          <IconButton edge="end" aria-label="Launch">
+            <a href={data.website}>
+              <GetAppIcon />
+            </a>
+          </IconButton>
+        </ListItemSecondaryAction>
       )}
-      <br />
-      {data.website && data.website.length > 0 && (
-        <a href={data.website}>Launch app</a>
-      )}
-    </>
+    </ListItem>
   )
 }
 
@@ -60,6 +112,17 @@ export const query = graphql`
     openSourceUrl
     fields {
       lastCommit
+    }
+    description
+  }
+
+  fragment AppIcon on apps {
+    localFile {
+      childImageSharp {
+        fixed(width: 24, height: 24) {
+          ...GatsbyImageSharpFixed
+        }
+      }
     }
   }
 `

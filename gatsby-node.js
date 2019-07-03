@@ -13,7 +13,7 @@ getLastCommit = openSourceUrl => {
       const repo = parts[1]
       const url =
         'https://api.github.com/repos/' + owner + '/' + repo + '/commits'
-      return fetch(url)
+      return fetch(url, {headers:{"Authorization":"token " + process.env.GATSBY_GITHUB_TOKEN}})
         .then(response => response.json(), () => 'No json')
         .then(
           response => {
@@ -69,7 +69,7 @@ exports.onCreateNode = async ({ node, getNode, actions, cache, store, _auth, cre
   const { createNodeField, createNode } = actions
   if (node.internal.type === `apps`) {
     return createRemoteFileNode({
-      url: node.imgixImageUrl,
+      url: node.imageUrl,
       parentNodeId: node.id,
       store,
       cache,
@@ -82,9 +82,8 @@ exports.onCreateNode = async ({ node, getNode, actions, cache, store, _auth, cre
           node.localFile___NODE = fileNode.id
         }
 
-        if (node.openSourceUrl && node.openSourceUrl !== '') {
-          //const lastCommit = Promise.resolve('N/A')
-          const lastCommit = getLastCommit(node.openSourceUrl)
+        if (node.openSourceUrl && node.openSourceUrl !== '') {          
+          const lastCommit = process.env.GATSBY_GITHUB_TOKEN === "INVALID" ? Promise.resolve('N/A') : getLastCommit(node.openSourceUrl)
           return lastCommit.then(r => {
             createNodeField({
               node,

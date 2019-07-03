@@ -1,42 +1,10 @@
-import React from 'react'
 import { graphql } from 'gatsby'
-import App from '../../components/app'
-import Layout from '../../components/layout'
-
-const AppCo = ({ data }) => {
-  return (
-    <Layout>
-      <h1>New Blockstack Apps (June 2019)</h1>
-      <ul>
-        <li>Total number: {data.thismonth.totalCount}</li>
-      </ul>
-      <ul>
-        {data.thismonth.edges.map(function(d, idx) {
-          const appcodata = data.allApps.edges.filter(
-            e => e.node.appcoid === d.node.appcoid
-          )
-          console.log(appcodata)
-          const app = {
-            lifetimeEarnings: 0,
-            website: appcodata.length > 0 ? appcodata[0].node.website : null,
-            ...d.node,
-          }
-          console.log(app.website)
-          return (
-            <li key={idx}>
-              <App data={app} hideRewards />
-            </li>
-          )
-        })}
-      </ul>
-    </Layout>
-  )
-}
+import NewAppList from '../../components/newAppList'
 
 export const query = graphql`
   query new201906 {
-    thismonth:allAppminingresultsXlsxJune2019(
-      filter: { Score_Last_Round: { eq: null }, Average_Score: {ne: null} }
+    thismonth: allAppminingresultsXlsxJune2019(
+      filter: { Score_Last_Round: { eq: null }, Average_Score: { ne: null } }
     ) {
       totalCount
       edges {
@@ -51,10 +19,11 @@ export const query = graphql`
       edges {
         node {
           ...AppInformation
+          ...AppIcon
         }
       }
     }
   }
 `
 
-export default AppCo
+export default NewAppList({ month: 'June 2019' })

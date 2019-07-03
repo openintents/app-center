@@ -3,7 +3,7 @@ import { graphql } from 'gatsby'
 import Layout from '../components/layout'
 import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
-import { loadAppData, isSignedIn } from '../app/services/blockstack'
+import { loadAppData } from '../app/services/blockstack'
 import Editor from '../lib/editor'
 import { monthsLabels, months } from '../components/constants';
 
