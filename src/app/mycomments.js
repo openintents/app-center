@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core'
 import { UserComment, OwnerComment } from '../components/model'
 import DeleteIcon from '@material-ui/icons/Delete'
+import { User } from 'radiks/lib'
 
 class MyComments extends React.Component {
   state = {
@@ -26,26 +27,28 @@ class MyComments extends React.Component {
   }
 
   componentDidMount() {
-    loadMyData().then(content => {
-      this.setState({
-        myApps: content.myApps,
-        loadingApps: false,
-        loading: this.state.loadingComments && this.state.loadingUpdates,
+    User.createWithCurrentUser().then(() => {
+      loadMyData().then(content => {
+        this.setState({
+          myApps: content.myApps,
+          loadingApps: false,
+          loading: this.state.loadingComments && this.state.loadingUpdates,
+        })
       })
-    })
 
-    UserComment.fetchOwnList().then(myComments => {
-      this.setState({
-        myComments,
-        loadingComments: false,
-        loading: this.state.loadingApps && this.state.loadingUpdates,
+      UserComment.fetchOwnList().then(myComments => {
+        this.setState({
+          myComments,
+          loadingComments: false,
+          loading: this.state.loadingApps && this.state.loadingUpdates,
+        })
       })
-    })
-    OwnerComment.fetchOwnList().then(myUpdates => {
-      this.setState({
-        myUpdates,
-        loadingUpdates: false,
-        loading: this.state.loadingApps && this.state.loadingComments,
+      OwnerComment.fetchOwnList().then(myUpdates => {
+        this.setState({
+          myUpdates,
+          loadingUpdates: false,
+          loading: this.state.loadingApps && this.state.loadingComments,
+        })
       })
     })
   }

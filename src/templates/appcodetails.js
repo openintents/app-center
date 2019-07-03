@@ -34,6 +34,9 @@ import {
   Divider,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
+import LaunchIcon from '@material-ui/icons/Launch'
+import NoteIcon from '@material-ui/icons/Note'
+
 import { UserComment, OwnerComment } from '../components/model'
 import { monthStrings, months, monthsLabels } from '../components/constants'
 import Img from 'gatsby-image'
@@ -112,19 +115,21 @@ const Comments = (data, comments, isSignedIn) => {
     )
   }
   if (comments.length === 0) {
-    return <>No comments yet</>
+    return <Typography>No comments yet</Typography>
   } else {
     return comments.map((c, key) => {
       return (
         <Card key={c._id}>
           <CardContent>
-            {c.attrs.comment}
-            <br />
-            <small>
-              {c.attrs.createdBy || 'A user'}
-              {' - '}
-              {new Date(c.attrs.createdAt).toLocaleDateString()}
-            </small>
+            <Typography>
+              {c.attrs.comment}
+              <br />
+              <small>
+                {c.attrs.createdBy || 'A user'}
+                {' - '}
+                {new Date(c.attrs.createdAt).toLocaleDateString()}
+              </small>
+            </Typography>
           </CardContent>
         </Card>
       )
@@ -146,7 +151,7 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
     return <Typography>No updates yet.</Typography>
   } else {
     const allMonths = []
-    const renderComment = (month) => (c, key) => {
+    const renderComment = month => (c, key) => {
       return (
         <React.Fragment key={c._id}>
           <Typography component="div">
@@ -201,8 +206,6 @@ class AppDetails extends Component {
   componentDidMount() {
     checkIsSignedIn().then(isSignedIn => {
       if (isSignedIn) {
-        console.log('createWithCurrentUser')
-        console.log('createWithCurrentUser3')
         const { data } = this.props
         loadMyData().then(content => {
           const isClaimedApp =
@@ -217,8 +220,6 @@ class AppDetails extends Component {
           })
         })
         this.loadComments()
-
-        console.log('createWithCurrentUser2')
       } else {
         this.setState({ isSignedIn: false })
       }
@@ -231,7 +232,7 @@ class AppDetails extends Component {
       loadingComments: true,
       loadingUpdates: true,
     })
-    OwnerComment.fetchList({ object: data.apps.website }).then(comments => {
+    OwnerComment.fetchList({ object: data.apps.website, sort: '-createdAt' }).then(comments => {
       const monthlyUpdates = {}
       let createdAtDate, dateKey
       comments.forEach(comment => {
@@ -258,13 +259,17 @@ class AppDetails extends Component {
       })
     })
 
-    UserComment.fetchList({ object: data.apps.website }).then(comments => {
+    UserComment.fetchList({ object: data.apps.website, sort: '-createdAt' }).then(comments => {
       this.setState({
         comments,
         loadingComments: false,
         loadingData: this.state.loadingUpdates,
       })
     })
+  }
+
+  launchApp() {
+    window.location = this.props.data.apps.website
   }
 
   claimApp() {
@@ -391,6 +396,7 @@ class AppDetails extends Component {
           variant="outlined"
           onClick={() => this.setState({ showUpdateDialog: true })}
         >
+          <NoteIcon />
           Post progress update
         </Button>{' '}
         <Button
@@ -400,10 +406,12 @@ class AppDetails extends Component {
         >
           Remove from my apps
         </Button>
+        <Button disabled={!data.apps.website} onClick={() => this.launchApp()}>
+          <LaunchIcon />
+        </Button>
       </>
     ) : (
       <>
-       
         <Button
           variant="outlined"
           onClick={() => {
@@ -414,6 +422,7 @@ class AppDetails extends Component {
             }
           }}
         >
+          <NoteIcon />
           Post comment
         </Button>{' '}
         <Button
@@ -424,6 +433,9 @@ class AppDetails extends Component {
           variant="outlined"
         >
           Claim this app
+        </Button>
+        <Button disabled={!data.apps.website} onClick={() => this.launchApp()}>
+          <LaunchIcon />
         </Button>
       </>
     )
@@ -462,6 +474,7 @@ class AppDetails extends Component {
           </Grid>
           <Grid item>{appActions}</Grid>
         </Grid>
+        <Typography>{data.apps.description}</Typography>
         <StyledRoot>
           <AppBar position="static">
             <Tabs
@@ -476,36 +489,38 @@ class AppDetails extends Component {
           </AppBar>
           <br />
           {tabIndex === 0 && (
-            <Grid container spacing={0}>
-              <StyledCell item md={4} xs={4}>
-                <b>Month</b>
-              </StyledCell>
-              <StyledCell item md={2} xs={4}>
-                <b>Rank</b>
-              </StyledCell>
-              <StyledCell item md={1} xs={4}>
-                <b>Final Score</b>
-              </StyledCell>
-              <StyledCell item md={1} xs={2}>
-                <small>DE</small>
-              </StyledCell>
-              <StyledCell item md={1} xs={2}>
-                <small>PH</small>
-              </StyledCell>
-              <StyledCell item md={1} xs={2}>
-                <small>NIL</small>
-              </StyledCell>
-              <StyledCell item md={1} xs={2}>
-                <small>TMUI</small>
-              </StyledCell>
-              <StyledCell item md={1} xs={2}>
-                <small>AW</small>
-              </StyledCell>
-              <StyledCell item xs={12}>
-                <hr />
-              </StyledCell>
-              {monthlyScoresInGrid}
-            </Grid>
+            <Typography component="div">
+              <Grid container spacing={0}>
+                <StyledCell item md={4} xs={4}>
+                  <b>Month</b>
+                </StyledCell>
+                <StyledCell item md={2} xs={4}>
+                  <b>Rank</b>
+                </StyledCell>
+                <StyledCell item md={1} xs={4}>
+                  <b>Final Score</b>
+                </StyledCell>
+                <StyledCell item md={1} xs={2}>
+                  <small>DE</small>
+                </StyledCell>
+                <StyledCell item md={1} xs={2}>
+                  <small>PH</small>
+                </StyledCell>
+                <StyledCell item md={1} xs={2}>
+                  <small>NIL</small>
+                </StyledCell>
+                <StyledCell item md={1} xs={2}>
+                  <small>TMUI</small>
+                </StyledCell>
+                <StyledCell item md={1} xs={2}>
+                  <small>AW</small>
+                </StyledCell>
+                <StyledCell item xs={12}>
+                  <hr />
+                </StyledCell>
+                {monthlyScoresInGrid}
+              </Grid>
+            </Typography>
           )}
 
           {tabIndex === 1 && (

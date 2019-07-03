@@ -1,6 +1,10 @@
 import { Model } from 'radiks'
 
 class ModelExt extends Model {
+  fetchOwnPrivateList() {
+    
+  }
+
   savePrivately() {
     return new Promise(async (resolve, reject) => {
       try {

@@ -1,5 +1,5 @@
 import { UserSession, AppConfig } from 'blockstack'
-import { configure, getConfig, User, GroupMembership } from 'radiks'
+import { configure, getConfig, User, GroupMembership, userGroupKeys } from 'radiks'
 
 // helpful for debugging
 const logAuth = process.env.NODE_ENV === 'development' && true // set to true to turn on logging
@@ -20,6 +20,10 @@ configure({
   apiServer: process.env.GATSBY_RADIKS_SERVER || 'http://localhost:1260',
   userSession: uSession,
 })
+
+export const getApiServer = () => getConfig().apiServer
+
+export const getPersonalKey = () => JSON.stringify(User.currentUser())
 
 export const isBrowser = () => typeof window !== 'undefined'
 

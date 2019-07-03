@@ -50,7 +50,7 @@
     "heroku-postbuild": "gatsby -v",
     "develop": "cross-env GATSBY_GITHUB_TOKEN=INVALID GATSBY_RADIKS_SERVER=https://app-center.herokuapp.com gatsby develop",
     "build": "run-p build:**",
-    "build:app": "cross-env GATSBY_GITHUB_TOKEN=a58c65cf623596cddbdcbe1d367a3f2e383c46db GATSBY_RADIKS_SERVER=https://app-center.herokuapp.com gatsby build",
+    "build:app": "gatsby build",
     "serve": "gatsby serve",
     "format": "prettier --write \"src/**/*.js\"",
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\"",

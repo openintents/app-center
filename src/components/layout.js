@@ -4,7 +4,8 @@ import { StaticQuery, graphql } from 'gatsby'
 
 import Header from './header'
 import './layout.css'
-import { Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core'
+import { getApiServer, getPersonalKey } from '../app/services/blockstack'
 
 const Layout = ({ children }) => (
   <StaticQuery
@@ -38,14 +39,16 @@ const Layout = ({ children }) => (
         >
           {children}
           <footer>
-            <Typography variant="body2" style={{fontSize:"small"}} >
-            © {new Date().getFullYear()}, Built with
-            {` `}
-            <a href="https://www.gatsbyjs.org">Gatsby</a> and{' '}
-            <a href="https://blockstack.org">Blockstack</a>. You can{' '}
-            <a href="https://gitlab.com/friedger/app-center">
-              view the source here
-            </a>
+            <Typography variant="body2" style={{ fontSize: 'small' }}>
+              © {new Date().getFullYear()}, Built with
+              {` `}
+              <a href="https://www.gatsbyjs.org">Gatsby</a> and{' '}
+              <a href="https://blockstack.org">Blockstack</a>. You can{' '}
+              <a href="https://gitlab.com/friedger/app-center">
+                view the source here
+              </a>
+              <br />
+              Radiks Server: {getApiServer()}
             </Typography>
           </footer>
         </div>

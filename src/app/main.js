@@ -3,6 +3,7 @@ import { graphql, Link, StaticQuery } from 'gatsby'
 import { encryptContent, loadMyData } from './services/blockstack'
 import { UserComment, OwnerComment } from '../components/model'
 import { Typography, ListItem, ListItemText, List } from '@material-ui/core'
+import { User } from 'radiks/lib';
 
 class Main extends React.Component {
   state = {
@@ -16,25 +17,27 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    loadMyData().then(content => {
-      this.setState({
-        myApps: content.myApps,
-        loadingApps: false,
-        loading: this.state.loadingComments && this.state.loadingUpdates,
+    User.createWithCurrentUser().then(() => {
+      loadMyData().then(content => {
+        this.setState({
+          myApps: content.myApps,
+          loadingApps: false,
+          loading: this.state.loadingComments && this.state.loadingUpdates,
+        })
       })
-    })
-    UserComment.fetchOwnList().then(myComments => {
-      this.setState({
-        myComments,
-        loadingComments: false,
-        loading: this.state.loadingApps && this.state.loadingUpdates,
+      UserComment.fetchOwnList().then(myComments => {
+        this.setState({
+          myComments,
+          loadingComments: false,
+          loading: this.state.loadingApps && this.state.loadingUpdates,
+        })
       })
-    })
-    OwnerComment.fetchOwnList().then(myUpdates => {
-      this.setState({
-        myUpdates,
-        loadingUpdates: false,
-        loading: this.state.loadingApps && this.state.loadingComments,
+      OwnerComment.fetchOwnList().then(myUpdates => {
+        this.setState({
+          myUpdates,
+          loadingUpdates: false,
+          loading: this.state.loadingApps && this.state.loadingComments,
+        })
       })
     })
   }
