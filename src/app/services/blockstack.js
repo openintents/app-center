@@ -7,7 +7,7 @@ const clog = (...args) => logAuth && console.log(...args)
 // helpful for debugging
 
 const appConfig = new AppConfig(
-  ['store_write'],
+  ['store_write', 'publish_data'],
   typeof window !== 'undefined'
     ? window.location.origin
     : 'http://localhost:8000',
@@ -74,7 +74,7 @@ export const checkIsSignedIn = () => {
       .handlePendingSignIn()
       .then(() => User.createWithCurrentUser().then(() => true))
   } else if (userSession.isUserSignedIn()) {
-    return User.createWithCurrentUser().then(() => true)
+    return Promise.resolve(true)
   } else {
     clog('isLoggedIn check - nothing')
     return Promise.resolve(false)
@@ -84,7 +84,7 @@ export const checkIsSignedIn = () => {
 export const logout = callback => {
   const { userSession } = getConfig()
   GroupMembership.clearStorage()
-  userSession.signUserOut('/data/login')
+  userSession.signUserOut('/data/')
   callback()
 }
 

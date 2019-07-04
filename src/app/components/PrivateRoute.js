@@ -15,7 +15,7 @@ class PrivateRoute extends React.Component {
           return null
         } else {
           if (location.search && location.search.startsWith("?authResponse=")) {
-            navigate(`/data`)
+            navigate(`/data/`)
           }
         }
       }

@@ -7,6 +7,13 @@ import './layout.css'
 import { Typography } from '@material-ui/core'
 import { getApiServer } from '../app/services/blockstack'
 
+export const styles = {
+  smallIcon: {
+    width: 27,
+    height: 27,
+  },
+}
+
 const Layout = ({ children }) => (
   <StaticQuery
     query={graphql`

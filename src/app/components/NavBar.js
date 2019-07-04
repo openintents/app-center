@@ -51,7 +51,7 @@ export default class NavBar extends React.Component {
             {` `}
             {signedIn ? (
               <a
-                href="/"
+                href="/data/login"
                 onClick={event => {
                   event.preventDefault()
                   logout(() => navigate(`/data/login`))

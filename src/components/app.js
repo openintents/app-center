@@ -12,6 +12,7 @@ import {
 import AppIcon from '@material-ui/icons/Apps'
 import GetAppIcon from '@material-ui/icons/Launch'
 import Img from 'gatsby-image'
+import { styles } from './layout';
 
 export const numberFormat = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -54,7 +55,7 @@ const App = ({ data, hideRewards, showSourceLink }) => {
       {(!data.localFile || !data.localFile.childImageSharp) && (
         <ListItemAvatar>
           <Avatar>
-            <AppIcon />
+            <AppIcon iconStyle={styles.smallIcon}/>
           </Avatar>
         </ListItemAvatar>
       )}
@@ -94,7 +95,7 @@ const App = ({ data, hideRewards, showSourceLink }) => {
         <ListItemSecondaryAction>
           <IconButton edge="end" aria-label="Launch">
             <a href={data.website}>
-              <GetAppIcon />
+              <GetAppIcon iconStyle={styles.smallIcon}/>
             </a>
           </IconButton>
         </ListItemSecondaryAction>

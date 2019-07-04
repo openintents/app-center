@@ -13,7 +13,9 @@ getLastCommit = openSourceUrl => {
       const repo = parts[1]
       const url =
         'https://api.github.com/repos/' + owner + '/' + repo + '/commits'
-      return fetch(url, {headers:{"Authorization":"token " + process.env.GATSBY_GITHUB_TOKEN}})
+      return fetch(url, {
+        headers: { Authorization: 'token ' + process.env.GATSBY_GITHUB_TOKEN },
+      })
         .then(response => response.json(), () => 'No json')
         .then(
           response => {
@@ -65,7 +67,15 @@ getLastCommit = openSourceUrl => {
   }
 }
 
-exports.onCreateNode = async ({ node, getNode, actions, cache, store, _auth, createNodeId }) => {
+exports.onCreateNode = async ({
+  node,
+  getNode,
+  actions,
+  cache,
+  store,
+  _auth,
+  createNodeId,
+}) => {
   const { createNodeField, createNode } = actions
   if (node.internal.type === `apps`) {
     return createRemoteFileNode({
@@ -82,8 +92,11 @@ exports.onCreateNode = async ({ node, getNode, actions, cache, store, _auth, cre
           node.localFile___NODE = fileNode.id
         }
 
-        if (node.openSourceUrl && node.openSourceUrl !== '') {          
-          const lastCommit = process.env.GATSBY_GITHUB_TOKEN === "INVALID" ? Promise.resolve('N/A') : getLastCommit(node.openSourceUrl)
+        if (node.openSourceUrl && node.openSourceUrl !== '') {
+          const lastCommit =
+            process.env.GATSBY_GITHUB_TOKEN === 'INVALID'
+              ? Promise.resolve('N/A')
+              : getLastCommit(node.openSourceUrl)
           return lastCommit.then(r => {
             createNodeField({
               node,
@@ -123,18 +136,7 @@ exports.createPages = async ({ graphql, actions }) => {
           // Data passed to context is available
           // in page queries as GraphQL variables.
           appcoid: node.appcoid,
-          appname: node.name,      
-        },
-      })
-
-      await createPage({
-        path: '/appco-edit/' + node.appcoid,
-        component: path.resolve('./src/templates/appcoeditor.js'),
-        context: {
-          // Data passed to context is available
-          // in page queries as GraphQL variables.
-          appcoid: node.appcoid,
-          appname: node.name
+          appname: node.name,
         },
       })
     })

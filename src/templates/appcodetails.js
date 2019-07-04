@@ -37,7 +37,8 @@ import { monthStrings, months, monthsLabels } from '../components/constants'
 import Img from 'gatsby-image'
 import UserCommentDialog from '../components/userCommentDialog'
 import OwnerCommentDialog from '../components/ownerCommentDialog'
-
+import SEO from '../components/seo'
+import { styles } from '../components/layout'
 const StyledRoot = styled.div`
   flexgrow: 1;
 `
@@ -105,7 +106,7 @@ const Comments = (data, comments, isSignedIn) => {
   if (!isSignedIn) {
     return (
       <Container>
-        <Button variant="outlined" onClick={() => navigate('data')}>
+        <Button variant="outlined" onClick={() => navigate('/data/login')}>
           Sign In to view comments
         </Button>
       </Container>
@@ -138,7 +139,7 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
   if (!isSignedIn) {
     return (
       <Container>
-        <Button variant="outlined" onClick={() => navigate('data')}>
+        <Button variant="outlined" onClick={() => navigate('/data/login')}>
           Sign In to view updates
         </Button>
       </Container>
@@ -236,7 +237,7 @@ class AppDetails extends Component {
       let createdAtDate, dateKey
       comments.forEach(comment => {
         const { createdAt } = comment.attrs
-        createdAtDate = new Date(createdAt)       
+        createdAtDate = new Date(createdAt)
         dateKey =
           monthStrings[createdAtDate.getUTCMonth()] +
           createdAtDate.getUTCFullYear().toString()
@@ -272,6 +273,9 @@ class AppDetails extends Component {
     if (this.state.isSignedIn) {
       this.setState({ isClaimingApp: true })
       loadMyData().then(content => {
+        if (!content.myApps) {
+          content.myApps = {}
+        }
         content.myApps[`app-${this.props.data.apps.appcoid}`] = true
         saveMyData(content).then(() => {
           this.setState({
@@ -312,6 +316,11 @@ class AppDetails extends Component {
     } else {
       navigate('/data/login')
     }
+  }
+
+  handleChangeTabIndex = (e, tabIndex) => {
+    e.preventDefault()
+    this.setState({ tabIndex })
   }
 
   handleCloseUndo() {
@@ -390,7 +399,7 @@ class AppDetails extends Component {
           variant="outlined"
           onClick={() => this.setState({ showUpdateDialog: true })}
         >
-          <NoteIcon />
+          <NoteIcon iconStyle={styles.smallIcon} />
           Post progress update
         </Button>{' '}
         <Button
@@ -401,7 +410,7 @@ class AppDetails extends Component {
           Remove from my apps
         </Button>
         <Button disabled={!data.apps.website} onClick={() => this.launchApp()}>
-          <LaunchIcon />
+          <LaunchIcon iconStyle={styles.smallIcon} />
         </Button>
       </>
     ) : (
@@ -416,7 +425,7 @@ class AppDetails extends Component {
             }
           }}
         >
-          <NoteIcon />
+          <NoteIcon iconStyle={styles.smallIcon} />
           Post comment
         </Button>{' '}
         <Button
@@ -429,7 +438,7 @@ class AppDetails extends Component {
           Claim this app
         </Button>
         <Button disabled={!data.apps.website} onClick={() => this.launchApp()}>
-          <LaunchIcon />
+          <LaunchIcon iconStyle={styles.smallIcon} />
         </Button>
       </>
     )
@@ -459,6 +468,11 @@ class AppDetails extends Component {
       ) : null
     return (
       <Layout>
+        <SEO
+          title={data.apps.name}
+          description={data.apps.description}
+          keywords={[data.apps.name, `application`, `blockstack`]}
+        />
         <Grid container alignItems="center" spacing={2}>
           <Grid item>{icon}</Grid>
           <Grid item>
@@ -474,11 +488,11 @@ class AppDetails extends Component {
             <Tabs
               variant="fullWidth"
               value={tabIndex}
-              onChange={(e, tabIndex) => this.handleChangeTabIndex(e, tabIndex)}
+              onChange={this.handleChangeTabIndex}
             >
-              <LinkTab label="Scores" href="/scores" />
-              <LinkTab label="Updates" href="/updates" />
-              <LinkTab label="Comments" href="/comments" />
+              <LinkTab label="Scores" />
+              <LinkTab label="Updates" />
+              <LinkTab label="Comments" />
             </Tabs>
           </AppBar>
           <br />
