@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import {
   loadMyData,
   saveMyData,
-  postUserUpdate,
   getUser,
   checkIsSignedIn,
 } from '../app/services/blockstack'
@@ -14,15 +13,6 @@ import {
   Button,
   Snackbar,
   IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  TextField,
-  DialogActions,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
   Card,
   CardContent,
   AppBar,
@@ -37,9 +27,16 @@ import CloseIcon from '@material-ui/icons/Close'
 import LaunchIcon from '@material-ui/icons/Launch'
 import NoteIcon from '@material-ui/icons/Note'
 
-import { UserComment, OwnerComment } from '../components/model'
+import {
+  UserComment,
+  OwnerComment,
+  PrivateUserComment,
+  DraftOwnerComment,
+} from '../components/model'
 import { monthStrings, months, monthsLabels } from '../components/constants'
 import Img from 'gatsby-image'
+import UserCommentDialog from '../components/userCommentDialog'
+import OwnerCommentDialog from '../components/ownerCommentDialog'
 
 const StyledRoot = styled.div`
   flexgrow: 1;
@@ -163,7 +160,6 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
       )
     }
     for (var month in comments) {
-      console.log(month)
       allMonths.push(
         <Typography key={`title-${month}`}>{monthsLabels[month]}</Typography>
       )
@@ -232,21 +228,18 @@ class AppDetails extends Component {
       loadingComments: true,
       loadingUpdates: true,
     })
-    OwnerComment.fetchList({ object: data.apps.website, sort: '-createdAt' }).then(comments => {
+    OwnerComment.fetchList({
+      object: data.apps.website,
+      sort: '-createdAt',
+    }).then(comments => {
       const monthlyUpdates = {}
       let createdAtDate, dateKey
       comments.forEach(comment => {
         const { createdAt } = comment.attrs
-        createdAtDate = new Date(createdAt)
-        console.log(
-          createdAtDate,
-          createdAtDate.getUTCMonth(),
-          monthStrings[createdAtDate.getUTCMonth()]
-        )
+        createdAtDate = new Date(createdAt)       
         dateKey =
           monthStrings[createdAtDate.getUTCMonth()] +
           createdAtDate.getUTCFullYear().toString()
-        console.log(dateKey)
         if (!monthlyUpdates.hasOwnProperty(dateKey)) {
           monthlyUpdates[dateKey] = []
         }
@@ -259,7 +252,10 @@ class AppDetails extends Component {
       })
     })
 
-    UserComment.fetchList({ object: data.apps.website, sort: '-createdAt' }).then(comments => {
+    UserComment.fetchList({
+      object: data.apps.website,
+      sort: '-createdAt',
+    }).then(comments => {
       this.setState({
         comments,
         loadingComments: false,
@@ -318,60 +314,58 @@ class AppDetails extends Component {
     }
   }
 
-  handleChangeVisibility(event) {
-    this.setState({ visibility: event.target.value })
-  }
-
   handleCloseUndo() {
     this.setState({ showUndoAction: false })
   }
 
-  handleCloseUpdate() {
+  handleChangeVisibility = event => {
+    this.setState({ visibility: event.target.value })
+  }
+
+  handleCloseUpdate = () => {
     this.setState({ showUpdateDialog: false })
   }
 
-  async postComment() {
+  handleChangeText = e => {
+    this.setState({ userUpdate: e.target.value })
+  }
+
+  postComment = async () => {
     const { userUpdate, visibility, userData } = this.state
-    await postUserUpdate(
-      visibility,
-      new UserComment({
-        comment: userUpdate,
-        object: this.props.data.apps.website,
-        createdBy: userData.name,
-      })
-    )
+    const comment =
+      visibility === 'public'
+        ? new UserComment({
+            comment: userUpdate,
+            object: this.props.data.apps.website,
+            createdBy: userData.name,
+          })
+        : new PrivateUserComment({
+            comment: userUpdate,
+            object: this.props.data.apps.website,
+          })
+    await comment.save()
     await this.loadComments()
     this.setState({ showUpdateDialog: false })
   }
 
-  async postUpdate() {
+  postUpdate = async () => {
     const { userUpdate, userData } = this.state
-    await postUserUpdate(
-      'public',
-      new OwnerComment({
-        comment: userUpdate,
-        object: this.props.data.apps.website,
-        createdBy: userData.name,
-      })
-    )
+    await new OwnerComment({
+      comment: userUpdate,
+      object: this.props.data.apps.website,
+      createdBy: userData.name,
+    }).save()
+
     await this.loadComments()
     this.setState({ showUpdateDialog: false })
   }
 
-  async saveDraftUpdate() {
+  saveDraftUpdate = async () => {
     const { userUpdate, userData } = this.state
-    await postUserUpdate(
-      'private',
-      new OwnerComment({
-        comment: userUpdate,
-        object: this.props.data.apps.website,
-        createdBy: userData.name,
-      })
-    )
-  }
-
-  handleChangeTabIndex(e, tabIndex) {
-    this.setState({ tabIndex })
+    await new DraftOwnerComment({
+      comment: userUpdate,
+      object: this.props.data.apps.website,
+    }).save()
   }
 
   render() {
@@ -560,108 +554,28 @@ class AppDetails extends Component {
           ]}
         />
 
-        {!isClaimedApp && (
-          <Dialog
-            open={showUpdateDialog}
-            onClose={() => this.handleCloseUpdate()}
-            aria-labelledby="form-dialog-title"
-          >
-            <DialogTitle id="form-dialog-title">
-              {isClaimedApp && <>Publish Updates</>}
-              {!isClaimedApp && <>Add Comment</>}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Comments can be shown to either all users publicly or kept
-                privately.
-              </DialogContentText>
+        {!isClaimedApp &&
+          UserCommentDialog({
+            userUpdate,
+            showUpdateDialog,
+            visibility,
+            handleCloseUpdate: this.handleCloseUpdate,
+            handleChangeVisibility: this.handleChangeVisibility,
+            handleChangeText: this.handleChangeText,
+            postComment: this.postComment,
+          })}
 
-              <RadioGroup
-                aria-label="Visibility"
-                name="visibility"
-                value={visibility}
-                onChange={e => this.handleChangeVisibility(e)}
-              >
-                <FormControlLabel
-                  value="public"
-                  control={<Radio />}
-                  label="Visible for all"
-                />
-
-                <FormControlLabel
-                  value="private"
-                  control={<Radio />}
-                  label="Visible only for me"
-                />
-              </RadioGroup>
-              <TextField
-                margin="normal"
-                id="userUpdate"
-                type="text"
-                fullWidth
-                multiline
-                rows="3"
-                helperText="What did you like or dislike?"
-                variant="outlined"
-                value={userUpdate}
-                onChange={e => {
-                  this.setState({ userUpdate: e.target.value })
-                }}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => this.handleCloseUpdate()} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={() => this.postComment()} color="primary">
-                Post
-              </Button>
-            </DialogActions>
-          </Dialog>
-        )}
-
-        {isClaimedApp && (
-          <Dialog
-            open={showUpdateDialog}
-            onClose={() => this.handleCloseUpdate()}
-            aria-labelledby="form-dialog-title"
-          >
-            <DialogTitle id="form-dialog-title">Publish Updates</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Updates are shown to all users onced published
-              </DialogContentText>
-              <TextField
-                margin="normal"
-                id="userUpdate"
-                type="text"
-                fullWidth
-                multiline
-                rows="3"
-                helperText="What is new? (~200 characters)"
-                variant="standard"
-                value={userUpdate}
-                onChange={e => {
-                  this.setState({ userUpdate: e.target.value })
-                }}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={() => this.handleCloseUpdate()}
-                color="secondary"
-              >
-                Cancel
-              </Button>
-              <Button onClick={() => this.saveDraftUpdate()} color="secondary">
-                Save Draft
-              </Button>
-              <Button onClick={() => this.postUpdate()} color="primary">
-                Publish
-              </Button>
-            </DialogActions>
-          </Dialog>
-        )}
+        {isClaimedApp &&
+          OwnerCommentDialog({
+            userUpdate,
+            showUpdateDialog,
+            visibility,
+            handleCloseUpdate: this.handleCloseUpdate,
+            handleChangeVisibility: this.handleChangeVisibility,
+            handleChangeText: this.handleChangeText,
+            saveDraftUpdate: this.saveDraftUpdate,
+            postComment: this.postComment,
+          })}
 
         <hr />
       </Layout>

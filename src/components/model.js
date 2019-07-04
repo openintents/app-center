@@ -1,8 +1,21 @@
-import { Model } from 'radiks'
+import { Model, getConfig } from 'radiks'
 
 class ModelExt extends Model {
-  fetchOwnPrivateList() {
-    
+  static fetchOwnPrivateList() {
+    const { userSession } = getConfig()
+    const models = new Set()
+    const modelName = this.modelName()
+    return userSession
+      .listFiles(name => {
+        if (name.startsWith(modelName)) {
+          models.add(name.substring(modelName.length + 1))
+        }
+        return true
+      })
+      .then(() => {
+        console.log(models)
+        return models
+      })
   }
 
   savePrivately() {
@@ -65,4 +78,94 @@ export class OwnerComment extends ModelExt {
   static defaults = {
     verified: false,
   }
+}
+
+export class PrivateUserComment extends ModelExt {
+  static className = 'PrivateUserComment'
+  static schema = {
+    object: String,
+    comment: String,
+    publicRef: String,
+  }
+}
+
+export class DraftOwnerComment extends ModelExt {
+  static className = 'PrivateOwnerComment'
+  static schema = {
+    object: String,
+    comment: String,
+    publicRef: String,
+  }
+}
+
+export const saveUserComment = async (commentText, currentComment) => {
+  let updatedComment
+  if (currentComment.modelName() === PrivateUserComment.modelName()) {
+    updatedComment = new UserComment({
+      object: currentComment.attrs.object,
+      comment: commentText,
+    })
+    await currentComment.destroy()
+  } else {
+    currentComment.update({
+      comment: commentText,
+    })
+    updatedComment = currentComment
+  }
+
+  await updatedComment.save()
+}
+
+export const savePrivateUserComment = async (commentText, currentComment) => {
+  let updatedComment
+  if (currentComment.modelName() === UserComment.modelName()) {
+    updatedComment = new PrivateUserComment({
+      object: currentComment.attrs.object,
+      comment: commentText,
+    })
+    await currentComment.destroy()
+  } else {
+    currentComment.update({
+      comment: commentText,
+    })
+    updatedComment = currentComment
+  }
+
+  await updatedComment.save()
+}
+
+export const saveOwnerComment = async (commentText, currentComment) => {
+  let updatedComment
+  if (currentComment.modelName() === DraftOwnerComment.modelName()) {
+    updatedComment = new OwnerComment({
+      object: currentComment.attrs.object,
+      comment: commentText,
+    })
+    await currentComment.destroy()
+  } else {
+    currentComment.update({
+      comment: commentText,
+    })
+    updatedComment = currentComment
+  }
+
+  await updatedComment.save()
+}
+
+export const saveDraftOwnerComment = async (commentText, currentComment) => {
+  let updatedComment
+  if (currentComment.modelName() === OwnerComment.modelName()) {
+    updatedComment = new DraftOwnerComment({
+      object: currentComment.attrs.object,
+      comment: commentText,
+    })
+    await currentComment.destroy()
+  } else {
+    currentComment.update({
+      comment: commentText,
+    })
+    updatedComment = currentComment
+  }
+
+  await updatedComment.save()
 }

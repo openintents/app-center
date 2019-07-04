@@ -1,5 +1,5 @@
 import { UserSession, AppConfig } from 'blockstack'
-import { configure, getConfig, User, GroupMembership, userGroupKeys } from 'radiks'
+import { configure, getConfig, User, GroupMembership } from 'radiks'
 
 // helpful for debugging
 const logAuth = process.env.NODE_ENV === 'development' && true // set to true to turn on logging
@@ -70,11 +70,11 @@ export const checkIsSignedIn = () => {
   }
   const { userSession } = getConfig()
   if (userSession.isSignInPending()) {
-    return userSession.handlePendingSignIn().then(() => true)
+    return userSession
+      .handlePendingSignIn()
+      .then(() => User.createWithCurrentUser().then(() => true))
   } else if (userSession.isUserSignedIn()) {
-    const user = userSession.loadUserData()
-    clog('isLoggedIn check', { user })
-    return Promise.resolve(!!user)
+    return User.createWithCurrentUser().then(() => true)
   } else {
     clog('isLoggedIn check - nothing')
     return Promise.resolve(false)

@@ -5,7 +5,7 @@ import { StaticQuery, graphql } from 'gatsby'
 import Header from './header'
 import './layout.css'
 import { Typography } from '@material-ui/core'
-import { getApiServer, getPersonalKey } from '../app/services/blockstack'
+import { getApiServer } from '../app/services/blockstack'
 
 const Layout = ({ children }) => (
   <StaticQuery

@@ -48,7 +48,7 @@
   "scripts": {
     "babel-node": "babel-node --config-file ./babel-server.config.js",
     "heroku-postbuild": "gatsby -v",
-    "develop": "cross-env GATSBY_GITHUB_TOKEN=INVALID GATSBY_RADIKS_SERVER=https://app-center.herokuapp.com gatsby develop",
+    "develop": "cross-env GATSBY_GITHUB_TOKEN=INVALID GATSBY_RADIKS_SERVER=http://localhost:5000 gatsby develop",
     "build": "run-p build:**",
     "build:app": "gatsby build",
     "serve": "gatsby serve",
