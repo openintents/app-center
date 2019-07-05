@@ -12,15 +12,18 @@ import {
   Button,
   CircularProgress,
 } from '@material-ui/core'
+import Rating from 'material-ui-rating'
 
 const UserCommentDialog = ({
   userUpdate,
   showUpdateDialog,
   updating,
   visibility,
+  rating,
   handleCloseUpdate,
   handleChangeVisibility,
   handleChangeText,
+  handleChangeRating,
   postComment,
 }) => {
   return (
@@ -53,6 +56,10 @@ const UserCommentDialog = ({
             label="Visible only for me"
           />
         </RadioGroup>
+        <Rating
+          onChange={(value) => handleChangeRating(value)}
+          value={rating}
+        />
         <TextField
           margin="normal"
           id="userUpdate"

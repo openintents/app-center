@@ -14,7 +14,7 @@ export const styles = {
   },
 }
 
-const Layout = ({ children }) => (
+const Layout = ({ children, hideSearch }) => (
   <StaticQuery
     query={graphql`
       query SiteHeaderQuery {
@@ -35,6 +35,7 @@ const Layout = ({ children }) => (
           siteTitle={data.site.siteMetadata.title}
           siteDescription={data.site.siteMetadata.description}
           siteSearchIndex={data.siteSearchIndex}
+          hideSearch={hideSearch}
         />
         <div
           style={{

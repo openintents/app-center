@@ -1,9 +1,10 @@
 import React from 'react'
 import { graphql, Link, StaticQuery } from 'gatsby'
 import { encryptContent, loadMyData } from './services/blockstack'
-import { UserComment, OwnerComment } from '../components/model'
+import { UserComment, OwnerComment, PrivateUserComment } from '../components/model'
 import { Typography, ListItem, ListItemText, List } from '@material-ui/core'
-import { User } from 'radiks/lib';
+import { User } from 'radiks/lib'
+import { SmallRating } from './mycomments';
 
 class Main extends React.Component {
   state = {
@@ -97,12 +98,31 @@ class Main extends React.Component {
         const apps = data.allApps.edges.filter(
           e => e.node.website === c.attrs.object
         )
+        const appLabel =
+          apps.length === 1
+            ? `For ${apps[0].node.name}`
+            : `For ${c.attrs.object}`
+        const rating = [
+          UserComment.modelName(),
+          PrivateUserComment.modelName(),
+        ].includes(c.modelName()) ? (
+          <>
+            <br />
+            <SmallRating component="span" readOnly value={c.attrs.rating} />
+          </>
+        ) : null
+
         if (apps.length === 1) {
           comments.push(
             <ListItem key={c._id}>
               <ListItemText
                 primary={<>{c.attrs.comment}</>}
-                secondary={<>For {apps[0].node.name}</>}
+                secondary={
+                  <>
+                    {appLabel}
+                    {rating}
+                  </>
+                }
               />
             </ListItem>
           )

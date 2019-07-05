@@ -5,7 +5,12 @@ import Search from './search'
 import BlockstackProfile from './blockstackProfile'
 import { Container, Typography, Grid } from '@material-ui/core'
 
-const Header = ({ siteTitle, siteDescription, siteSearchIndex }) => (
+const Header = ({
+  siteTitle,
+  siteDescription,
+  siteSearchIndex,
+  hideSearch,
+}) => (
   <Container
     style={{
       background: '#3f51b5',
@@ -21,7 +26,7 @@ const Header = ({ siteTitle, siteDescription, siteSearchIndex }) => (
           </Link>
         </Typography>
         <Typography variant="body2">{siteDescription}</Typography>
-        <Search searchIndex={siteSearchIndex.index} />
+        {!hideSearch && <Search searchIndex={siteSearchIndex.index} />}
       </Grid>
       <Grid item sm={4} xs={12}>
         <BlockstackProfile />

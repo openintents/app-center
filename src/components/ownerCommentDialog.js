@@ -34,26 +34,7 @@ const OwnerCommentDialog = ({
       <DialogContent>
         <DialogContentText>
           Updates are shown to all users onced published
-        </DialogContentText>
-
-        <RadioGroup
-          aria-label="Visibility"
-          name="visibility"
-          value={visibility}
-          onChange={e => handleChangeVisibility(e)}
-        >
-          <FormControlLabel
-            value="public"
-            control={<Radio />}
-            label="Visible for all"
-          />
-
-          <FormControlLabel
-            value="private"
-            control={<Radio />}
-            label="Visible only for me"
-          />
-        </RadioGroup>
+        </DialogContentText>        
         <TextField
           margin="normal"
           id="userUpdate"

@@ -44,6 +44,10 @@ export class UserComment extends ModelExt {
       type: String,
       decrypted: true,
     },
+    rating: {
+      type: Number,
+      decrypted: true,
+    },
     comment: {
       type: String,
       decrypted: true,
@@ -84,7 +88,8 @@ export class PrivateUserComment extends ModelExt {
   static className = 'PrivateUserComment'
   static schema = {
     object: String,
-    comment: String,
+    rating: Number,
+    comment: String,    
     publicRef: String,
   }
 }
@@ -98,16 +103,18 @@ export class DraftOwnerComment extends ModelExt {
   }
 }
 
-export const saveUserComment = async (commentText, currentComment) => {
+export const saveUserComment = async (commentText, rating, currentComment) => {
   let updatedComment
   if (currentComment.modelName() === PrivateUserComment.modelName()) {
     updatedComment = new UserComment({
       object: currentComment.attrs.object,
+      rating,
       comment: commentText,
     })
     await currentComment.destroy()
   } else {
     currentComment.update({
+      rating,
       comment: commentText,
     })
     updatedComment = currentComment
@@ -116,16 +123,22 @@ export const saveUserComment = async (commentText, currentComment) => {
   await updatedComment.save()
 }
 
-export const savePrivateUserComment = async (commentText, currentComment) => {
+export const savePrivateUserComment = async (
+  commentText,
+  rating,
+  currentComment
+) => {
   let updatedComment
   if (currentComment.modelName() === UserComment.modelName()) {
     updatedComment = new PrivateUserComment({
       object: currentComment.attrs.object,
+      rating,
       comment: commentText,
     })
     await currentComment.destroy()
   } else {
     currentComment.update({
+      rating,
       comment: commentText,
     })
     updatedComment = currentComment

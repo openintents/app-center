@@ -58,9 +58,9 @@ export const handleLogin = callback => {
   }
 }
 
-export const redirectToSignIn = () => {
-  const { userSession } = getConfig()
-  userSession.redirectToSignIn()
+export const redirectToSignIn = (redirectUri) => {
+  const { userSession } = getConfig()  
+  userSession.redirectToSignIn(redirectUri)
 }
 
 export const checkIsSignedIn = () => {

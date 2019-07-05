@@ -12,7 +12,6 @@ import {
 import AppIcon from '@material-ui/icons/Apps'
 import GetAppIcon from '@material-ui/icons/Launch'
 import Img from 'gatsby-image'
-import { styles } from './layout';
 
 export const numberFormat = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -22,18 +21,56 @@ export const commitFormat = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
   month: 'long',
 })
-const App = ({ data, hideRewards, showSourceLink }) => {
-  const earnings = numberFormat.format(data.lifetimeEarnings)
+
+export const SmallAppDetails = ({
+  description,
+  lifetimeEarnings,
+  lastCommit,
+  openSourceUrl,
+  showSourceLink,
+  hideRewards,
+}) => {
+  const earnings = numberFormat.format(lifetimeEarnings)
   var lastUpdate = ''
-  if (data.openSourceUrl) {
-    const lastCommitDate = Date.parse(data.fields.lastCommit)
+  if (openSourceUrl) {
+    const lastCommitDate = Date.parse(lastCommit)
     if (isNaN(lastCommitDate)) {
-      lastUpdate = data.fields.lastCommit
+      lastUpdate = lastCommit
     } else {
       lastUpdate = commitFormat.format(lastCommitDate)
     }
   }
 
+  return (
+    <React.Fragment>
+      <Typography component="span" variant="body2" color="textPrimary">
+        {description}
+        {showSourceLink && openSourceUrl && (
+          <>
+            <br />
+            <a href={openSourceUrl}>{openSourceUrl}</a>
+          </>
+        )}
+      </Typography>
+      <Typography component="span" variant="body2">
+        {!hideRewards && (
+          <>
+            <br />
+            rewards: {earnings}{' '}
+          </>
+        )}
+        {showSourceLink && openSourceUrl && (
+          <>
+            <br />
+            last update: {lastUpdate}
+          </>
+        )}
+      </Typography>
+    </React.Fragment>
+  )
+}
+
+const App = ({ data, hideRewards, showSourceLink }) => {
   return (
     <ListItem
       dense
@@ -55,47 +92,28 @@ const App = ({ data, hideRewards, showSourceLink }) => {
       {(!data.localFile || !data.localFile.childImageSharp) && (
         <ListItemAvatar>
           <Avatar>
-            <AppIcon iconStyle={styles.smallIcon}/>
+            <AppIcon />
           </Avatar>
         </ListItemAvatar>
       )}
 
       <ListItemText
         primary={<b>{data.name}</b>}
-        secondary={
-          <React.Fragment>
-            <Typography component="span" variant="body2" color="textPrimary">
-              {showSourceLink && data.openSourceUrl && (
-                <>
-                  <a href={data.openSourceUrl}>{data.openSourceUrl}</a>
-                  <br />
-                </>
-              )}
-              {data.description}
-            </Typography>
-            <Typography component="span" variant="body2">
-              {!hideRewards && (
-                <>
-                  <br />
-                  rewards: {earnings}{' '}
-                </>
-              )}
-              {showSourceLink && data.openSourceUrl && (
-                <>
-                  <br />
-                  last update: {lastUpdate}
-                </>
-              )}
-            </Typography>
-          </React.Fragment>
-        }
+        secondary={SmallAppDetails({
+          description: data.description,
+          lifetimeEarnings: data.lifetimeEarnings,
+          lastCommit: data.fields && data.fields.lastCommit,
+          openSourceUrl: data.openSourceUrl,
+          hideRewards,
+          showSourceLink,
+        })}
       />
 
       {!data.hideDetailsLink && data.website && data.website.length > 0 && (
         <ListItemSecondaryAction>
           <IconButton edge="end" aria-label="Launch">
             <a href={data.website}>
-              <GetAppIcon iconStyle={styles.smallIcon}/>
+              <GetAppIcon />
             </a>
           </IconButton>
         </ListItemSecondaryAction>

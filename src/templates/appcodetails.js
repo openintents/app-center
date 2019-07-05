@@ -38,7 +38,7 @@ import Img from 'gatsby-image'
 import UserCommentDialog from '../components/userCommentDialog'
 import OwnerCommentDialog from '../components/ownerCommentDialog'
 import SEO from '../components/seo'
-import { styles } from '../components/layout'
+import { SmallAppDetails } from '../components/app'
 const StyledRoot = styled.div`
   flexgrow: 1;
 `
@@ -190,6 +190,7 @@ class AppDetails extends Component {
   state = {
     isClaimedApp: false,
     visibility: 'private',
+    rating: 0,
     userUpdate: '',
     showUndoAction: false,
     showUpdateDialog: false,
@@ -200,7 +201,7 @@ class AppDetails extends Component {
     loadingData: true,
   }
 
-  componentDidMount() {
+  componentDidMount() {    
     checkIsSignedIn().then(isSignedIn => {
       if (isSignedIn) {
         const { data } = this.props
@@ -287,6 +288,9 @@ class AppDetails extends Component {
               this.handleCloseUndo()
             },
             actionMessage: 'App has been added.',
+            userUpdate: '',
+            visibility: 'private',
+            rating: 0,
           })
         })
       })
@@ -310,6 +314,9 @@ class AppDetails extends Component {
               this.handleCloseUndo()
             },
             actionMessage: 'App has been removed.',
+            userUpdate: '',
+            visibility: 'private',
+            rating: 0,
           })
         })
       })
@@ -339,25 +346,33 @@ class AppDetails extends Component {
     this.setState({ userUpdate: e.target.value })
   }
 
+  handleChangeRating = value => {
+    this.setState({ rating: value })
+  }
+
   postComment = async () => {
-    const { userUpdate, visibility, userData } = this.state
+    this.setState({ updating: true })
+    const { userUpdate, visibility, userData, rating } = this.state
     const comment =
       visibility === 'public'
         ? new UserComment({
             comment: userUpdate,
+            rating,
             object: this.props.data.apps.website,
             createdBy: userData.name,
           })
         : new PrivateUserComment({
             comment: userUpdate,
+            rating,
             object: this.props.data.apps.website,
           })
     await comment.save()
     await this.loadComments()
-    this.setState({ showUpdateDialog: false })
+    this.setState({ showUpdateDialog: false, updating: false })
   }
 
   postUpdate = async () => {
+    this.setState({ updating: true })
     const { userUpdate, userData } = this.state
     await new OwnerComment({
       comment: userUpdate,
@@ -366,15 +381,17 @@ class AppDetails extends Component {
     }).save()
 
     await this.loadComments()
-    this.setState({ showUpdateDialog: false })
+    this.setState({ showUpdateDialog: false, updating: false })
   }
 
   saveDraftUpdate = async () => {
-    const { userUpdate, userData } = this.state
+    this.setState({ updating: true })
+    const { userUpdate } = this.state
     await new DraftOwnerComment({
       comment: userUpdate,
       object: this.props.data.apps.website,
     }).save()
+    this.setState({ updating: false })
   }
 
   render() {
@@ -387,11 +404,13 @@ class AppDetails extends Component {
       actionMessage,
       undoFunction,
       visibility,
+      rating,
       userUpdate,
       monthlyUpdates,
       comments,
       tabIndex,
       isSignedIn,
+      updating,
     } = this.state
     const appActions = isClaimedApp ? (
       <>
@@ -399,7 +418,7 @@ class AppDetails extends Component {
           variant="outlined"
           onClick={() => this.setState({ showUpdateDialog: true })}
         >
-          <NoteIcon iconStyle={styles.smallIcon} />
+          <NoteIcon />
           Post progress update
         </Button>{' '}
         <Button
@@ -410,7 +429,7 @@ class AppDetails extends Component {
           Remove from my apps
         </Button>
         <Button disabled={!data.apps.website} onClick={() => this.launchApp()}>
-          <LaunchIcon iconStyle={styles.smallIcon} />
+          <LaunchIcon />
         </Button>
       </>
     ) : (
@@ -425,7 +444,7 @@ class AppDetails extends Component {
             }
           }}
         >
-          <NoteIcon iconStyle={styles.smallIcon} />
+          <NoteIcon />
           Post comment
         </Button>{' '}
         <Button
@@ -438,7 +457,7 @@ class AppDetails extends Component {
           Claim this app
         </Button>
         <Button disabled={!data.apps.website} onClick={() => this.launchApp()}>
-          <LaunchIcon iconStyle={styles.smallIcon} />
+          <LaunchIcon />
         </Button>
       </>
     )
@@ -482,7 +501,17 @@ class AppDetails extends Component {
           </Grid>
           <Grid item>{appActions}</Grid>
         </Grid>
-        <Typography>{data.apps.description}</Typography>
+
+        <Container>
+          {SmallAppDetails({
+            description: data.apps.description,
+            lifetimeEarnings: data.apps.lifetimeEarnings,
+            lastCommit: data.apps.fields && data.apps.fields.lastCommit,
+            openSourceUrl: data.apps.openSourceUrl,
+            hideRewards: false,
+            showSourceLink: true,
+          })}
+        </Container>
         <StyledRoot>
           <AppBar position="static">
             <Tabs
@@ -572,10 +601,13 @@ class AppDetails extends Component {
           UserCommentDialog({
             userUpdate,
             showUpdateDialog,
+            updating,
             visibility,
+            rating,
             handleCloseUpdate: this.handleCloseUpdate,
             handleChangeVisibility: this.handleChangeVisibility,
             handleChangeText: this.handleChangeText,
+            handleChangeRating: this.handleChangeRating,
             postComment: this.postComment,
           })}
 
@@ -583,6 +615,7 @@ class AppDetails extends Component {
           OwnerCommentDialog({
             userUpdate,
             showUpdateDialog,
+            updating,
             visibility,
             handleCloseUpdate: this.handleCloseUpdate,
             handleChangeVisibility: this.handleChangeVisibility,

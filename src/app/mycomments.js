@@ -1,6 +1,6 @@
 import React from 'react'
 import { graphql, Link, StaticQuery } from 'gatsby'
-import { loadMyData, postUserUpdate } from './services/blockstack'
+import { loadMyData } from './services/blockstack'
 import {
   Typography,
   ListItem,
@@ -9,22 +9,36 @@ import {
   Divider,
   ListItemSecondaryAction,
   IconButton,
+  withStyles,
 } from '@material-ui/core'
 import {
   UserComment,
   OwnerComment,
   PrivateUserComment,
   DraftOwnerComment,
-  saveDraftUserComment,
   saveDraftOwnerComment,
   saveOwnerComment,
   saveUserComment,
   savePrivateUserComment,
 } from '../components/model'
 import DeleteIcon from '@material-ui/icons/Delete'
+import Rating from 'material-ui-rating'
 import { User } from 'radiks/lib'
 import UserCommentDialog from '../components/userCommentDialog'
 import OwnerCommentDialog from '../components/ownerCommentDialog'
+
+const smallStyles = {
+  iconButton: {
+    width: 24,
+    height: 24,
+    padding: 0,
+  },
+  icon: {
+    width: 16,
+    height: 16,
+  },
+}
+export const SmallRating = withStyles(smallStyles)(Rating)
 
 class MyComments extends React.Component {
   state = {
@@ -41,6 +55,7 @@ class MyComments extends React.Component {
     showCommentDialog: false,
     userUpdate: '',
     currentVisibility: 'private',
+    rating: 0,
     updating: false,
   }
 
@@ -112,9 +127,13 @@ class MyComments extends React.Component {
 
   handleDeleteClick(comment) {
     const myComments = this.state.myComments.filter(item => item !== comment)
-    const myPrivateComments = this.state.myPrivateComments.filter(item => item !== comment)
+    const myPrivateComments = this.state.myPrivateComments.filter(
+      item => item !== comment
+    )
     const myUpdates = this.state.myUpdates.filter(item => item !== comment)
-    const myDraftUpdates = this.state.myDraftUpdates.filter(item => item !== comment)
+    const myDraftUpdates = this.state.myDraftUpdates.filter(
+      item => item !== comment
+    )
     comment.destroy()
     this.setState({ myComments, myPrivateComments, myUpdates, myDraftUpdates })
   }
@@ -126,13 +145,29 @@ class MyComments extends React.Component {
         const apps = data.allApps.edges.filter(
           e => e.node.website === c.attrs.object
         )
-        const secondaryText =
-          apps.length === 1 ? <>For {apps[0].node.name}</> : null
+        const appLabel =
+          apps.length === 1
+            ? `For ${apps[0].node.name}`
+            : `For ${c.attrs.object}`
+        const rating = [
+          UserComment.modelName(),
+          PrivateUserComment.modelName(),
+        ].includes(c.modelName()) ? (
+          <>
+            <br />
+            <SmallRating component="span" readOnly value={c.attrs.rating} />
+          </>
+        ) : null
         comments.push(
           <ListItem button key={c._id} onClick={() => this.handleClick(c)}>
             <ListItemText
               primary={<>{c.attrs.comment}</>}
-              secondary={secondaryText}
+              secondary={
+                <>
+                  {appLabel}
+                  {rating}
+                </>
+              }
             />
             <ListItemSecondaryAction onClick={() => this.handleDeleteClick(c)}>
               <IconButton aria-label="Delete">
@@ -162,17 +197,21 @@ class MyComments extends React.Component {
     this.setState({ currentVisibility: event.target.value })
   }
 
+  handleChangeRating = value => {
+    this.setState({ rating: value })
+  }
+
   handleCloseUpdate = () => {
     this.setState({ showUpdateDialog: false, showCommentDialog: false })
   }
 
   postComment = async () => {
     this.setState({ updating: true })
-    const { userUpdate, currentVisibility, currentComment } = this.state
+    const { userUpdate, rating, currentVisibility, currentComment } = this.state
     if (currentVisibility === 'public') {
-      await saveUserComment(userUpdate, currentComment)
+      await saveUserComment(userUpdate, rating, currentComment)
     } else {
-      await savePrivateUserComment(userUpdate, currentComment)
+      await savePrivateUserComment(userUpdate, rating, currentComment)
     }
     await this.loadComments()
     this.setState({
@@ -211,6 +250,7 @@ class MyComments extends React.Component {
       myPrivateComments,
       myDraftUpdates,
       loading,
+      rating,
       userUpdate,
       showCommentDialog,
       showUpdateDialog,
@@ -248,10 +288,12 @@ class MyComments extends React.Component {
               userUpdate,
               showUpdateDialog: showCommentDialog,
               updating,
+              rating,
               visibility: currentVisibility,
               handleCloseUpdate: this.handleCloseUpdate,
               handleChangeVisibility: this.handleChangeVisibility,
               handleChangeText: this.handleChangeText,
+              handleChangeRating: this.handleChangeRating,
               postComment: this.postComment,
             })}
             {OwnerCommentDialog({

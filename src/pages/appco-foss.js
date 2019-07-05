@@ -42,5 +42,5 @@ export const query = graphql`
 
 export default AppCoList({
   title: 'All Open Source Blockstack Apps',
-  showSourceLink: true,
+  showSourceLink: false,
 })

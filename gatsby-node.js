@@ -139,6 +139,17 @@ exports.createPages = async ({ graphql, actions }) => {
           appname: node.name,
         },
       })
+
+      await createPage({
+        path: '/appco/' + node.appcoid + '/comment',
+        component: path.resolve('./src/templates/appco-comment.js'),
+        context: {
+          // Data passed to context is available
+          // in page queries as GraphQL variables.
+          appcoid: node.appcoid,
+          appname: node.name,
+        },
+      })
     })
   )
 }

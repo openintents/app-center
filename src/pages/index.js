@@ -21,13 +21,13 @@ const AppCoMonth = ({ title, path, newOnly }) => {
       <List dense>
         <ListItem>
           <ListItemText>
-            <Link to={`${path}/appco-new/`}>New apps</Link>
+            <Link to={`/${path}/appco-new/`}>New apps</Link>
           </ListItemText>
         </ListItem>
         {!newOnly && (
           <ListItem>
             <ListItemText>
-              <Link to={`${path}/appco-out/`}>Retired apps</Link>
+              <Link to={`/${path}/appco-out/`}>Retired apps</Link>
             </ListItemText>
           </ListItem>
         )}
