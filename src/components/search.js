@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Index } from 'elasticlunr'
 import { Link, graphql, StaticQuery } from 'gatsby'
 import { List, ListItem, Typography, Grid, TextField, InputAdornment } from '@material-ui/core'
-import { Email } from '@material-ui/icons';
+import { Apps } from '@material-ui/icons';
 import Img from 'gatsby-image'
 // Search component
 
@@ -50,7 +50,7 @@ export default class Search extends Component {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Email />
+                      <Apps />
                     </InputAdornment>
                   ),
                 }}
