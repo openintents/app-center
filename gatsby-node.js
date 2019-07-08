@@ -78,8 +78,34 @@ exports.onCreateNode = async ({
 }) => {
   const { createNodeField, createNode } = actions
   if (node.internal.type === `apps`) {
+
+    if( !node.imageUrl.trim() ) {
+      if (fileNode) {
+        node.localFile___NODE = fileNode.id
+      }
+
+      if (node.openSourceUrl && node.openSourceUrl !== '') {
+        const lastCommit =
+          process.env.GATSBY_GITHUB_TOKEN === 'INVALID'
+            ? Promise.resolve('N/A')
+            : getLastCommit(node.openSourceUrl)
+        return lastCommit.then(r => {
+          createNodeField({
+            node,
+            name: `lastCommit`,
+            value: r,
+            type: 'String',
+          })
+        }).catch(e => {
+          console.log('createNodeField error ',e);
+          throw e
+        })
+      }
+    }
+
+    console.log("url '" +node.imageUrl.trim()+"'");
     return createRemoteFileNode({
-      url: node.imageUrl,
+      url: node.imageUrl.trim(),
       parentNodeId: node.id,
       store,
       cache,
@@ -104,11 +130,16 @@ exports.onCreateNode = async ({
               value: r,
               type: 'String',
             })
+          }).catch(e => {
+            console.log('createNodeField error ',e);
+            throw e
           })
         }
       })
       .catch(e => {
-        throw e
+        console.log('fileNode error ',e);
+        Promise.resolve('N/A')
+        // throw e
       })
   } else {
     return Promise.resolve()

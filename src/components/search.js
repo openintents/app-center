@@ -1,11 +1,27 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 import { Index } from 'elasticlunr'
+import { withStyles } from '@material-ui/core/styles';
 import { Link, graphql, StaticQuery } from 'gatsby'
-import { List, ListItem, Typography, Grid } from '@material-ui/core'
+import { List, ListItem, Typography, Grid, TextField, InputAdornment } from '@material-ui/core'
+import { Apps } from '@material-ui/icons';
 import Img from 'gatsby-image'
 // Search component
 
-export default class Search extends Component {
+const styles = theme => ({
+  margin: {
+    margin: theme.spacing.unit,
+    // borderRadius: 3,
+    // color:'gray',
+    backgroundColor:'white',
+    // padding: 4
+  },
+  AppsIcon: {
+    color:'gray',
+  }
+});
+
+class Search extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -15,6 +31,7 @@ export default class Search extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     return (
       <StaticQuery
         query={graphql`
@@ -39,11 +56,20 @@ export default class Search extends Component {
         render={data => {
           return (
             <div>
-              <input
-                type="text"
+              <TextField
+                className={classes.margin}
+                id="input-with-icon-textfield"
+                placeholder="Search"
+                variant="outlined"
                 value={this.state.query}
                 onChange={this.search}
-                placeholder="Search apps by name, .."
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Apps className={classes.AppsIcon} />
+                    </InputAdornment>
+                  ),
+                }}
               />
               <List>
                 {this.state.results.map(page => {
@@ -111,3 +137,9 @@ export default class Search extends Component {
     })
   }
 }
+
+Search.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(Search);
