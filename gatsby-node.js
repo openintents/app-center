@@ -77,9 +77,10 @@ exports.onCreateNode = async ({
   createNodeId,
 }) => {
   const { createNodeField, createNode } = actions
-  if (node.internal.type === `apps`) {
+  if (node.internal.type === `apps` && !!node.imageUrl.trim()) {
+    console.log("url '" +node.imageUrl.trim()+"'");
     return createRemoteFileNode({
-      url: node.imageUrl,
+      url: node.imageUrl.trim(),
       parentNodeId: node.id,
       store,
       cache,
@@ -104,11 +105,16 @@ exports.onCreateNode = async ({
               value: r,
               type: 'String',
             })
+          }).catch(e => {
+            console.log('createNodeField error ',e);
+            throw e
           })
         }
       })
       .catch(e => {
-        throw e
+        console.log('fileNode error ',e);
+        Promise.resolve('N/A')
+        // throw e
       })
   } else {
     return Promise.resolve()

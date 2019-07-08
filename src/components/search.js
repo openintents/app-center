@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Index } from 'elasticlunr'
 import { Link, graphql, StaticQuery } from 'gatsby'
-import { List, ListItem, Typography, Grid } from '@material-ui/core'
+import { List, ListItem, Typography, Grid, TextField, InputAdornment } from '@material-ui/core'
+import { Email } from '@material-ui/icons';
 import Img from 'gatsby-image'
 // Search component
 
@@ -39,11 +40,20 @@ export default class Search extends Component {
         render={data => {
           return (
             <div>
-              <input
-                type="text"
+              <TextField
+                className={'searchField'}
+                style={{color:'gray',backgroundColor:'white'}}
+                id="input-with-icon-textfield"
+                placeholder="Search"
                 value={this.state.query}
                 onChange={this.search}
-                placeholder="Search apps by name, .."
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Email />
+                    </InputAdornment>
+                  ),
+                }}
               />
               <List>
                 {this.state.results.map(page => {
