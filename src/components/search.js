@@ -1,19 +1,20 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 import { Index } from 'elasticlunr'
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { Link, graphql, StaticQuery } from 'gatsby'
 import { List, ListItem, Typography, Grid, TextField, InputAdornment } from '@material-ui/core'
 import { Apps } from '@material-ui/icons';
 import Img from 'gatsby-image'
 // Search component
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   margin: {
-    margin: theme.spacing(1),
+    margin: theme.spacing.unit,
   },
-}));
+});
 
-export default class Search extends Component {
+class Search extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -23,7 +24,7 @@ export default class Search extends Component {
   }
 
   render() {
-    const classes = useStyles();
+    const { classes } = this.props;
     return (
       <StaticQuery
         query={graphql`
@@ -49,7 +50,7 @@ export default class Search extends Component {
           return (
             <div>
               <TextField
-                className={'searchField'}
+                className={classes.margin}
                 style={{color:'gray',backgroundColor:'white'}}
                 id="input-with-icon-textfield"
                 placeholder="Search"
@@ -129,3 +130,9 @@ export default class Search extends Component {
     })
   }
 }
+
+Search.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(Search);

@@ -36,9 +36,9 @@
     "node-fetch": "^2.5.0",
     "radiks": "^0.2.1",
     "radiks-server": "^0.1.12",
-    "react": "^16.8.0",
+    "react": "^16.8.1",
     "react-blockstack-button": "^0.1.0",
-    "react-dom": "^16.8.0",
+    "react-dom": "^16.8.1",
     "react-helmet": "^5.2.0",
     "styled-components": "^4.2.0"
   },

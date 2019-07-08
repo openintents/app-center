@@ -79,7 +79,7 @@ exports.onCreateNode = async ({
   const { createNodeField, createNode } = actions
   if (node.internal.type === `apps`) {
 
-    if( !node.imageUrl.trim()) ) {
+    if( !node.imageUrl.trim() ) {
       if (fileNode) {
         node.localFile___NODE = fileNode.id
       }
