@@ -11,7 +11,13 @@ import Img from 'gatsby-image'
 const styles = theme => ({
   margin: {
     margin: theme.spacing.unit,
+    borderRadius: 3,
+    color:'gray',
+    backgroundColor:'white'
   },
+  AppsIcon: {
+    color:'gray',
+  }
 });
 
 class Search extends Component {
@@ -51,7 +57,6 @@ class Search extends Component {
             <div>
               <TextField
                 className={classes.margin}
-                style={{color:'gray',backgroundColor:'white'}}
                 id="input-with-icon-textfield"
                 placeholder="Search"
                 value={this.state.query}
@@ -59,7 +64,7 @@ class Search extends Component {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Apps />
+                      <Apps className={classes.AppsIcon} />
                     </InputAdornment>
                   ),
                 }}
