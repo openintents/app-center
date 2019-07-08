@@ -78,19 +78,19 @@ exports.onCreateNode = async ({
 }) => {
   const { createNodeField, createNode } = actions
   if (node.internal.type === `apps`) {
-
-    if( !node.imageUrl.trim()) ) return Promise.resolve()
-
-    console.log("url '" +node.imageUrl.trim()+"'");
-    return createRemoteFileNode({
-      url: node.imageUrl.trim(),
+    let remoteNode = {
+      url: node.imageUrl.trim() ? node.imageUrl.trim() 'https://via.placeholder.com/150',
       parentNodeId: node.id,
       store,
       cache,
       createNode,
       createNodeId,
       auth: _auth,
-    })
+    };
+    if( !node.imageUrl.trim()) ) remoteNode['name'] = 'lastCommit'
+
+    console.log("url '" +node.imageUrl.trim()+"'");
+    return createRemoteFileNode(remoteNode)
       .then(fileNode => {
         if (fileNode) {
           node.localFile___NODE = fileNode.id
