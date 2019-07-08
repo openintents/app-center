@@ -77,7 +77,10 @@ exports.onCreateNode = async ({
   createNodeId,
 }) => {
   const { createNodeField, createNode } = actions
-  if (node.internal.type === `apps` && !!node.imageUrl.trim()) {
+  if (node.internal.type === `apps`) {
+
+    if( !node.imageUrl.trim()) ) return Promise.resolve()
+
     console.log("url '" +node.imageUrl.trim()+"'");
     return createRemoteFileNode({
       url: node.imageUrl.trim(),
