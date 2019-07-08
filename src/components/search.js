@@ -1,10 +1,17 @@
 import React, { Component } from 'react'
 import { Index } from 'elasticlunr'
+import { makeStyles } from '@material-ui/core/styles';
 import { Link, graphql, StaticQuery } from 'gatsby'
 import { List, ListItem, Typography, Grid, TextField, InputAdornment } from '@material-ui/core'
 import { Apps } from '@material-ui/icons';
 import Img from 'gatsby-image'
 // Search component
+
+const useStyles = makeStyles(theme => ({
+  margin: {
+    margin: theme.spacing(1),
+  },
+}));
 
 export default class Search extends Component {
   constructor(props) {
@@ -16,6 +23,7 @@ export default class Search extends Component {
   }
 
   render() {
+    const classes = useStyles();
     return (
       <StaticQuery
         query={graphql`
