@@ -64,6 +64,7 @@ class MyComments extends React.Component {
 
   componentDidMount() {
     User.createWithCurrentUser().then(() => {
+      console.log('user comments');
       loadMyData().then(content => {
         console.log('content',content);
         this.setState({
@@ -75,10 +76,29 @@ class MyComments extends React.Component {
 
       this.loadComments()
     })
+    this.loadUserOwnerComments()
   }
 
+  loadUserOwnerComments() {
+    console.log('gets loadUserOwnerComments');
+    getOwnerComments(20).then((comments) => {
+      console.log('getOwnerComments', comments);
+      this.setState({
+        loadingAllComments: false,
+        loading: false,
+        ownersComments: comments
+      })
+    })
+    getUserComments(20).then((comments) => {
+      console.log('getUserComments', comments);
+      this.setState({
+        loadingAllComments: false,
+        loading: false,
+        usersComments: comments
+      })
+    })
+  }
   loadComments() {
-    console.log('gets comms');
     UserComment.fetchOwnList().then(myComments => {
       console.log('loading comms',myComments);
       this.setState({
@@ -107,22 +127,6 @@ class MyComments extends React.Component {
         myDraftUpdates,
         loadingUpdates: false,
         loading: this.state.loadingApps && this.state.loadingUpdates,
-      })
-    })
-    getOwnerComments(20).then((comments) => {
-      console.log('getOwnerComments', comments);
-      this.setState({
-        loadingAllComments: false,
-        loading: this.state.loadingApps && this.state.loadingUpdates,
-        ownersComments: comments
-      })
-    })
-    getUserComments(20).then((comments) => {
-      console.log('getUserComments', comments);
-      this.setState({
-        loadingAllComments: false,
-        loading: this.state.loadingApps && this.state.loadingUpdates,
-        usersComments: comments
       })
     })
   }
@@ -302,13 +306,13 @@ class MyComments extends React.Component {
             {loading && <>Loading...</>}
             {!loading && (
               <>
-                <Typography variant="h3">Comments</Typography>
+                <Typography variant="h5">Comments</Typography>
                 {this.renderComments(myComments, data)}
                 {this.renderComments(myPrivateComments, data)}
                 <Divider light />
                 {this.renderComments(myUpdates, data)}
                 {this.renderComments(myDraftUpdates, data)}
-                <div>
+                {!!ownersComments && ownersComments.length ? <div>
                     <Typography variant="h5" gutterBottom>
                       Users Comments
                     </Typography>
@@ -316,8 +320,9 @@ class MyComments extends React.Component {
                     <Paper>
                       {this.renderComments(ownersComments, data)}
                     </Paper>
-                </div>
-                <div>
+                </div>: null}
+
+                {!!usersComments && usersComments.length ? <div>
                     <Typography variant="h5" gutterBottom>
                       Owners Comments
                     </Typography>
@@ -325,7 +330,7 @@ class MyComments extends React.Component {
                     <Paper>
                       {this.renderComments(usersComments, data)}
                     </Paper>
-                </div>
+                </div>: null}
               </>
             )}
             {UserCommentDialog({
