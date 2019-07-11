@@ -10,6 +10,7 @@ import {
   ListItemSecondaryAction,
   IconButton,
   withStyles,
+  Paper
 } from '@material-ui/core'
 import {
   UserComment,
@@ -20,6 +21,8 @@ import {
   saveOwnerComment,
   saveUserComment,
   savePrivateUserComment,
+  getUserComments,
+  getOwnerComments
 } from '../components/model'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Rating from 'material-ui-rating'
@@ -62,6 +65,7 @@ class MyComments extends React.Component {
   componentDidMount() {
     User.createWithCurrentUser().then(() => {
       loadMyData().then(content => {
+        console.log('content',content);
         this.setState({
           myApps: content.myApps,
           loadingApps: false,
@@ -74,7 +78,9 @@ class MyComments extends React.Component {
   }
 
   loadComments() {
+    console.log('gets comms');
     UserComment.fetchOwnList().then(myComments => {
+      console.log('loading comms',myComments);
       this.setState({
         myComments,
         loadingComments: false,
@@ -101,6 +107,22 @@ class MyComments extends React.Component {
         myDraftUpdates,
         loadingUpdates: false,
         loading: this.state.loadingApps && this.state.loadingUpdates,
+      })
+    })
+    getOwnerComments(20).then((comments) => {
+      console.log('getOwnerComments', comments);
+      this.setState({
+        loadingAllComments: false,
+        loading: this.state.loadingApps && this.state.loadingUpdates,
+        ownersComments: comments
+      })
+    })
+    getUserComments(20).then((comments) => {
+      console.log('getUserComments', comments);
+      this.setState({
+        loadingAllComments: false,
+        loading: this.state.loadingApps && this.state.loadingUpdates,
+        usersComments: comments
       })
     })
   }
@@ -140,8 +162,10 @@ class MyComments extends React.Component {
 
   renderComments(myComments, data) {
     const comments = []
+    console.log(myComments,data);
     if (myComments) {
       myComments.forEach(c => {
+        console.log('dd',c);
         const apps = data.allApps.edges.filter(
           e => e.node.website === c.attrs.object
         )
@@ -256,6 +280,8 @@ class MyComments extends React.Component {
       showUpdateDialog,
       currentVisibility,
       updating,
+      usersComments,
+      ownersComments
     } = this.state
 
     return (
@@ -282,6 +308,24 @@ class MyComments extends React.Component {
                 <Divider light />
                 {this.renderComments(myUpdates, data)}
                 {this.renderComments(myDraftUpdates, data)}
+                <div>
+                    <Typography variant="h5" gutterBottom>
+                      Users Comments
+                    </Typography>
+                    <Divider light />
+                    <Paper>
+                      {this.renderComments(ownersComments, data)}
+                    </Paper>
+                </div>
+                <div>
+                    <Typography variant="h5" gutterBottom>
+                      Owners Comments
+                    </Typography>
+                    <Divider light />
+                    <Paper>
+                      {this.renderComments(usersComments, data)}
+                    </Paper>
+                </div>
               </>
             )}
             {UserCommentDialog({

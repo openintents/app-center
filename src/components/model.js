@@ -89,7 +89,7 @@ export class PrivateUserComment extends ModelExt {
   static schema = {
     object: String,
     rating: Number,
-    comment: String,    
+    comment: String,
     publicRef: String,
   }
 }
@@ -163,6 +163,20 @@ export const saveOwnerComment = async (commentText, currentComment) => {
   }
 
   await updatedComment.save()
+}
+
+export const getUserComments = async (limit=10) => {
+  const comments = await UserComment.fetchList({
+    sort: '-order'
+  })
+  return comments
+}
+
+export const getOwnerComments = async (limit=10) => {
+  const comments = await OwnerComment.fetchList({
+    sort: '-order'
+  })
+  return comments
 }
 
 export const saveDraftOwnerComment = async (commentText, currentComment) => {

@@ -9,10 +9,13 @@ import {
   ListItemText,
   List,
   ListItemAvatar,
-  Avatar,
+  Avatar
 } from '@material-ui/core'
 import CommentIcon from '@material-ui/icons/Note'
 import AppsIcon from '@material-ui/icons/Apps'
+import MyComments from '../app/mycomments';
+import Paper from '@material-ui/core/Paper';
+
 
 const AppCoMonth = ({ title, path, newOnly }) => {
   return (
@@ -123,6 +126,10 @@ class IndexPage extends React.Component {
                 />
               </ListItem>
             </List>
+
+            <div>
+                <MyComments />
+            </div>
           </div>
         </div>
       </Layout>

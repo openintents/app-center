@@ -201,7 +201,7 @@ class AppDetails extends Component {
     loadingData: true,
   }
 
-  componentDidMount() {    
+  componentDidMount() {
     checkIsSignedIn().then(isSignedIn => {
       if (isSignedIn) {
         const { data } = this.props
@@ -367,6 +367,7 @@ class AppDetails extends Component {
             object: this.props.data.apps.website,
           })
     await comment.save()
+    // await comment.insertOne()
     await this.loadComments()
     this.setState({ showUpdateDialog: false, updating: false })
   }
