@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core'
 import CommentIcon from '@material-ui/icons/Note'
 import AppsIcon from '@material-ui/icons/Apps'
+import AllComments from '../components/allComments'
 
 const AppCoMonth = ({ title, path, newOnly }) => {
   return (
@@ -123,6 +124,7 @@ class IndexPage extends React.Component {
                 />
               </ListItem>
             </List>
+            <AllComments/>
           </div>
         </div>
       </Layout>
