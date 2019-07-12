@@ -14,6 +14,7 @@ import {
 import CommentIcon from '@material-ui/icons/Note'
 import AppsIcon from '@material-ui/icons/Apps'
 import AllComments from '../components/allComments'
+import { styles } from '../components/layout'
 
 const AppCoMonth = ({ title, path, newOnly }) => {
   return (
@@ -97,7 +98,7 @@ class IndexPage extends React.Component {
               <ListItem>
                 <ListItemAvatar>
                   <Avatar>
-                    <CommentIcon />
+                    <CommentIcon style={styles.smallIcon} />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText>
@@ -111,7 +112,7 @@ class IndexPage extends React.Component {
               <ListItem>
                 <ListItemAvatar>
                   <Avatar>
-                    <AppsIcon />
+                    <AppsIcon style={styles.smallIcon} />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
@@ -124,7 +125,7 @@ class IndexPage extends React.Component {
                 />
               </ListItem>
             </List>
-            <AllComments/>
+            <AllComments />
           </div>
         </div>
       </Layout>

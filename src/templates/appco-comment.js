@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { graphql, navigate } from 'gatsby'
+import { graphql } from 'gatsby'
 import Layout from '../components/layout'
 import Grid from '@material-ui/core/Grid'
-import styled from 'styled-components'
 import {
   getUser,
   checkIsSignedIn,
@@ -118,7 +117,7 @@ class AppComment extends Component {
 
   render() {
     const { data } = this.props
-    const { visibility, rating, userUpdate, comments, updating } = this.state
+    const { visibility, rating, userUpdate, updating } = this.state
 
     const icon =
       data.apps.localFile && data.apps.localFile.childImageSharp ? (

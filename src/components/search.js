@@ -10,7 +10,7 @@ import Img from 'gatsby-image'
 
 const styles = theme => ({
   margin: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
     // borderRadius: 3,
     // color:'gray',
     backgroundColor:'white',

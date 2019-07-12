@@ -125,16 +125,16 @@ class AllComments extends React.Component {
         `}
         render={data => (
           <>
-            {loading && <>Loading...</>}
+            {loading && <Typography>Loading...</Typography>}
             {!loading && isSignedIn && (
               <>
-                <Typography variant="h3">Comments</Typography>
+                <Typography variant="h5">Comments</Typography>
                 {this.renderComments(allComments, data)}
               </>
             )}
             {!loading && !isSignedIn && (
               <>
-                <Typography variant="h3">Comments</Typography>
+                <Typography variant="h5">Comments</Typography>
                 <Button
                   variant="outlined"
                   onClick={() => navigate('/data/login')}
