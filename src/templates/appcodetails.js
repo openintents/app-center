@@ -39,6 +39,8 @@ import UserCommentDialog from '../components/userCommentDialog'
 import OwnerCommentDialog from '../components/ownerCommentDialog'
 import SEO from '../components/seo'
 import { SmallAppDetails } from '../components/app'
+import { styles } from '../components/layout'
+
 const StyledRoot = styled.div`
   flexgrow: 1;
 `
@@ -419,7 +421,7 @@ class AppDetails extends Component {
           variant="outlined"
           onClick={() => this.setState({ showUpdateDialog: true })}
         >
-          <NoteIcon />
+          <NoteIcon style={styles.smallIcon} />
           Post progress update
         </Button>{' '}
         <Button
@@ -430,7 +432,7 @@ class AppDetails extends Component {
           Remove from my apps
         </Button>
         <Button disabled={!data.apps.website} onClick={() => this.launchApp()}>
-          <LaunchIcon />
+          <LaunchIcon style={styles.smallIcon} />
         </Button>
       </>
     ) : (
@@ -445,7 +447,7 @@ class AppDetails extends Component {
             }
           }}
         >
-          <NoteIcon />
+          <NoteIcon style={styles.smallIcon} />
           Post comment
         </Button>{' '}
         <Button
@@ -458,7 +460,7 @@ class AppDetails extends Component {
           Claim this app
         </Button>
         <Button disabled={!data.apps.website} onClick={() => this.launchApp()}>
-          <LaunchIcon />
+          <LaunchIcon style={styles.smallIcon} />
         </Button>
       </>
     )
@@ -593,7 +595,7 @@ class AppDetails extends Component {
               color="inherit"
               onClick={() => this.handleCloseUndo()}
             >
-              <CloseIcon />
+              <CloseIcon style={styles.smallIcon} />
             </IconButton>,
           ]}
         />

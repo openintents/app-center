@@ -29,6 +29,7 @@ import Rating from 'material-ui-rating'
 import { User } from 'radiks/lib'
 import UserCommentDialog from '../components/userCommentDialog'
 import OwnerCommentDialog from '../components/ownerCommentDialog'
+import { styles } from '../components/layout'
 
 const smallStyles = {
   iconButton: {
@@ -199,7 +200,7 @@ class MyComments extends React.Component {
             />
             <ListItemSecondaryAction onClick={() => this.handleDeleteClick(c)}>
               <IconButton aria-label="Delete">
-                <DeleteIcon />
+                <DeleteIcon stlye={styles.smallIcon} />
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>

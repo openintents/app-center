@@ -13,9 +13,14 @@ import {
 } from '@material-ui/core'
 import CommentIcon from '@material-ui/icons/Note'
 import AppsIcon from '@material-ui/icons/Apps'
+<<<<<<< HEAD
 import MyComments from '../app/mycomments';
 import Paper from '@material-ui/core/Paper';
 
+=======
+import AllComments from '../components/allComments'
+import { styles } from '../components/layout'
+>>>>>>> upstream/master
 
 const AppCoMonth = ({ title, path, newOnly }) => {
   return (
@@ -99,7 +104,7 @@ class IndexPage extends React.Component {
               <ListItem>
                 <ListItemAvatar>
                   <Avatar>
-                    <CommentIcon />
+                    <CommentIcon style={styles.smallIcon} />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText>
@@ -113,7 +118,7 @@ class IndexPage extends React.Component {
               <ListItem>
                 <ListItemAvatar>
                   <Avatar>
-                    <AppsIcon />
+                    <AppsIcon style={styles.smallIcon} />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
@@ -126,10 +131,14 @@ class IndexPage extends React.Component {
                 />
               </ListItem>
             </List>
+<<<<<<< HEAD
 
             <div>
                 <MyComments />
             </div>
+=======
+            <AllComments />
+>>>>>>> upstream/master
           </div>
         </div>
       </Layout>

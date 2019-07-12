@@ -78,41 +78,21 @@ exports.onCreateNode = async ({
 }) => {
   const { createNodeField, createNode } = actions
   if (node.internal.type === `apps`) {
-
-    if( !node.imageUrl.trim() ) {
-      if (fileNode) {
-        node.localFile___NODE = fileNode.id
-      }
-
-      if (node.openSourceUrl && node.openSourceUrl !== '') {
-        const lastCommit =
-          process.env.GATSBY_GITHUB_TOKEN === 'INVALID'
-            ? Promise.resolve('N/A')
-            : getLastCommit(node.openSourceUrl)
-        return lastCommit.then(r => {
-          createNodeField({
-            node,
-            name: `lastCommit`,
-            value: r,
-            type: 'String',
-          })
-        }).catch(e => {
-          console.log('createNodeField error ',e);
-          throw e
-        })
-      }
+    let fileNodePromise
+    if (node.imageUrl && node.imageUrl.trim()) {
+      fileNodePromise = createRemoteFileNode({
+        url: node.imageUrl.trim(),
+        parentNodeId: node.id,
+        store,
+        cache,
+        createNode,
+        createNodeId,
+        auth: _auth,
+      })
+    } else {
+      fileNodePromise = Promise.resolve(null)
     }
-
-    console.log("url '" +node.imageUrl.trim()+"'");
-    return createRemoteFileNode({
-      url: node.imageUrl.trim(),
-      parentNodeId: node.id,
-      store,
-      cache,
-      createNode,
-      createNodeId,
-      auth: _auth,
-    })
+    return fileNodePromise
       .then(fileNode => {
         if (fileNode) {
           node.localFile___NODE = fileNode.id
@@ -123,21 +103,23 @@ exports.onCreateNode = async ({
             process.env.GATSBY_GITHUB_TOKEN === 'INVALID'
               ? Promise.resolve('N/A')
               : getLastCommit(node.openSourceUrl)
-          return lastCommit.then(r => {
-            createNodeField({
-              node,
-              name: `lastCommit`,
-              value: r,
-              type: 'String',
+          return lastCommit
+            .then(r => {
+              createNodeField({
+                node,
+                name: `lastCommit`,
+                value: r,
+                type: 'String',
+              })
             })
-          }).catch(e => {
-            console.log('createNodeField error ',e);
-            throw e
-          })
+            .catch(e => {
+              console.log('createNodeField error ', e)
+              throw e
+            })
         }
       })
       .catch(e => {
-        console.log('fileNode error ',e);
+        console.log('fileNode error ', e)
         Promise.resolve('N/A')
         // throw e
       })

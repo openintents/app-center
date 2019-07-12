@@ -10,7 +10,11 @@ import Img from 'gatsby-image'
 
 const styles = theme => ({
   margin: {
+<<<<<<< HEAD
     margin: theme.spacing(1),//new syntax for spacing in mui
+=======
+    margin: theme.spacing(1),
+>>>>>>> upstream/master
     // borderRadius: 3,
     // color:'gray',
     backgroundColor:'white',
