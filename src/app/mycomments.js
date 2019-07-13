@@ -27,6 +27,7 @@ import { User } from 'radiks/lib'
 import UserCommentDialog from '../components/userCommentDialog'
 import OwnerCommentDialog from '../components/ownerCommentDialog'
 import { styles } from '../components/layout'
+import Img from 'gatsby-image'
 
 const smallStyles = {
   iconButton: {
@@ -146,10 +147,7 @@ class MyComments extends React.Component {
         const apps = data.allApps.edges.filter(
           e => e.node.website === c.attrs.object
         )
-        const appLabel =
-          apps.length === 1
-            ? `For ${apps[0].node.name}`
-            : `For ${c.attrs.object}`
+
         const rating = [
           UserComment.modelName(),
           PrivateUserComment.modelName(),
@@ -159,6 +157,25 @@ class MyComments extends React.Component {
             <SmallRating component="span" readOnly value={c.attrs.rating} />
           </>
         ) : null
+
+        const icon =
+          apps.length > 0 &&
+          apps[0].node.localFile &&
+          apps[0].node.localFile.childImageSharp ? (
+            <Img fixed={apps[0].node.localFile.childImageSharp.fixed} />
+          ) : (
+            <div width="16px" height="16px" />
+          )
+        const appLabel =
+          apps.length === 1 ? (
+            <>
+              {icon} {apps[0].node.name}
+            </>
+          ) : (
+            <>
+              {icon} {c.attrs.object}
+            </>
+          )
         comments.push(
           <ListItem button key={c._id} onClick={() => this.handleClick(c)}>
             <ListItemText
@@ -267,6 +284,14 @@ class MyComments extends React.Component {
               edges {
                 node {
                   ...AppInformation
+                  localFile {
+                    id
+                    childImageSharp {
+                      fixed(width: 16, height: 16) {
+                        ...GatsbyImageSharpFixed
+                      }
+                    }
+                  }
                 }
               }
             }
