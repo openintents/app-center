@@ -93,8 +93,8 @@ class AllComments extends React.Component {
         )
         const appLabel =
           apps.length === 1
-            ? `For ${apps[0].node.name}`
-            : `For ${c.object}`
+            ? `${apps[0].node.name}`
+            : `${c.object}`
         const rating =<>
             <br />
             <SmallRating component="span" readOnly value={c.rating} />
@@ -151,20 +151,9 @@ class AllComments extends React.Component {
             {loading && <Typography>Loading...</Typography>}
             {!loading && (
               <>
-                <Typography variant="h5">Comments</Typography>
+                <Typography variant="h5">Recent Comments</Typography>
                 {this.renderComments(allComments, data)}
                 {this.renderComments(apiComments, data)}
-              </>
-            )}
-            {!loading && !isSignedIn && (
-              <>
-                <Typography variant="h5">Comments</Typography>
-                <Button
-                  variant="outlined"
-                  onClick={() => navigate('/data/login')}
-                >
-                  Sign In to view comments
-                </Button>
               </>
             )}
           </>
