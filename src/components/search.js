@@ -63,6 +63,7 @@ class Search extends Component {
                 variant="outlined"
                 value={this.state.query}
                 onChange={this.search}
+                margin="dense"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">

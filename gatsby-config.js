@@ -3,7 +3,7 @@ var proxy = require('http-proxy-middleware')
 module.exports = {
   siteMetadata: {
     title: 'OI App Center',
-    description: `Explore the Blockstack app ecosystem`,
+    description: `App reviews done right!`,
     author: `@friedger`,
   },
   plugins: [
