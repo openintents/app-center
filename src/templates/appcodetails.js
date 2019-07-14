@@ -22,7 +22,6 @@ import {
   Typography,
   Box,
   Divider,
-  CardHeader,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import LaunchIcon from '@material-ui/icons/Launch'
@@ -497,7 +496,7 @@ class AppDetails extends Component {
           description={data.apps.description}
           keywords={[data.apps.name, `application`, `blockstack`]}
         />
-        <Card style={{ margin: 8 }}>
+        <Card style={{ margin: 4 }}>
           <CardContent>
             <Grid container alignItems="center" spacing={2}>
               <Grid item xs={1} sm={1}>

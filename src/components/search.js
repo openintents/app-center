@@ -16,13 +16,11 @@ import Img from 'gatsby-image'
 // Search component
 
 const styles = theme => {
-  console.log(theme)
   return {
     SearchField: {
       borderRadius: 4,
-      // color:'gray',
-      backgroundColor: theme.palette.primary.contrastText,
-      // padding: 4
+      color: theme.palette.text.primary,
+      backgroundColor: theme.palette.common.white,
     },
     AppsIcon: {
       color: 'gray',

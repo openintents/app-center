@@ -10,8 +10,12 @@ import { withStyles } from '@material-ui/styles'
 const styles = theme => ({
   header: {
     paddingTop: theme.spacing(1),
-    color: theme.palette.primary.contrastText,
+    color: theme.palette.common.contrastText,
     backgroundColor: theme.palette.primary.main,
+  },
+  title: {
+    color: theme.palette.common.white,
+    textDecoration: 'none',
   },
 })
 
@@ -30,7 +34,7 @@ const Header = ({
       </Grid>
       <Grid item sm={7} xs={11}>
         <Typography variant="h3">
-          <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>
+          <Link to="/" className={classes.title}>
             {siteTitle}
           </Link>
         </Typography>
