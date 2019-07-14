@@ -13,7 +13,6 @@ import {
 } from '@material-ui/core'
 import CommentIcon from '@material-ui/icons/Note'
 import AppsIcon from '@material-ui/icons/Apps'
-import MyComments from '../app/mycomments';
 import Paper from '@material-ui/core/Paper';
 
 import AllComments from '../components/allComments'
@@ -129,9 +128,9 @@ class IndexPage extends React.Component {
               </ListItem>
             </List>
             <div>
-                <MyComments />
                 <AllComments />
-          </div>
+            </div>
+        </div>
         </div>
       </Layout>
     )

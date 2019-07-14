@@ -77,28 +77,8 @@ class MyComments extends React.Component {
 
       this.loadComments()
     })
-    this.loadUserOwnerComments()
   }
 
-  loadUserOwnerComments() {
-    console.log('gets loadUserOwnerComments');
-    getOwnerComments(20).then((comments) => {
-      console.log('getOwnerComments', comments);
-      this.setState({
-        loadingAllComments: false,
-        loading: false,
-        ownersComments: comments
-      })
-    })
-    getUserComments(20).then((comments) => {
-      console.log('getUserComments', comments);
-      this.setState({
-        loadingAllComments: false,
-        loading: false,
-        usersComments: comments
-      })
-    })
-  }
   loadComments() {
     UserComment.fetchOwnList().then(myComments => {
       console.log('loading comms',myComments);
@@ -313,25 +293,6 @@ class MyComments extends React.Component {
                 <Divider light />
                 {this.renderComments(myUpdates, data)}
                 {this.renderComments(myDraftUpdates, data)}
-                {!!ownersComments && ownersComments.length ? <div>
-                    <Typography variant="h5" gutterBottom>
-                      Users Comments
-                    </Typography>
-                    <Divider light />
-                    <Paper>
-                      {this.renderComments(ownersComments, data)}
-                    </Paper>
-                </div>: null}
-
-                {!!usersComments && usersComments.length ? <div>
-                    <Typography variant="h5" gutterBottom>
-                      Owners Comments
-                    </Typography>
-                    <Divider light />
-                    <Paper>
-                      {this.renderComments(usersComments, data)}
-                    </Paper>
-                </div>: null}
               </>
             )}
             {UserCommentDialog({

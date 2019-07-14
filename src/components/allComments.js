@@ -16,6 +16,7 @@ class AllComments extends React.Component {
   state = {
     myApps: {},
     allComments: [],
+    apiComments: [],
     loading: true,
     loadingApps: true,
     loadingComments: true,
@@ -38,6 +39,33 @@ class AllComments extends React.Component {
     } else {
       this.setState({ loading: false, isSignedIn: false })
     }
+    this.loadUserOwnerComments()
+  }
+
+  loadUserOwnerComments() {
+    console.log('gets loadUserOwnerComments');
+    fetch('http://localhost:5000/api/usercomments', {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then( (response) => {
+      return response.json();
+      //we can make another call here to get the owner comments too from the api
+    })
+    .then( (comments) => {
+      console.log('get all comments', comments);
+      this.setState({
+        loadingAllComments: false,
+        loading: false,
+        apiComments: comments
+      })
+    })
+    .catch( (err) => {
+      console.log('error',err);
+    })
   }
 
   loadComments() {
@@ -61,22 +89,17 @@ class AllComments extends React.Component {
     if (myComments) {
       myComments.forEach(c => {
         const apps = data.allApps.edges.filter(
-          e => e.node.website === c.attrs.object
+          e => e.node.website === c.object
         )
         const appLabel =
           apps.length === 1
             ? `For ${apps[0].node.name}`
-            : `For ${c.attrs.object}`
-        const rating = [
-          UserComment.modelName(),
-          PrivateUserComment.modelName(),
-        ].includes(c.modelName()) ? (
-          <>
+            : `For ${c.object}`
+        const rating =<>
             <br />
-            <SmallRating component="span" readOnly value={c.attrs.rating} />
+            <SmallRating component="span" readOnly value={c.rating} />
           </>
-        ) : null
-        const comment = c.attrs.comment.toString()
+        const comment = c.comment.toString()
         comments.push(
           <ListItem button key={c._id} onClick={() => this.handleClick(c)}>
             <ListItemText
@@ -108,7 +131,7 @@ class AllComments extends React.Component {
   }
 
   render() {
-    const { allComments, loading, isSignedIn } = this.state
+    const { allComments, apiComments, loading, isSignedIn } = this.state
 
     return (
       <StaticQuery
@@ -126,10 +149,11 @@ class AllComments extends React.Component {
         render={data => (
           <>
             {loading && <Typography>Loading...</Typography>}
-            {!loading && isSignedIn && (
+            {!loading && (
               <>
                 <Typography variant="h5">Comments</Typography>
                 {this.renderComments(allComments, data)}
+                {this.renderComments(apiComments, data)}
               </>
             )}
             {!loading && !isSignedIn && (
