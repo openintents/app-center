@@ -97,7 +97,7 @@ class IndexPage extends React.Component {
             <List>
               <ListItem>
                 <ListItemAvatar>
-                  <Avatar>
+                  <Avatar  >
                     <CommentIcon style={styles.smallIcon} />
                   </Avatar>
                 </ListItemAvatar>
@@ -111,8 +111,8 @@ class IndexPage extends React.Component {
               </ListItem>
               <ListItem>
                 <ListItemAvatar>
-                  <Avatar>
-                    <AppsIcon style={styles.smallIcon} />
+                  <Avatar  >
+                    <AppsIcon style={styles.smallIcon}  />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText

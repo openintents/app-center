@@ -10,8 +10,8 @@ import { ThemeProvider } from '@material-ui/styles'
 
 export const styles = {
   smallIcon: {
-    width: 27,
-    height: 27,
+    width: 24,
+    height: 24,
   },
 }
 
