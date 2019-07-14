@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Index } from 'elasticlunr'
 import { withStyles } from '@material-ui/core/styles';
 import { Link, graphql, StaticQuery } from 'gatsby'
-import { List, ListItem, Typography, Grid, TextField, InputAdornment } from '@material-ui/core'
+import { List, ListItem, Typography, Grid, IconButton, InputBase, Paper } from '@material-ui/core'
 import { Apps } from '@material-ui/icons';
 import Img from 'gatsby-image'
 // Search component
@@ -14,10 +14,14 @@ const styles = theme => ({
     // borderRadius: 3,
     // color:'gray',
     backgroundColor:'white',
-    // padding: 4
+    padding: 4
   },
   AppsIcon: {
     color:'gray',
+  },
+  paper: {
+    padding: 1,
+    height: 50,
   }
 });
 
@@ -55,21 +59,20 @@ class Search extends Component {
         `}
         render={data => {
           return (
-            <div>
-              <TextField
-                className={classes.margin}
-                id="input-with-icon-textfield"
-                placeholder="Search"
+            <Paper className={classes.paper}>
+              <IconButton className={classes.iconButton} aria-label="Menu">
+                <Apps className={classes.AppsIcon} />
+              </IconButton>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
                 variant="outlined"
                 value={this.state.query}
                 onChange={this.search}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Apps className={classes.AppsIcon} />
-                    </InputAdornment>
-                  ),
-                }}
+                inputProps={{ 'aria-label': 'Search' }}
               />
               <List>
                 {this.state.results.map(page => {
@@ -112,7 +115,7 @@ class Search extends Component {
                   )
                 })}
               </List>
-            </div>
+            </Paper>
           )
         }}
       />
