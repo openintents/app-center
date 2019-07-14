@@ -42,7 +42,7 @@ class AllComments extends React.Component {
   }
 
   loadComments() {
-    UserComment.fetchList().then(allComments => {
+    UserComment.fetchList({sort: '-createdAt'}).then(allComments => {
       this.setState({
         allComments,
         loadingComments: false,

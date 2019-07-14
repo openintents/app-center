@@ -120,7 +120,7 @@ const Comments = (data, comments, isSignedIn) => {
   } else {
     return comments.map((c, key) => {
       return (
-        <Card key={c._id}>
+        <Card key={c._id} style={{ margin: 4 }}>
           <CardContent>
             <Typography>
               {c.attrs.comment}
