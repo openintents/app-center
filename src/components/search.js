@@ -15,18 +15,20 @@ import { Apps } from '@material-ui/icons'
 import Img from 'gatsby-image'
 // Search component
 
-const styles = theme => ({
-  margin: {
-    margin: theme.spacing(1),
-    // borderRadius: 3,
-    // color:'gray',
-    backgroundColor: theme.palette.primary.contrastText,
-    // padding: 4
-  },
-  AppsIcon: {
-    color: 'gray',
-  },
-})
+const styles = theme => {
+  console.log(theme)
+  return {
+    SearchField: {
+      borderRadius: 4,
+      // color:'gray',
+      backgroundColor: theme.palette.primary.contrastText,
+      // padding: 4
+    },
+    AppsIcon: {
+      color: 'gray',
+    },
+  }
+}
 
 class Search extends Component {
   constructor(props) {
@@ -64,7 +66,6 @@ class Search extends Component {
           return (
             <div>
               <TextField
-                className={classes.margin}
                 id="input-with-icon-textfield"
                 placeholder="Search"
                 variant="outlined"
@@ -72,6 +73,7 @@ class Search extends Component {
                 onChange={this.search}
                 margin="dense"
                 InputProps={{
+                  className: classes.SearchField,
                   startAdornment: (
                     <InputAdornment position="start">
                       <Apps

@@ -9,7 +9,7 @@ import { withStyles } from '@material-ui/styles'
 
 const styles = theme => ({
   header: {
-    marginTop: theme.spacing(1),
+    paddingTop: theme.spacing(1),
     color: theme.palette.primary.contrastText,
     backgroundColor: theme.palette.primary.main,
   },
@@ -35,7 +35,7 @@ const Header = ({
           </Link>
         </Typography>
       </Grid>
-      <Grid item sm={4} xs={12} alignItems="center">
+      <Grid item sm={4} xs={12}>
         <BlockstackProfile />
       </Grid>
       <Grid item xs={1} />

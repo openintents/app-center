@@ -22,10 +22,12 @@ import {
   Typography,
   Box,
   Divider,
+  CardHeader,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import LaunchIcon from '@material-ui/icons/Launch'
 import NoteIcon from '@material-ui/icons/Note'
+import AppsIcon from '@material-ui/icons/Apps'
 
 import {
   UserComment,
@@ -456,6 +458,7 @@ class AppDetails extends Component {
           }}
           variant="outlined"
         >
+          <AppsIcon style={styles.smallIcon} />
           Claim this app
         </Button>
         <Button disabled={!data.apps.website} onClick={() => this.launchApp()}>
@@ -494,26 +497,32 @@ class AppDetails extends Component {
           description={data.apps.description}
           keywords={[data.apps.name, `application`, `blockstack`]}
         />
-        <Grid container alignItems="center" spacing={2}>
-          <Grid item>{icon}</Grid>
-          <Grid item>
-            <Typography variant="h3" align="center">
-              {data.apps.name}
-            </Typography>
-          </Grid>
-          <Grid item>{appActions}</Grid>
-        </Grid>
+        <Card style={{ margin: 8 }}>
+          <CardContent>
+            <Grid container alignItems="center" spacing={2}>
+              <Grid item xs={1} sm={1}>
+                {icon}
+              </Grid>
+              <Grid item xs={11} sm={7}>
+                <Typography variant="h3" align="center">
+                  {data.apps.name}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                {appActions}
+              </Grid>
+            </Grid>
 
-        <Container>
-          {SmallAppDetails({
-            description: data.apps.description,
-            lifetimeEarnings: data.apps.lifetimeEarnings,
-            lastCommit: data.apps.fields && data.apps.fields.lastCommit,
-            openSourceUrl: data.apps.openSourceUrl,
-            hideRewards: false,
-            showSourceLink: true,
-          })}
-        </Container>
+            {SmallAppDetails({
+              description: data.apps.description,
+              lifetimeEarnings: data.apps.lifetimeEarnings,
+              lastCommit: data.apps.fields && data.apps.fields.lastCommit,
+              openSourceUrl: data.apps.openSourceUrl,
+              hideRewards: false,
+              showSourceLink: true,
+            })}
+          </CardContent>
+        </Card>
         <StyledRoot>
           <AppBar position="static">
             <Tabs
