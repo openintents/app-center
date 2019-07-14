@@ -28,8 +28,8 @@ module.exports = {
         name: `OI App Center for Blockstack`,
         short_name: `OI App Center`,
         start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#663399`,
+        background_color: `#72a7cf`,
+        theme_color: `#72a7cf`,
         display: `minimal-ui`,
         icon: `src/images/icon.png`, // This path is relative to the root of the site.
       },
