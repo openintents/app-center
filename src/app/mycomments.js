@@ -20,9 +20,7 @@ import {
   saveDraftOwnerComment,
   saveOwnerComment,
   saveUserComment,
-  savePrivateUserComment,
-  getUserComments,
-  getOwnerComments
+  savePrivateUserComment
 } from '../components/model'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Rating from 'material-ui-rating'
@@ -65,9 +63,7 @@ class MyComments extends React.Component {
 
   componentDidMount() {
     User.createWithCurrentUser().then(() => {
-      console.log('user comments');
       loadMyData().then(content => {
-        console.log('content',content);
         this.setState({
           myApps: content.myApps,
           loadingApps: false,
@@ -81,7 +77,6 @@ class MyComments extends React.Component {
 
   loadComments() {
     UserComment.fetchOwnList().then(myComments => {
-      console.log('loading comms',myComments);
       this.setState({
         myComments,
         loadingComments: false,
@@ -147,10 +142,8 @@ class MyComments extends React.Component {
 
   renderComments(myComments, data) {
     const comments = []
-    console.log(myComments,data);
     if (myComments) {
       myComments.forEach(c => {
-        console.log('dd',c);
         const apps = data.allApps.edges.filter(
           e => e.node.website === c.attrs.object
         )

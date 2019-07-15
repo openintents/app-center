@@ -24,27 +24,12 @@ class AllComments extends React.Component {
   }
 
   componentDidMount() {
-    if (isSignedIn()) {
-      User.createWithCurrentUser().then(() => {
-        loadMyData().then(content => {
-          this.setState({
-            myApps: content.myApps,
-            loadingApps: false,
-            loading: this.state.loadingComments,
-            isSignedIn: true,
-          })
-        })
-        this.loadComments()
-      })
-    } else {
-      this.setState({ loading: false, isSignedIn: false })
-    }
     this.loadUserOwnerComments()
   }
 
   loadUserOwnerComments() {
-    console.log('gets loadUserOwnerComments');
-    fetch('http://localhost:5000/api/usercomments', {
+    const server = process.env.GATSBY_RADIKS_SERVER ? process.env.GATSBY_RADIKS_SERVER : 'http://localhost:5000'
+    fetch(server+'/api/usercomments', {
         method: 'GET',
         mode: 'cors',
         headers: {
@@ -65,16 +50,6 @@ class AllComments extends React.Component {
     })
     .catch( (err) => {
       console.log('error',err);
-    })
-  }
-
-  loadComments() {
-    UserComment.fetchList().then(allComments => {
-      this.setState({
-        allComments,
-        loadingComments: false,
-        loading: this.state.loadingApps,
-      })
     })
   }
 
@@ -152,7 +127,6 @@ class AllComments extends React.Component {
             {!loading && (
               <>
                 <Typography variant="h5">Comments</Typography>
-                {this.renderComments(allComments, data)}
                 {this.renderComments(apiComments, data)}
               </>
             )}
