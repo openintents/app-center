@@ -7,6 +7,7 @@ import {
 import { Avatar } from '@material-ui/core'
 import AccountIcon from '@material-ui/icons/AccountBox'
 import { BlockstackButton } from 'react-blockstack-button'
+import { navigateTo } from 'gatsby'
 import { styles } from './layout'
 
 class BlockstackProfile extends Component {
@@ -40,12 +41,14 @@ class BlockstackProfile extends Component {
           <Avatar
             alt={userData.username}
             src={avatar}
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: 'pointer', marginBottom: 1.45 + 'rem' }}
+            onClick={() => navigateTo('data')}
           />
         )
       } else {
         return (
           <Avatar
+            onClick={() => navigateTo('data')}
             style={{ cursor: 'pointer', marginBottom: 1.45 + 'rem' }}
           >
             <AccountIcon style={styles.smallIcon} />

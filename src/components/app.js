@@ -46,18 +46,24 @@ export const SmallAppDetails = ({
     <React.Fragment>
       <Typography component="span" variant="body2" color="textPrimary">
         {description}
+        {showSourceLink && openSourceUrl && (
+          <>
+            <br />
+            <a href={openSourceUrl}>{openSourceUrl}</a>
+          </>
+        )}
       </Typography>
       <Typography component="span" variant="body2">
         {!hideRewards && (
           <>
             <br />
-            Rewards: <b>{earnings}</b>{' '}
+            rewards: {earnings}{' '}
           </>
         )}
         {showSourceLink && openSourceUrl && (
           <>
             <br />
-            Last update: {lastUpdate}
+            last update: {lastUpdate}
           </>
         )}
       </Typography>
@@ -68,7 +74,6 @@ export const SmallAppDetails = ({
 const App = ({ data, hideRewards, showSourceLink }) => {
   return (
     <ListItem
-      className={'appItem'}
       dense
       alignItems="flex-start"
       button={!data.hideDetailsLink}
@@ -80,12 +85,16 @@ const App = ({ data, hideRewards, showSourceLink }) => {
     >
       {data.localFile && data.localFile.childImageSharp && (
         <ListItemAvatar>
-          <Img fixed={data.localFile.childImageSharp.fixed} />
+          <Avatar>
+            <Img fixed={data.localFile.childImageSharp.fixed} />
+          </Avatar>
         </ListItemAvatar>
       )}
       {(!data.localFile || !data.localFile.childImageSharp) && (
         <ListItemAvatar>
+          <Avatar>
             <AppIcon style={styles.smallIcon} />
+          </Avatar>
         </ListItemAvatar>
       )}
 
@@ -100,6 +109,16 @@ const App = ({ data, hideRewards, showSourceLink }) => {
           showSourceLink,
         })}
       />
+
+      {!data.hideDetailsLink && data.website && data.website.length > 0 && (
+        <ListItemSecondaryAction>
+          <IconButton edge="end" aria-label="Launch">
+            <a href={data.website}>
+              <GetAppIcon style={styles.smallIcon} />
+            </a>
+          </IconButton>
+        </ListItemSecondaryAction>
+      )}
     </ListItem>
   )
 }

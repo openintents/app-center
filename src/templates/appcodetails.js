@@ -25,7 +25,6 @@ import {
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import LaunchIcon from '@material-ui/icons/Launch'
-import Code from '@material-ui/icons/Code'
 import NoteIcon from '@material-ui/icons/Note'
 
 import {
@@ -37,7 +36,6 @@ import {
 import { monthStrings, months, monthsLabels } from '../components/constants'
 import Img from 'gatsby-image'
 import UserCommentDialog from '../components/userCommentDialog'
-import UserCommentBox from '../components/userCommentBox'
 import OwnerCommentDialog from '../components/ownerCommentDialog'
 import SEO from '../components/seo'
 import { SmallAppDetails } from '../components/app'
@@ -271,14 +269,8 @@ class AppDetails extends Component {
   }
 
   launchApp() {
-    // window.location = this.props.data.apps.website
-    this.goTo(this.props.data.apps.website)
+    window.location = this.props.data.apps.website
   }
-
-  goTo(url) {
-     window.open(url, "_blank")
-  }
-
 
   claimApp() {
     if (this.state.isSignedIn) {
@@ -439,15 +431,25 @@ class AppDetails extends Component {
         >
           Remove from my apps
         </Button>
-        <Button variant="outlined" disabled={!data.apps.website} onClick={() => this.launchApp()}>
-          Try it <LaunchIcon style={styles.smallIcon} />
+        <Button disabled={!data.apps.website} onClick={() => this.launchApp()}>
+          <LaunchIcon style={styles.smallIcon} />
         </Button>
-        {data.apps.openSourceUrl ? <Button variant="outlined" disabled={!data.apps.website} onClick={() => this.goTo(data.apps.openSourceUrl)}>
-          <Code style={styles.smallIcon} />
-        </Button>: null}
       </>
     ) : (
       <>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            if (this.state.isSignedIn) {
+              this.setState({ showUpdateDialog: true })
+            } else {
+              navigate('/data/login')
+            }
+          }}
+        >
+          <NoteIcon style={styles.smallIcon} />
+          Post comment
+        </Button>{' '}
         <Button
           disabled={isClaimingApp}
           onClick={() => {
@@ -455,14 +457,11 @@ class AppDetails extends Component {
           }}
           variant="outlined"
         >
-          Claim App
+          Claim this app
         </Button>
-        <Button variant="outlined" disabled={!data.apps.website} onClick={() => this.launchApp()}>
-          Try it <LaunchIcon style={styles.smallIcon} />
+        <Button disabled={!data.apps.website} onClick={() => this.launchApp()}>
+          <LaunchIcon style={styles.smallIcon} />
         </Button>
-        {data.apps.openSourceUrl ? <Button variant="outlined" disabled={!data.apps.website} onClick={() => this.goTo(data.apps.openSourceUrl)}>
-          <Code style={styles.smallIcon} />
-        </Button>: null}
       </>
     )
 
@@ -487,7 +486,7 @@ class AppDetails extends Component {
     }
     const icon =
       data.apps.localFile && data.apps.localFile.childImageSharp ? (
-        <Img fixed={data.apps.localFile.childImageSharp} />
+        <Img fixed={data.apps.localFile.childImageSharp.fixed} />
       ) : null
     return (
       <Layout>
@@ -569,18 +568,6 @@ class AppDetails extends Component {
           )}
           {tabIndex === 2 && <>{Comments(data, comments, isSignedIn)}</>}
         </StyledRoot>
-        {UserCommentBox({
-          userUpdate,
-          showUpdateDialog,
-          updating,
-          visibility,
-          rating,
-          handleCloseUpdate: this.handleCloseUpdate,
-          handleChangeVisibility: this.handleChangeVisibility,
-          handleChangeText: this.handleChangeText,
-          handleChangeRating: this.handleChangeRating,
-          postComment: this.postComment,
-        })}
         <Snackbar
           anchorOrigin={{
             vertical: 'bottom',
@@ -613,7 +600,7 @@ class AppDetails extends Component {
           ]}
         />
 
-      {!isClaimedApp && showUpdateDialog &&
+        {!isClaimedApp &&
           UserCommentDialog({
             userUpdate,
             showUpdateDialog,
@@ -652,7 +639,7 @@ export const query = graphql`
       ...AppInformation
       localFile {
         childImageSharp {
-          fixed(width: 100, height: 100) {
+          fixed(width: 80, height: 80) {
             ...GatsbyImageSharpFixed
           }
         }
