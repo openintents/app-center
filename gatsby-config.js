@@ -121,6 +121,7 @@ module.exports = {
             name: node => node.frontmatter.title,
             category: () => 'Blog',
             description: node => node.excerpt,
+            appcoid: () => -1,
           },
         },
       },
