@@ -10,6 +10,7 @@ import {
   ListItemSecondaryAction,
   IconButton,
   withStyles,
+  ListItemAvatar,
 } from '@material-ui/core'
 import {
   UserComment,
@@ -27,6 +28,7 @@ import { User } from 'radiks/lib'
 import UserCommentDialog from '../components/userCommentDialog'
 import OwnerCommentDialog from '../components/ownerCommentDialog'
 import { styles } from '../components/layout'
+import Img from 'gatsby-image'
 
 const smallStyles = {
   iconButton: {
@@ -146,10 +148,7 @@ class MyComments extends React.Component {
         const apps = data.allApps.edges.filter(
           e => e.node.website === c.attrs.object
         )
-        const appLabel =
-          apps.length === 1
-            ? `For ${apps[0].node.name}`
-            : `For ${c.attrs.object}`
+
         const rating = [
           UserComment.modelName(),
           PrivateUserComment.modelName(),
@@ -159,8 +158,30 @@ class MyComments extends React.Component {
             <SmallRating component="span" readOnly value={c.attrs.rating} />
           </>
         ) : null
+
+        const icon =
+          apps.length > 0 &&
+          apps[0].node.localFile &&
+          apps[0].node.localFile.childImageSharp ? (
+            <Img fixed={apps[0].node.localFile.childImageSharp.fixed} />
+          ) : (
+            <div width="24" height="24" />
+          )
+        const appLabel =
+          apps.length === 1 ? (
+            <>
+              {apps[0].node.name}
+            </>
+          ) : (
+            <>
+              {c.attrs.object}
+            </>
+          )
         comments.push(
           <ListItem button key={c._id} onClick={() => this.handleClick(c)}>
+            <ListItemAvatar>
+              {icon}
+            </ListItemAvatar>
             <ListItemText
               primary={<>{c.attrs.comment}</>}
               secondary={
@@ -267,6 +288,14 @@ class MyComments extends React.Component {
               edges {
                 node {
                   ...AppInformation
+                  localFile {
+                    id
+                    childImageSharp {
+                      fixed(width: 24, height: 24) {
+                        ...GatsbyImageSharpFixed
+                      }
+                    }
+                  }
                 }
               }
             }

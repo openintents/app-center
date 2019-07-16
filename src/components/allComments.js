@@ -6,11 +6,10 @@ import {
   ListItemText,
   List,
   Button,
+  ListItemAvatar,
 } from '@material-ui/core'
-import { UserComment, PrivateUserComment } from '../components/model'
-import { User } from 'radiks/lib'
-import { loadMyData, isSignedIn } from '../app/services/blockstack'
 import { SmallRating } from '../app/mycomments'
+import Img from 'gatsby-image'
 
 class AllComments extends React.Component {
   state = {
@@ -28,55 +27,71 @@ class AllComments extends React.Component {
   }
 
   loadUserOwnerComments() {
-    const server = process.env.GATSBY_RADIKS_SERVER ? process.env.GATSBY_RADIKS_SERVER : 'http://localhost:5000'
-    fetch(server+'/api/usercomments', {
-        method: 'GET',
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+    const server = process.env.GATSBY_RADIKS_SERVER
+      ? process.env.GATSBY_RADIKS_SERVER
+      : 'http://localhost:5000'
+    fetch(server + '/api/usercomments', {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
-    .then( (response) => {
-      return response.json();
-      //we can make another call here to get the owner comments too from the api
-    })
-    .then( (comments) => {
-      console.log('get all comments', comments);
-      this.setState({
-        loadingAllComments: false,
-        loading: false,
-        apiComments: comments
+      .then(response => {
+        return response.json()
+        //we can make another call here to get the owner comments too from the api
       })
-    })
-    .catch( (err) => {
-      console.log('error',err);
-    })
+      .then(comments => {
+        console.log('get all comments', comments)
+        this.setState({
+          loadingAllComments: false,
+          loading: false,
+          apiComments: comments,
+        })
+      })
+      .catch(err => {
+        console.log('error', err)
+      })
   }
 
-  handleClick(comment) {
-    if (window) {
-      window.location.href = comment.attrs.object
-    }
+  handleClick(appLink) {
+    navigate(appLink)
   }
 
   renderComments(myComments, data) {
     const comments = []
     if (myComments) {
       myComments.forEach(c => {
-        const apps = data.allApps.edges.filter(
-          e => e.node.website === c.object
-        )
+        const apps = data.allApps.edges.filter(e => e.node.website === c.object)
+        const icon =
+          apps.length > 0 &&
+          apps[0].node.localFile &&
+          apps[0].node.localFile.childImageSharp ? (
+            <Img
+              component="span"
+              fixed={apps[0].node.localFile.childImageSharp.fixed}
+            />
+          ) : (
+            <div width="24px" height="24px" />
+          )
         const appLabel =
-          apps.length === 1
-            ? `For ${apps[0].node.name}`
-            : `For ${c.object}`
-        const rating =<>
+          apps.length === 1 ? <>{apps[0].node.name}</> : <>{c.attrs.object}</>
+        const appLink =
+          apps.length === 1 ? `/appco/${apps[0].node.appcoid}` : c.attrs.object
+        const rating = (
+          <>
             <br />
             <SmallRating component="span" readOnly value={c.rating} />
           </>
+        )
         const comment = c.comment.toString()
         comments.push(
-          <ListItem button key={c._id} onClick={() => this.handleClick(c)}>
+          <ListItem
+            button
+            key={c._id}
+            onClick={() => this.handleClick(appLink)}
+          >
+            <ListItemAvatar>{icon}</ListItemAvatar>
             <ListItemText
               primary={<>{comment}</>}
               secondary={
@@ -106,7 +121,7 @@ class AllComments extends React.Component {
   }
 
   render() {
-    const { allComments, apiComments, loading, isSignedIn } = this.state
+    const { apiComments, loading, isSignedIn } = this.state
 
     return (
       <StaticQuery
@@ -116,6 +131,14 @@ class AllComments extends React.Component {
               edges {
                 node {
                   ...AppInformation
+                  localFile {
+                    id
+                    childImageSharp {
+                      fixed(width: 24, height: 24) {
+                        ...GatsbyImageSharpFixed
+                      }
+                    }
+                  }
                 }
               }
             }

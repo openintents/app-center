@@ -4,15 +4,27 @@ import { StaticQuery, graphql } from 'gatsby'
 
 import Header from './header'
 import './layout.css'
-import { Typography } from '@material-ui/core'
+import { Typography, createMuiTheme } from '@material-ui/core'
 import { getApiServer } from '../app/services/blockstack'
+import { ThemeProvider } from '@material-ui/styles'
 
 export const styles = {
   smallIcon: {
-    width: 27,
-    height: 27,
+    width: 24,
+    height: 24,
   },
 }
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#72a7cf',
+    },
+    secondary: {
+      main: '#cf9a72',
+    },
+  },
+})
 
 const Layout = ({ children, hideSearch }) => (
   <StaticQuery
@@ -27,15 +39,26 @@ const Layout = ({ children, hideSearch }) => (
         siteSearchIndex {
           index
         }
+        file(
+          sourceInstanceName: { eq: "images" }
+          relativePath: { eq: "icon.png" }
+        ) {
+          childImageSharp {
+            fixed(width: 24, height: 24) {
+              ...GatsbyImageSharpFixed
+            }
+          }
+        }
       }
     `}
     render={data => (
-      <>
+      <ThemeProvider theme={theme}>
         <Header
           siteTitle={data.site.siteMetadata.title}
           siteDescription={data.site.siteMetadata.description}
           siteSearchIndex={data.siteSearchIndex}
           hideSearch={hideSearch}
+          fixedIcon={data.file.childImageSharp.fixed}
         />
         <div
           style={{
@@ -60,7 +83,7 @@ const Layout = ({ children, hideSearch }) => (
             </Typography>
           </footer>
         </div>
-      </>
+      </ThemeProvider>
     )}
   />
 )
