@@ -6,11 +6,13 @@ import {
   ListItemText,
   List,
   Button,
+  ListItemAvatar,
 } from '@material-ui/core'
 import { UserComment, PrivateUserComment } from '../components/model'
 import { User } from 'radiks/lib'
 import { loadMyData, isSignedIn } from '../app/services/blockstack'
 import { SmallRating } from '../app/mycomments'
+import Img from 'gatsby-image'
 
 class AllComments extends React.Component {
   state = {
@@ -26,7 +28,6 @@ class AllComments extends React.Component {
   componentDidMount() {
     this.loadUserOwnerComments()
   }
-
   loadUserOwnerComments() {
     const server = process.env.GATSBY_RADIKS_SERVER ? process.env.GATSBY_RADIKS_SERVER : 'http://localhost:5000'
     fetch(server+'/api/usercomments', {
@@ -54,9 +55,7 @@ class AllComments extends React.Component {
   }
 
   handleClick(comment) {
-    if (window) {
-      window.location.href = comment.attrs.object
-    }
+    navigate(comment.object)
   }
 
   renderComments(myComments, data) {
@@ -66,6 +65,14 @@ class AllComments extends React.Component {
         const apps = data.allApps.edges.filter(
           e => e.node.website === c.object
         )
+        const icon =
+          apps.length > 0 &&
+          apps[0].node.localFile &&
+          apps[0].node.localFile.childImageSharp ? (
+            <Img component="span" fixed={apps[0].node.localFile.childImageSharp.fixed} />
+          ) : (
+            <div width="24px" height="24px" />
+          )        
         const appLabel =
           apps.length === 1
             ? `For ${apps[0].node.name}`
@@ -76,7 +83,14 @@ class AllComments extends React.Component {
           </>
         const comment = c.comment.toString()
         comments.push(
-          <ListItem button key={c._id} onClick={() => this.handleClick(c)}>
+          <ListItem
+            button
+            key={c._id}
+            onClick={() => this.handleClick(c)}
+          >
+            <ListItemAvatar>
+              {icon}
+            </ListItemAvatar>
             <ListItemText
               primary={<>{comment}</>}
               secondary={
@@ -116,6 +130,14 @@ class AllComments extends React.Component {
               edges {
                 node {
                   ...AppInformation
+                  localFile {
+                    id
+                    childImageSharp {
+                      fixed(width: 24, height: 24) {
+                        ...GatsbyImageSharpFixed
+                      }
+                    }
+                  }
                 }
               }
             }

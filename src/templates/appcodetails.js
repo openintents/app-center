@@ -26,7 +26,8 @@ import {
 import CloseIcon from '@material-ui/icons/Close'
 import LaunchIcon from '@material-ui/icons/Launch'
 import NoteIcon from '@material-ui/icons/Note'
-
+import AppsIcon from '@material-ui/icons/Apps'
+import RemoveIcon from '@material-ui/icons/RemoveCircleOutline'
 import {
   UserComment,
   OwnerComment,
@@ -119,7 +120,7 @@ const Comments = (data, comments, isSignedIn) => {
   } else {
     return comments.map((c, key) => {
       return (
-        <Card key={c._id}>
+        <Card key={c._id} style={{ margin: 4 }}>
           <CardContent>
             <Typography>
               {c.attrs.comment}
@@ -429,6 +430,7 @@ class AppDetails extends Component {
           disabled={isClaimingApp}
           onClick={() => this.removeApp()}
         >
+          <RemoveIcon style={styles.smallIcon} />
           Remove from my apps
         </Button>
         <Button disabled={!data.apps.website} onClick={() => this.launchApp()}>
@@ -457,6 +459,7 @@ class AppDetails extends Component {
           }}
           variant="outlined"
         >
+          <AppsIcon style={styles.smallIcon} />
           Claim this app
         </Button>
         <Button disabled={!data.apps.website} onClick={() => this.launchApp()}>
@@ -495,26 +498,32 @@ class AppDetails extends Component {
           description={data.apps.description}
           keywords={[data.apps.name, `application`, `blockstack`]}
         />
-        <Grid container alignItems="center" spacing={2}>
-          <Grid item>{icon}</Grid>
-          <Grid item>
-            <Typography variant="h3" align="center">
-              {data.apps.name}
-            </Typography>
-          </Grid>
-          <Grid item>{appActions}</Grid>
-        </Grid>
+        <Card style={{ margin: 4 }}>
+          <CardContent>
+            <Grid container alignItems="center" spacing={2}>
+              <Grid item xs={1} sm={1}>
+                {icon}
+              </Grid>
+              <Grid item xs={11} sm={7}>
+                <Typography variant="h3" align="center">
+                  {data.apps.name}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                {appActions}
+              </Grid>
+            </Grid>
 
-        <Container>
-          {SmallAppDetails({
-            description: data.apps.description,
-            lifetimeEarnings: data.apps.lifetimeEarnings,
-            lastCommit: data.apps.fields && data.apps.fields.lastCommit,
-            openSourceUrl: data.apps.openSourceUrl,
-            hideRewards: false,
-            showSourceLink: true,
-          })}
-        </Container>
+            {SmallAppDetails({
+              description: data.apps.description,
+              lifetimeEarnings: data.apps.lifetimeEarnings,
+              lastCommit: data.apps.fields && data.apps.fields.lastCommit,
+              openSourceUrl: data.apps.openSourceUrl,
+              hideRewards: false,
+              showSourceLink: true,
+            })}
+          </CardContent>
+        </Card>
         <StyledRoot>
           <AppBar position="static">
             <Tabs
