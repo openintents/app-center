@@ -1,6 +1,7 @@
 ---
 title: Comparing Blockstack Blogging Apps
 date: "2019-05-09T22:12:03.284Z"
+cover_image: './blog.jpg'
 ---
 
 I am looking for a convenient way to publish observations about Blockstack and the ecosystem. Therefore, I am starting here with my personal review for blogging apps that make use of Blockstack.
@@ -62,4 +63,4 @@ Cons:
 
 ##Conclusion
 
-This post has been published with "Graphite Publishing". The content discovery feature was too important. However, once Blockstack Collections are available choosing one single blogging app is not important anymore, because you can edit your posts with all apps that use the "Blog post" collection!
+This post has been [published initally](https://publishing.graphitedocs.com/sites/friedger.id/public/de8e222a9feb-4330-87ed-50e200e4ae56) with "Graphite Publishing". The content discovery feature was too important. However, once Blockstack Collections are available choosing one single blogging app is not important anymore, because you can edit your posts with all apps that use the "Blog post" collection!

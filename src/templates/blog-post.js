@@ -1,8 +1,9 @@
-import React from "react"
-import { Link, graphql } from "gatsby"
+import React from 'react'
+import { Link, graphql } from 'gatsby'
 
-import Layout from "../components/layout"
-import SEO from "../components/seo"
+import Layout from '../components/layout'
+import SEO from '../components/seo'
+import Img from 'gatsby-image'
 
 class BlogPostTemplate extends React.Component {
   render() {
@@ -11,10 +12,8 @@ class BlogPostTemplate extends React.Component {
 
     return (
       <Layout location={this.props.location}>
-        <SEO
-          title={post.frontmatter.title}
-          description={post.excerpt}
-        />        
+        <SEO title={post.frontmatter.title} description={post.excerpt} />
+        <Img fluid={post.frontmatter.cover_image.childImageSharp.fluid} />
         <h1
           style={{
             marginTop: 4,
@@ -24,7 +23,7 @@ class BlogPostTemplate extends React.Component {
           {post.frontmatter.title}
         </h1>
         <p
-          style={{            
+          style={{
             display: `block`,
             marginBottom: 4,
           }}
@@ -84,6 +83,14 @@ export const pageQuery = graphql`
       frontmatter {
         title
         date(formatString: "MMMM DD, YYYY")
+        cover_image {
+          publicURL
+          childImageSharp {
+            fluid(maxWidth: 1240) {
+              ...GatsbyImageSharpFluid
+            }
+          }
+        }
       }
     }
   }
