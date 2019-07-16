@@ -166,16 +166,12 @@ export const saveOwnerComment = async (commentText, currentComment) => {
 }
 
 export const getUserComments = async (limit=10) => {
-  const comments = await UserComment.fetchList({
-    sort: '-order'
-  })
+  const comments = await UserComment.fetchList()
   return comments
 }
 
 export const getOwnerComments = async (limit=10) => {
-  const comments = await OwnerComment.fetchList({
-    sort: '-order'
-  })
+  const comments = await OwnerComment.fetchList()
   return comments
 }
 

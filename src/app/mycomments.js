@@ -10,7 +10,6 @@ import {
   ListItemSecondaryAction,
   IconButton,
   withStyles,
-  Paper
 } from '@material-ui/core'
 import {
   UserComment,
@@ -257,9 +256,7 @@ class MyComments extends React.Component {
       showCommentDialog,
       showUpdateDialog,
       currentVisibility,
-      updating,
-      usersComments,
-      ownersComments
+      updating
     } = this.state
 
     return (
