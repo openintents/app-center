@@ -69,7 +69,7 @@ class AllComments extends React.Component {
           apps[0].node.localFile.childImageSharp ? (
             <Img component="span" fixed={apps[0].node.localFile.childImageSharp.fixed} />
           ) : (
-            <div width="16px" height="16px" />
+            <div width="24px" height="24px" />
           )
         const appLabel =
           apps.length === 1 ? (
@@ -144,7 +144,7 @@ class AllComments extends React.Component {
                   localFile {
                     id
                     childImageSharp {
-                      fixed(width: 16, height: 16) {
+                      fixed(width: 24, height: 24) {
                         ...GatsbyImageSharpFixed
                       }
                     }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'gatsby'
+import { Link, graphql } from 'gatsby'
 
 import Layout from '../components/layout'
 import SEO from '../components/seo'
@@ -17,9 +17,12 @@ import {
 } from '@material-ui/core'
 import CommentIcon from '@material-ui/icons/Note'
 import AppsIcon from '@material-ui/icons/Apps'
+import FossIcon from '@material-ui/icons/FolderOpen'
+import NossIcon from '@material-ui/icons/Folder'
 import AllComments from '../components/allComments'
 import { styles } from '../components/layout'
-import { AppCoIcon } from '../components/image'
+import AppCenterIcon from '../components/appCenterIcon'
+import AppCoIcon from '../components/appCoIcon'
 import BlockstackProfile from '../components/blockstackProfile'
 
 const AppCoMonth = ({ title, path, newOnly, date }) => {
@@ -83,8 +86,31 @@ const PersonalData = () => {
     </Card>
   )
 }
+
+const Post = ({ node }) => {
+  console.log(node)
+  const title = node.frontmatter.title || node.fields.slug
+  return (
+    <Card key={node.fields.slug} style={{ margin: 4 }}>
+      <CardHeader
+        title={
+          <Link style={{ boxShadow: `none` }} to={node.fields.slug}>
+            {title}
+          </Link>
+        }
+        subheader={node.frontmatter.date}
+        avatar={<AppCenterIcon />}
+      />
+      <CardContent>
+        <Typography>{node.excerpt}</Typography>
+      </CardContent>
+    </Card>
+  )
+}
+
 class IndexPage extends React.Component {
   render() {
+    const { data } = this.props
     return (
       <Layout>
         <SEO
@@ -102,15 +128,23 @@ class IndexPage extends React.Component {
               <CardHeader title="Browse currrent Blockstack apps" />
 
               <CardContent>
-                <Grid container>
+                <Grid container alignItems="center">
                   <Grid item xs={6}>
-                    <Typography>
-                      <Link to="/appco-foss/">Open Source apps</Link>
+                    <Typography align="center">
+                      <Link to="/appco-foss/">
+                        <FossIcon style={styles.smallIcon} />
+                        <br />
+                        Open Source apps
+                      </Link>
                     </Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography>
-                      <Link to="/appco-noss/">Closed Source apps</Link>
+                    <Typography align="center">
+                      <Link to="/appco-noss/">
+                        <NossIcon style={styles.smallIcon} />
+                        <br />
+                        Closed Source apps
+                      </Link>
                     </Typography>
                   </Grid>
                 </Grid>
@@ -119,37 +153,38 @@ class IndexPage extends React.Component {
             <AppCoMonth
               title="App Mining (June 2019)"
               path="2019-06"
-              date="6th July 2019"
+              date="July 06, 2019"
             />
+            <Post node={data.allMarkdownRemark.edges[0].node} />
             <AppCoMonth
               title="App Mining (May 2019)"
               path="2019-05"
-              date="5th May 2019"
+              date="May 05, 2019"
             />
             <AppCoMonth
               title="App Mining (April 2019)"
               path="2019-04"
-              date="3rd April 2019"
+              date="April 03, 2019"
             />
             <AppCoMonth
               title="App Mining (March 2019)"
               path="2019-03"
-              date="3rd April 2019"
+              date="April 03, 2019"
             />
             <AppCoMonth
               title="App Mining (February 2019)"
               path="2019-02"
-              date="3rd April 2019"
+              date="April 03, 2019"
             />
             <AppCoMonth
               title="App Mining (January 2019)"
               path="2019-01"
-              date="3rd April 2019"
+              date="April 03, 2019"
             />
             <AppCoMonth
               title="App Mining (December 2018)"
               path="2018-12"
-              date="3rd April 2019"
+              date="April 03, 2019"
               newOnly
             />
             <Typography variant="body2">
@@ -171,5 +206,24 @@ class IndexPage extends React.Component {
     )
   }
 }
+
+export const indexQuery = graphql`
+  query {
+    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+      edges {
+        node {
+          excerpt
+          fields {
+            slug
+          }
+          frontmatter {
+            date(formatString: "MMMM DD, YYYY")
+            title
+          }
+        }
+      }
+    }
+  }
+`
 
 export default IndexPage

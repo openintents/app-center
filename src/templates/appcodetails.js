@@ -27,7 +27,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import LaunchIcon from '@material-ui/icons/Launch'
 import NoteIcon from '@material-ui/icons/Note'
 import AppsIcon from '@material-ui/icons/Apps'
-
+import RemoveIcon from '@material-ui/icons/RemoveCircleOutline'
 import {
   UserComment,
   OwnerComment,
@@ -429,6 +429,7 @@ class AppDetails extends Component {
           disabled={isClaimingApp}
           onClick={() => this.removeApp()}
         >
+          <RemoveIcon style={styles.smallIcon} />
           Remove from my apps
         </Button>
         <Button disabled={!data.apps.website} onClick={() => this.launchApp()}>
