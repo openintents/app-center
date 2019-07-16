@@ -370,7 +370,6 @@ class AppDetails extends Component {
             object: this.props.data.apps.website,
           })
     await comment.save()
-    // await comment.insertOne()
     await this.loadComments()
     this.setState({ showUpdateDialog: false, updating: false })
   }
