@@ -6,6 +6,7 @@ import {
   ListItemText,
   List,
   Button,
+  ListItemAvatar,
 } from '@material-ui/core'
 import { UserComment, PrivateUserComment } from '../components/model'
 import { User } from 'radiks/lib'
@@ -66,18 +67,18 @@ class AllComments extends React.Component {
           apps.length > 0 &&
           apps[0].node.localFile &&
           apps[0].node.localFile.childImageSharp ? (
-            <Img fixed={apps[0].node.localFile.childImageSharp.fixed} />
+            <Img component="span" fixed={apps[0].node.localFile.childImageSharp.fixed} />
           ) : (
             <div width="16px" height="16px" />
           )
         const appLabel =
           apps.length === 1 ? (
             <>
-              {icon} {apps[0].node.name}
+              {apps[0].node.name}
             </>
           ) : (
             <>
-              {icon} {c.attrs.object}
+              {c.attrs.object}
             </>
           )
         const appLink =
@@ -98,6 +99,9 @@ class AllComments extends React.Component {
             key={c._id}
             onClick={() => this.handleClick(appLink)}
           >
+            <ListItemAvatar>
+              {icon}
+            </ListItemAvatar>
             <ListItemText
               primary={<>{comment}</>}
               secondary={

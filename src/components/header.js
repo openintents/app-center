@@ -32,15 +32,12 @@ const Header = ({
       <Grid item xs={1}>
         <Img fixed={fixedIcon} alt="icon" />
       </Grid>
-      <Grid item sm={7} xs={11}>
+      <Grid item xs={11}>
         <Typography variant="h3">
           <Link to="/" className={classes.title}>
             {siteTitle}
           </Link>
         </Typography>
-      </Grid>
-      <Grid item sm={4} xs={12}>
-        <BlockstackProfile />
       </Grid>
       <Grid item xs={1} />
       <Grid item xs={11}>
