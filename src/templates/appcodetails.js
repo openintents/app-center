@@ -634,7 +634,7 @@ class AppDetails extends Component {
             handleChangeVisibility: this.handleChangeVisibility,
             handleChangeText: this.handleChangeText,
             saveDraftUpdate: this.saveDraftUpdate,
-            postComment: this.postComment,
+            postComment: this.postUpdate,
           })}
 
         <hr />

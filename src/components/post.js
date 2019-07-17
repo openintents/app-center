@@ -1,7 +1,14 @@
 import React from 'react'
-import { Link } from 'gatsby'
+import { navigate } from 'gatsby'
 
-import { Typography, Card, CardHeader, CardContent } from '@material-ui/core'
+import {
+  Typography,
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
+  Button,
+} from '@material-ui/core'
 import AppCenterIcon from './appCenterIcon'
 
 export default ({ node }) => {
@@ -9,17 +16,24 @@ export default ({ node }) => {
   return (
     <Card key={node.fields.slug} style={{ margin: 4 }}>
       <CardHeader
-        title={
-          <Link style={{ boxShadow: `none` }} to={node.fields.slug}>
-            {title}
-          </Link>
-        }
+        title={title}
         subheader={node.frontmatter.date}
         avatar={<AppCenterIcon />}
       />
       <CardContent>
         <Typography>{node.excerpt}</Typography>
       </CardContent>
+      <CardActions>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => {
+            navigate(node.fields.slug)
+          }}
+        >
+          Read more
+        </Button>
+      </CardActions>
     </Card>
   )
 }
