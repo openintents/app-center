@@ -8,6 +8,9 @@ import {
   Button,
   ListItemAvatar,
 } from '@material-ui/core'
+import { UserComment, PrivateUserComment } from '../components/model'
+import { User } from 'radiks/lib'
+import { loadMyData, isSignedIn } from '../app/services/blockstack'
 import { SmallRating } from '../app/mycomments'
 import Img from 'gatsby-image'
 

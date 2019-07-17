@@ -13,7 +13,6 @@ import {
 } from '@material-ui/core'
 import { Apps } from '@material-ui/icons'
 import Img from 'gatsby-image'
-// Search component
 
 const styles = theme => ({
   SearchField: {
@@ -22,9 +21,9 @@ const styles = theme => ({
     backgroundColor: theme.palette.common.white,
   },
   AppsIcon: {
-    color: 'gray',
-  },
-})
+    color:'gray'
+  }
+}
 
 class Search extends Component {
   constructor(props) {
@@ -62,7 +61,6 @@ class Search extends Component {
           return (
             <div>
               <TextField
-                className={classes.margin}
                 id="input-with-icon-textfield"
                 placeholder="Search"
                 variant="outlined"
