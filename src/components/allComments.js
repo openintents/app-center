@@ -40,6 +40,15 @@ class AllComments extends React.Component {
         //we can make another call here to get the owner comments too from the api
       })
       .then(comments => {
+        comments.sort((c1, c2) => {
+          if (c1.createdAt - c2.createdAt > 0) {
+            return -1
+          } else if (c1.createdAt - c2.createdAt < 0) {
+            return 1
+          } else {
+            return 0
+          }
+        })
         this.setState({
           loadingAllComments: false,
           loading: false,
