@@ -1,7 +1,8 @@
 import React from 'react'
 import { navigate } from 'gatsby'
 import { handleLogin } from './services/blockstack'
-import { Button, Typography, Link, Container, Divider } from '@material-ui/core'
+import { Typography, Link, Container, Divider } from '@material-ui/core'
+import BlockstackProfile from '../components/blockstackProfile'
 
 class Login extends React.Component {
   componentDidMount() {
@@ -43,10 +44,9 @@ class Login extends React.Component {
             Neither Blockstack nor the makers of Blockstack apps can take the id
             from you or have access to it.
           </Typography>
+
+          <BlockstackProfile />
         </Container>
-        <Button variant="outlined" onClick={this.handleSubmit}>
-          log in
-        </Button>
       </>
     )
   }

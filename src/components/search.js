@@ -13,7 +13,6 @@ import {
 } from '@material-ui/core'
 import { Apps } from '@material-ui/icons'
 import Img from 'gatsby-image'
-// Search component
 
 const styles = theme => {
   return {

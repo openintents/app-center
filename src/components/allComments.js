@@ -5,19 +5,15 @@ import {
   ListItem,
   ListItemText,
   List,
-  Button,
   ListItemAvatar,
 } from '@material-ui/core'
-import { UserComment, PrivateUserComment } from '../components/model'
-import { User } from 'radiks/lib'
-import { loadMyData, isSignedIn } from '../app/services/blockstack'
 import { SmallRating } from '../app/mycomments'
 import Img from 'gatsby-image'
 
 class AllComments extends React.Component {
   state = {
     myApps: {},
-    allComments: [],
+    apiComments: [],
     loading: true,
     loadingApps: true,
     loadingComments: true,
@@ -25,83 +21,74 @@ class AllComments extends React.Component {
   }
 
   componentDidMount() {
-    if (isSignedIn()) {
-      User.createWithCurrentUser().then(() => {
-        loadMyData().then(content => {
-          this.setState({
-            myApps: content.myApps,
-            loadingApps: false,
-            loading: this.state.loadingComments,
-            isSignedIn: true,
-          })
-        })
-        this.loadComments()
-      })
-    } else {
-      this.setState({ loading: false, isSignedIn: false })
-    }
+    this.loadUserOwnerComments()
   }
 
-  loadComments() {
-    UserComment.fetchList({sort: '-createdAt'}).then(allComments => {
-      this.setState({
-        allComments,
-        loadingComments: false,
-        loading: this.state.loadingApps,
-      })
+  loadUserOwnerComments() {
+    const server = process.env.GATSBY_RADIKS_SERVER
+      ? process.env.GATSBY_RADIKS_SERVER
+      : 'http://localhost:5000'
+    fetch(server + '/api/usercomments', {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
+      .then(response => {
+        return response.json()
+        //we can make another call here to get the owner comments too from the api
+      })
+      .then(comments => {
+        this.setState({
+          loadingAllComments: false,
+          loading: false,
+          apiComments: comments,
+        })
+      })
+      .catch(err => {
+        console.log('error', err)
+      })
   }
 
   handleClick(appLink) {
     navigate(appLink)
   }
 
-  renderComments(myComments, data) {
+  renderComments(apiComments, data) {
     const comments = []
-    if (myComments) {
-      myComments.forEach(c => {
-        const apps = data.allApps.edges.filter(
-          e => e.node.website === c.attrs.object
-        )
+    if (apiComments) {
+      apiComments.forEach(c => {
+        const apps = data.allApps.edges.filter(e => e.node.website === c.object)
         const icon =
           apps.length > 0 &&
           apps[0].node.localFile &&
           apps[0].node.localFile.childImageSharp ? (
-            <Img component="span" fixed={apps[0].node.localFile.childImageSharp.fixed} />
+            <Img
+              component="span"
+              fixed={apps[0].node.localFile.childImageSharp.fixed}
+            />
           ) : (
             <div width="24px" height="24px" />
           )
         const appLabel =
-          apps.length === 1 ? (
-            <>
-              {apps[0].node.name}
-            </>
-          ) : (
-            <>
-              {c.attrs.object}
-            </>
-          )
+          apps.length === 1 ? <>{apps[0].node.name}</> : <>{c.object}</>
         const appLink =
-          apps.length === 1 ? `/appco/${apps[0].node.appcoid}` : c.attrs.object
-        const rating = [
-          UserComment.modelName(),
-          PrivateUserComment.modelName(),
-        ].includes(c.modelName()) ? (
+          apps.length === 1 ? `/appco/${apps[0].node.appcoid}` : c.object
+        const rating = (
           <>
             <br />
-            <SmallRating component="span" readOnly value={c.attrs.rating} />
+            <SmallRating component="span" readOnly value={c.rating} />
           </>
-        ) : null
-        const comment = c.attrs.comment.toString()
+        )
+        const comment = c.comment.toString()
         comments.push(
           <ListItem
             button
             key={c._id}
             onClick={() => this.handleClick(appLink)}
           >
-            <ListItemAvatar>
-              {icon}
-            </ListItemAvatar>
+            <ListItemAvatar>{icon}</ListItemAvatar>
             <ListItemText
               primary={<>{comment}</>}
               secondary={
@@ -131,7 +118,7 @@ class AllComments extends React.Component {
   }
 
   render() {
-    const { allComments, loading, isSignedIn } = this.state
+    const { apiComments, loading } = this.state
 
     return (
       <StaticQuery
@@ -157,21 +144,10 @@ class AllComments extends React.Component {
         render={data => (
           <>
             {loading && <Typography>Loading...</Typography>}
-            {!loading && isSignedIn && (
+            {!loading && (
               <>
                 <Typography variant="h5">Comments</Typography>
-                {this.renderComments(allComments, data)}
-              </>
-            )}
-            {!loading && !isSignedIn && (
-              <>
-                <Typography variant="h5">Comments</Typography>
-                <Button
-                  variant="outlined"
-                  onClick={() => navigate('/data/login')}
-                >
-                  Sign In to view comments
-                </Button>
+                {this.renderComments(apiComments, data)}
               </>
             )}
           </>
