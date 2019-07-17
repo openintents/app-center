@@ -119,11 +119,12 @@ const Comments = (data, comments, isSignedIn) => {
     return <Typography>No comments yet</Typography>
   } else {
     return comments.map((c, key) => {
+      const comment = c.attrs.comment.toString()
       return (
         <Card key={c._id} style={{ margin: 4 }}>
           <CardContent>
             <Typography>
-              {c.attrs.comment}
+              {comment}
               <br />
               <small>
                 {c.attrs.createdBy || 'A user'}
@@ -153,10 +154,11 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
   } else {
     const allMonths = []
     const renderComment = month => (c, key) => {
+      const comment = c.attrs.comment.toString()
       return (
         <React.Fragment key={c._id}>
           <Typography component="div">
-            <Box>{c.attrs.comment}</Box>
+            <Box>{comment}</Box>
             <Box fontSize="small">{c.attrs.createdBy || 'A user'}</Box>
           </Typography>
           {key < comments[month].length - 1 && <Divider light />}

@@ -14,14 +14,16 @@ import {
 import { Apps } from '@material-ui/icons'
 import Img from 'gatsby-image'
 
-const styles = theme => ({
-  SearchField: {
-    borderRadius: 4,
-    color: theme.palette.text.primary,
-    backgroundColor: theme.palette.common.white,
-  },
-  AppsIcon: {
-    color:'gray'
+const styles = theme => {
+  return {
+    SearchField: {
+      borderRadius: 4,
+      color: theme.palette.text.primary,
+      backgroundColor: theme.palette.common.white,
+    },
+    AppsIcon: {
+      color: 'gray',
+    },
   }
 }
 

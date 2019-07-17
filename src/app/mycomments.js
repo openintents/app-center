@@ -20,7 +20,7 @@ import {
   saveDraftOwnerComment,
   saveOwnerComment,
   saveUserComment,
-  savePrivateUserComment
+  savePrivateUserComment,
 } from '../components/model'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Rating from 'material-ui-rating'
@@ -168,20 +168,10 @@ class MyComments extends React.Component {
             <div width="24" height="24" />
           )
         const appLabel =
-          apps.length === 1 ? (
-            <>
-              {apps[0].node.name}
-            </>
-          ) : (
-            <>
-              {c.attrs.object}
-            </>
-          )
+          apps.length === 1 ? <>{apps[0].node.name}</> : <>{c.attrs.object}</>
         comments.push(
           <ListItem button key={c._id} onClick={() => this.handleClick(c)}>
-            <ListItemAvatar>
-              {icon}
-            </ListItemAvatar>
+            <ListItemAvatar>{icon}</ListItemAvatar>
             <ListItemText
               primary={<>{c.attrs.comment}</>}
               secondary={
@@ -277,7 +267,7 @@ class MyComments extends React.Component {
       showCommentDialog,
       showUpdateDialog,
       currentVisibility,
-      updating
+      updating,
     } = this.state
 
     return (

@@ -5,19 +5,14 @@ import {
   ListItem,
   ListItemText,
   List,
-  Button,
   ListItemAvatar,
 } from '@material-ui/core'
-import { UserComment, PrivateUserComment } from '../components/model'
-import { User } from 'radiks/lib'
-import { loadMyData, isSignedIn } from '../app/services/blockstack'
 import { SmallRating } from '../app/mycomments'
 import Img from 'gatsby-image'
 
 class AllComments extends React.Component {
   state = {
     myApps: {},
-    allComments: [],
     apiComments: [],
     loading: true,
     loadingApps: true,
@@ -45,7 +40,6 @@ class AllComments extends React.Component {
         //we can make another call here to get the owner comments too from the api
       })
       .then(comments => {
-        console.log('get all comments', comments)
         this.setState({
           loadingAllComments: false,
           loading: false,
@@ -61,10 +55,10 @@ class AllComments extends React.Component {
     navigate(appLink)
   }
 
-  renderComments(myComments, data) {
+  renderComments(apiComments, data) {
     const comments = []
-    if (myComments) {
-      myComments.forEach(c => {
+    if (apiComments) {
+      apiComments.forEach(c => {
         const apps = data.allApps.edges.filter(e => e.node.website === c.object)
         const icon =
           apps.length > 0 &&
@@ -78,9 +72,9 @@ class AllComments extends React.Component {
             <div width="24px" height="24px" />
           )
         const appLabel =
-          apps.length === 1 ? <>{apps[0].node.name}</> : <>{c.attrs.object}</>
+          apps.length === 1 ? <>{apps[0].node.name}</> : <>{c.object}</>
         const appLink =
-          apps.length === 1 ? `/appco/${apps[0].node.appcoid}` : c.attrs.object
+          apps.length === 1 ? `/appco/${apps[0].node.appcoid}` : c.object
         const rating = (
           <>
             <br />
@@ -124,7 +118,7 @@ class AllComments extends React.Component {
   }
 
   render() {
-    const { apiComments, loading, isSignedIn } = this.state
+    const { apiComments, loading } = this.state
 
     return (
       <StaticQuery
@@ -154,17 +148,6 @@ class AllComments extends React.Component {
               <>
                 <Typography variant="h5">Comments</Typography>
                 {this.renderComments(apiComments, data)}
-              </>
-            )}
-            {!loading && !isSignedIn && (
-              <>
-                <Typography variant="h5">Comments</Typography>
-                <Button
-                  variant="outlined"
-                  onClick={() => navigate('/data/login')}
-                >
-                  Sign In to view comments
-                </Button>
               </>
             )}
           </>
