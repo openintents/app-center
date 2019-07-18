@@ -10,8 +10,8 @@ import { ThemeProvider } from '@material-ui/styles'
 
 export const styles = {
   smallIcon: {
-    width: 24,
-    height: 24,
+    width: 36,
+    height: 36,
   },
 }
 
@@ -44,7 +44,7 @@ const Layout = ({ children, hideSearch }) => (
           relativePath: { eq: "icon.png" }
         ) {
           childImageSharp {
-            fixed(width: 24, height: 24) {
+            fixed(width: 36, height: 36) {
               ...GatsbyImageSharpFixed
             }
           }

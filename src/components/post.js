@@ -15,7 +15,10 @@ import ReadIcon from '@material-ui/icons/Subject'
 export default ({ node }) => {
   const title = node.frontmatter.title || node.fields.slug
   return (
-    <Card key={node.fields.slug} style={{ margin: 4 }}>
+    <Card
+      key={node.fields.slug}
+      style={{ marginTop: 4, marginLeft: 4, marginBottom: 12, marginLeft: 4 }}
+    >
       <CardHeader
         title={title}
         subheader={node.frontmatter.date}

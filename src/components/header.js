@@ -31,8 +31,8 @@ const Header = ({
   classes,
 }) => (
   <Container className={classes.header}>
-    <Grid container alignContent="center">
-      <Grid item xs={1} align="center">
+    <Grid container alignContent="center" spacing={2}>
+      <Grid item xs={1} align="center" >
         <Link to="/" className={classes.titleIcon}>
           <Img fixed={fixedIcon} alt="icon" />
           <Typography variant="body2">{siteDescription}</Typography>

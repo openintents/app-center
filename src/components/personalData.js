@@ -11,7 +11,6 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Box,
   Container,
 } from '@material-ui/core'
 import CommentIcon from '@material-ui/icons/Note'

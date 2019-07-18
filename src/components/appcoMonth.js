@@ -6,7 +6,9 @@ import AppCoIcon from './appCoIcon'
 
 export default ({ title, path, newOnly, date }) => {
   return (
-    <Card style={{ margin: 4 }}>
+    <Card
+      style={{ marginTop: 4, marginLeft: 4, marginBottom: 12, marginLeft: 4 }}
+    >
       <CardHeader title={title} subheader={date} avatar={<AppCoIcon />} />
       <CardContent>
         <Typography>

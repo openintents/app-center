@@ -2,15 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Index } from 'elasticlunr'
 import { withStyles } from '@material-ui/core/styles'
-import { Link, graphql, StaticQuery, navigate } from 'gatsby'
+import { graphql, StaticQuery, navigate } from 'gatsby'
 import {
   List,
   ListItem,
   Typography,
-  Grid,
   TextField,
   InputAdornment,
-  ListItemIcon,
   ListItemText,
   ListItemAvatar,
 } from '@material-ui/core'
@@ -55,7 +53,7 @@ class Search extends Component {
                   localFile {
                     id
                     childImageSharp {
-                      fixed(width: 24, height: 24) {
+                      fixed(width: 36, height: 36) {
                         ...GatsbyImageSharpFixed
                       }
                     }
@@ -100,7 +98,7 @@ class Search extends Component {
                         fixed={appNodes[0].node.localFile.childImageSharp.fixed}
                       />
                     ) : (
-                      <div width="24px" height="24px" />
+                      <div width="36" height="36" />
                     )
                   return (
                     <ListItem

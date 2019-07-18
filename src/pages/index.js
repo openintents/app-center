@@ -203,7 +203,7 @@ class IndexPage extends Component {
           }}
         >
           <div>
-            <Card style={{ margin: 4 }}>
+            <Card style={{ margin: 24 }}>
               <CardContent>
                 <Grid container alignItems="center">
                   <Grid item xs={12} sm={2}>
@@ -217,7 +217,7 @@ class IndexPage extends Component {
                     </Grid>
                     <Grid item xs={6}>
                       <Typography align="center">
-                        <Button onClick={() => navigate('/appco-foss/')}>
+                        <Button onClick={() => navigate('/appco-foss/')} color="primary">
                           <FossIcon style={styles.smallIcon} />
                           Try Open Source apps
                         </Button>
@@ -225,7 +225,7 @@ class IndexPage extends Component {
                     </Grid>
                     <Grid item xs={6}>
                       <Typography align="center">
-                        <Button onClick={() => navigate('/appco-noss/')}>
+                        <Button onClick={() => navigate('/appco-noss/')} color="primary">
                           <NossIcon style={styles.smallIcon} />
                           Try Closed Source apps
                         </Button>
@@ -235,7 +235,7 @@ class IndexPage extends Component {
                 </Grid>
               </CardContent>
             </Card>
-            <Typography variant="h5">News and Updates</Typography>
+            <Typography variant="h5" align="center">News and Updates</Typography>
             {postComponents}
             <Typography variant="body2">
               <a href="https://docs.blockstack.org/develop/mining_intro.html">

@@ -41,6 +41,7 @@ import OwnerCommentDialog from '../components/ownerCommentDialog'
 import SEO from '../components/seo'
 import { SmallAppDetails } from '../components/app'
 import { styles } from '../components/layout'
+import { SmallRating } from '../app/mycomments'
 
 const StyledRoot = styled.div`
   flexgrow: 1;
@@ -120,6 +121,11 @@ const Comments = (data, comments, isSignedIn) => {
   } else {
     return comments.map((c, key) => {
       const comment = c.attrs.comment.toString()
+
+      const rating = (
+        <SmallRating component="span" readOnly value={c.attrs.rating} />
+      )
+
       return (
         <Card key={c._id} style={{ margin: 4 }}>
           <CardContent>
@@ -131,6 +137,7 @@ const Comments = (data, comments, isSignedIn) => {
                 {' - '}
                 {new Date(c.attrs.createdAt).toLocaleDateString()}
               </small>
+              {rating}
             </Typography>
           </CardContent>
         </Card>
@@ -191,6 +198,8 @@ function LinkTab(props) {
   )
 }
 
+const hashes = ['#', '#updates', '#comments']
+
 class AppDetails extends Component {
   state = {
     isClaimedApp: false,
@@ -207,6 +216,11 @@ class AppDetails extends Component {
   }
 
   componentDidMount() {
+    if (window.location.hash === '#updates') {
+      this.setState({ tabIndex: 1 })
+    } else if (window.location.hash === '#comments') {
+      this.setState({ tabIndex: 2 })
+    }
     checkIsSignedIn().then(isSignedIn => {
       if (isSignedIn) {
         const { data } = this.props
@@ -332,6 +346,7 @@ class AppDetails extends Component {
 
   handleChangeTabIndex = (e, tabIndex) => {
     e.preventDefault()
+    window.location.hash = hashes[tabIndex]
     this.setState({ tabIndex })
   }
 
@@ -420,28 +435,41 @@ class AppDetails extends Component {
     const appActions = isClaimedApp ? (
       <>
         <Button
-          variant="outlined"
+          disabled={!data.apps.website}
+          onClick={() => this.launchApp()}
+          color="primary"
+        >
+          <LaunchIcon style={styles.smallIcon} />
+          Try now
+        </Button>
+        <Button
           onClick={() => this.setState({ showUpdateDialog: true })}
+          color="primary"
         >
           <NoteIcon style={styles.smallIcon} />
           Post progress update
         </Button>{' '}
         <Button
-          variant="outlined"
           disabled={isClaimingApp}
           onClick={() => this.removeApp()}
+          color="secondary"
         >
           <RemoveIcon style={styles.smallIcon} />
           Remove from my apps
-        </Button>
-        <Button disabled={!data.apps.website} onClick={() => this.launchApp()}>
-          <LaunchIcon style={styles.smallIcon} />
         </Button>
       </>
     ) : (
       <>
         <Button
-          variant="outlined"
+          disabled={!data.apps.website}
+          onClick={() => this.launchApp()}
+          color="primary"
+        >
+          <LaunchIcon style={styles.smallIcon} />
+          Try now
+        </Button>{' '}
+        <Button
+          color="primary"
           onClick={() => {
             if (this.state.isSignedIn) {
               this.setState({ showUpdateDialog: true })
@@ -454,17 +482,14 @@ class AppDetails extends Component {
           Post comment
         </Button>{' '}
         <Button
+          color="secondary"
           disabled={isClaimingApp}
           onClick={() => {
             this.claimApp()
           }}
-          variant="outlined"
         >
           <AppsIcon style={styles.smallIcon} />
           Claim this app
-        </Button>
-        <Button disabled={!data.apps.website} onClick={() => this.launchApp()}>
-          <LaunchIcon style={styles.smallIcon} />
         </Button>
       </>
     )

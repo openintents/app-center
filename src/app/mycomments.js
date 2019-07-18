@@ -32,8 +32,8 @@ import Img from 'gatsby-image'
 
 const smallStyles = {
   iconButton: {
-    width: 24,
-    height: 24,
+    width: 36,
+    height: 36,
     padding: 0,
   },
   icon: {
@@ -165,7 +165,7 @@ class MyComments extends React.Component {
           apps[0].node.localFile.childImageSharp ? (
             <Img fixed={apps[0].node.localFile.childImageSharp.fixed} />
           ) : (
-            <div width="24" height="24" />
+            <div width="36" height="36" />
           )
         const appLabel =
           apps.length === 1 ? <>{apps[0].node.name}</> : <>{c.attrs.object}</>
@@ -281,7 +281,7 @@ class MyComments extends React.Component {
                   localFile {
                     id
                     childImageSharp {
-                      fixed(width: 24, height: 24) {
+                      fixed(width: 36, height: 36) {
                         ...GatsbyImageSharpFixed
                       }
                     }

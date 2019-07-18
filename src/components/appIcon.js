@@ -16,7 +16,7 @@ const AppIcon = ({ app }) => {
   if (app) {
     return <Img fixed={app.node.localFile.childImageSharp.fixed} />
   } else {
-    return <div style={{ width: 24, height: 24 }} />
+    return <div style={{ width: 36, height: 36 }} />
   }
 }
 

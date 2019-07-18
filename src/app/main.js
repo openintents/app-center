@@ -130,7 +130,7 @@ class Main extends React.Component {
           apps[0].node.localFile.childImageSharp ? (
             <Img fixed={apps[0].node.localFile.childImageSharp.fixed} />
           ) : (
-            <div width="24" height="24" />
+            <div width="36" height="36" />
           )
         const appLabel =
           apps.length === 1 ? <>{apps[0].node.name}</> : <>{c.attrs.object}</>

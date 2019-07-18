@@ -78,12 +78,12 @@ class AllComments extends React.Component {
               fixed={apps[0].node.localFile.childImageSharp.fixed}
             />
           ) : (
-            <div width="24px" height="24px" />
+            <div width="36" height="36" />
           )
         const appLabel =
           apps.length === 1 ? <>{apps[0].node.name}</> : <>{c.object}</>
         const appLink =
-          apps.length === 1 ? `/appco/${apps[0].node.appcoid}` : c.object
+          apps.length === 1 ? `/appco/${apps[0].node.appcoid}/#comments` : c.object
         const rating = (
           <>
             <br />
@@ -140,7 +140,7 @@ class AllComments extends React.Component {
                   localFile {
                     id
                     childImageSharp {
-                      fixed(width: 24, height: 24) {
+                      fixed(width: 36, height: 36) {
                         ...GatsbyImageSharpFixed
                       }
                     }

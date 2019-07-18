@@ -26,6 +26,12 @@ const UserCommentDialog = ({
   handleChangeRating,
   postComment,
 }) => {
+  let postAction
+  if (visibility === 'public') {
+    postAction = 'Post Publicly'
+  } else {
+    postAction = 'Post Privately'
+  }
   return (
     <Dialog
       open={showUpdateDialog}
@@ -56,10 +62,7 @@ const UserCommentDialog = ({
             label="Visible only for me"
           />
         </RadioGroup>
-        <Rating
-          onChange={(value) => handleChangeRating(value)}
-          value={rating}
-        />
+        <Rating onChange={value => handleChangeRating(value)} value={rating} />
         <TextField
           margin="normal"
           id="userUpdate"
@@ -80,7 +83,7 @@ const UserCommentDialog = ({
           Cancel
         </Button>
         <Button onClick={() => postComment()} color="primary">
-          Post
+          {postAction}
         </Button>
       </DialogActions>
     </Dialog>

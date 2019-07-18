@@ -139,7 +139,7 @@ export const query = graphql`
   fragment AppIcon on apps {
     localFile {
       childImageSharp {
-        fixed(width: 24, height: 24) {
+        fixed(width: 36, height: 36) {
           ...GatsbyImageSharpFixed
         }
       }
