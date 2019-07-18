@@ -17,7 +17,7 @@ export default ({ node }) => {
   return (
     <Card
       key={node.fields.slug}
-      style={{ marginTop: 4, marginLeft: 4, marginBottom: 12, marginLeft: 4 }}
+      style={{ marginTop: 4, marginLeft: 4, marginBottom: 12, marginRight: 4 }}
     >
       <CardHeader
         title={title}

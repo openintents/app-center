@@ -13,7 +13,7 @@ import LaunchIcon from '@material-ui/icons/Launch'
 import ReadIcon from '@material-ui/icons/Subject'
 
 import AppIcon from './appIcon'
-import { StaticQuery, navigate } from 'gatsby'
+import { StaticQuery, navigate, graphql } from 'gatsby'
 
 export default ({ link, title, date, description, appcoId, apiComment }) => {
   return (
