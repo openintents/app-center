@@ -8,6 +8,10 @@ import {
   CardActions,
   Button,
 } from '@material-ui/core'
+import StarIcon from '@material-ui/icons/Star'
+import LaunchIcon from '@material-ui/icons/Launch'
+import ReadIcon from '@material-ui/icons/Subject'
+
 import AppIcon from './appIcon'
 import { StaticQuery, navigate } from 'gatsby'
 
@@ -28,7 +32,7 @@ export default ({ link, title, date, description, appcoId, apiComment }) => {
       `}
       render={data => {
         let apps
-        let app, actionName, appcoid
+        let app, actionName, appcoid, icon
         if (apiComment) {
           description = apiComment.comment.toString()
           date = new Date(apiComment.createdAt).toLocaleDateString()
@@ -44,6 +48,7 @@ export default ({ link, title, date, description, appcoId, apiComment }) => {
           }
           link = apiComment.object
           actionName = 'Try now'
+          icon = <LaunchIcon />
         } else {
           appcoid = parseInt(appcoId)
           apps = data.apps.edges.filter(e => e.node.appcoid === appcoid)
@@ -51,6 +56,7 @@ export default ({ link, title, date, description, appcoId, apiComment }) => {
             app = apps[0]
           }
           actionName = 'Read more'
+          icon = <ReadIcon />
         }
 
         return (
@@ -73,6 +79,7 @@ export default ({ link, title, date, description, appcoId, apiComment }) => {
                       window.location.href = link
                     }}
                   >
+                    {icon}
                     {actionName}
                   </Button>
                 )}
@@ -84,6 +91,7 @@ export default ({ link, title, date, description, appcoId, apiComment }) => {
                       navigate(`/appco/${appcoid}/comment`)
                     }}
                   >
+                    <StarIcon />
                     Rate now
                   </Button>
                 )}

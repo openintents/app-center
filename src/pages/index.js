@@ -1,15 +1,9 @@
 import React, { Component } from 'react'
-import { Link, graphql } from 'gatsby'
+import { graphql, navigate } from 'gatsby'
 
 import Layout from '../components/layout'
 import SEO from '../components/seo'
-import {
-  Typography,
-  Card,
-  CardHeader,
-  CardContent,
-  Grid,
-} from '@material-ui/core'
+import { Typography, Card, CardContent, Grid, Button } from '@material-ui/core'
 import FossIcon from '@material-ui/icons/FolderOpen'
 import NossIcon from '@material-ui/icons/Folder'
 import AllComments from '../components/allComments'
@@ -18,7 +12,7 @@ import PersonalData from '../components/personalData'
 import AppCoMonth from '../components/appcoMonth'
 import Post from '../components/post'
 import AppUpdate from '../components/appUpdate'
-
+import Img from 'gatsby-image'
 class IndexPage extends Component {
   state = {
     loading: true,
@@ -171,8 +165,8 @@ class IndexPage extends Component {
             newOnly={p.post.newOnly}
           />
         )
-      } else if (p.type === 'post') {        
-        return <Post key={"post" + p.post.date} node={p.post.node} />
+      } else if (p.type === 'post') {
+        return <Post key={'post' + p.post.date} node={p.post.node} />
       } else if (p.type === 'appUpdate') {
         return (
           <AppUpdate
@@ -209,32 +203,39 @@ class IndexPage extends Component {
           }}
         >
           <div>
-            <Card style={{ margin: 4 }} theme="dark">
-              <CardHeader title="Browse currrent Blockstack apps" />
-
+            <Card style={{ margin: 4 }}>
               <CardContent>
                 <Grid container alignItems="center">
-                  <Grid item xs={6}>
-                    <Typography align="center">
-                      <Link to="/appco-foss/">
-                        <FossIcon style={styles.smallIcon} />
-                        <br />
-                        Open Source apps
-                      </Link>
-                    </Typography>
+                  <Grid item xs={12} sm={2}>
+                    <Img fluid={data.togetherImage.childImageSharp.fluid} />
                   </Grid>
-                  <Grid item xs={6}>
-                    <Typography align="center">
-                      <Link to="/appco-noss/">
-                        <NossIcon style={styles.smallIcon} />
-                        <br />
-                        Closed Source apps
-                      </Link>
-                    </Typography>
+                  <Grid item xs={12} sm={10} container>
+                    <Grid item xs={12}>
+                      <Typography variant="h6" align="center">
+                        Help the community and add your review
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography align="center">
+                        <Button onClick={() => navigate('/appco-foss/')}>
+                          <FossIcon style={styles.smallIcon} />
+                          Try Open Source apps
+                        </Button>
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography align="center">
+                        <Button onClick={() => navigate('/appco-noss/')}>
+                          <NossIcon style={styles.smallIcon} />
+                          Try Closed Source apps
+                        </Button>
+                      </Typography>
+                    </Grid>
                   </Grid>
                 </Grid>
               </CardContent>
             </Card>
+            <Typography variant="h5">News and Updates</Typography>
             {postComponents}
             <Typography variant="body2">
               <a href="https://docs.blockstack.org/develop/mining_intro.html">
@@ -275,6 +276,13 @@ export const query = graphql`
     ogImage: file(relativePath: { eq: "hero-img.png" }) {
       childImageSharp {
         fluid(maxWidth: 300) {
+          ...GatsbyImageSharpFluid
+        }
+      }
+    }
+    togetherImage: file(relativePath: { eq: "together.jpg" }) {
+      childImageSharp {
+        fluid(maxWidth: 128) {
           ...GatsbyImageSharpFluid
         }
       }

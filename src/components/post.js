@@ -10,6 +10,7 @@ import {
   Button,
 } from '@material-ui/core'
 import AppCenterIcon from './appCenterIcon'
+import ReadIcon from '@material-ui/icons/Subject'
 
 export default ({ node }) => {
   const title = node.frontmatter.title || node.fields.slug
@@ -31,6 +32,7 @@ export default ({ node }) => {
             navigate(node.fields.slug)
           }}
         >
+          <ReadIcon />
           Read more
         </Button>
       </CardActions>

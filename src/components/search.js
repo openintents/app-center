@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Index } from 'elasticlunr'
 import { withStyles } from '@material-ui/core/styles'
-import { Link, graphql, StaticQuery } from 'gatsby'
+import { Link, graphql, StaticQuery, navigate } from 'gatsby'
 import {
   List,
   ListItem,
@@ -10,6 +10,9 @@ import {
   Grid,
   TextField,
   InputAdornment,
+  ListItemIcon,
+  ListItemText,
+  ListItemAvatar,
 } from '@material-ui/core'
 import { Apps } from '@material-ui/icons'
 import Img from 'gatsby-image'
@@ -23,6 +26,9 @@ const styles = theme => {
     },
     AppsIcon: {
       color: 'gray',
+    },
+    SearchResult: {
+      color: theme.palette.common.white,
     },
   }
 }
@@ -64,7 +70,7 @@ class Search extends Component {
             <div>
               <TextField
                 id="input-with-icon-textfield"
-                placeholder="Search"
+                placeholder="Find apps by name, category,.."
                 variant="outlined"
                 value={this.state.query}
                 onChange={this.search}
@@ -97,27 +103,23 @@ class Search extends Component {
                       <div width="24px" height="24px" />
                     )
                   return (
-                    <ListItem key={page.id}>
-                      <Link
-                        to={'/appco/' + page.appcoid}
-                        style={{
-                          color: `white`,
-                          fontWeight: 'bold',
-                          textDecoration: `none`,
-                        }}
-                      >
-                        <Grid container>
-                          <Grid item xs={1}>
-                            {icon}
-                          </Grid>
-                          <Grid item xs={11}>
-                            <Typography>
-                              <b>{page.name}</b>
-                              {': ' + page.category} {' : ' + page.description}
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                      </Link>
+                    <ListItem
+                      key={page.id}
+                      button
+                      onClick={() => {
+                        navigate('/appco/' + page.appcoid)
+                      }}
+                    >
+                      <ListItemAvatar>{icon}</ListItemAvatar>
+                      <ListItemText>
+                        <Typography
+                          align="left"
+                          className={classes.SearchResult}
+                        >
+                          <b>{page.name}</b>
+                          {': ' + page.category} {' : ' + page.description}
+                        </Typography>
+                      </ListItemText>
                     </ListItem>
                   )
                 })}

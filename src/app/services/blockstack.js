@@ -11,7 +11,7 @@ const appConfig = new AppConfig(
   typeof window !== 'undefined'
     ? window.location.origin
     : 'http://localhost:8000',
-  '/data',
+  '/',
   '/manifest.webmanifest'
 )
 const uSession = new UserSession({ appConfig })

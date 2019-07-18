@@ -4,7 +4,7 @@ import { StaticQuery, graphql } from 'gatsby'
 
 import Header from './header'
 import './layout.css'
-import { Typography, createMuiTheme } from '@material-ui/core'
+import { Typography, createMuiTheme, Container } from '@material-ui/core'
 import { getApiServer } from '../app/services/blockstack'
 import { ThemeProvider } from '@material-ui/styles'
 
@@ -54,18 +54,19 @@ const Layout = ({ children, hideSearch }) => (
     render={data => (
       <ThemeProvider theme={theme}>
         <Header
-          siteTitle={data.site.siteMetadata.title}
-          siteDescription={data.site.siteMetadata.description}
+          siteTitle={data.site.siteMetadata.description}
+          siteDescription={data.site.siteMetadata.title}
           siteSearchIndex={data.siteSearchIndex}
           hideSearch={hideSearch}
           fixedIcon={data.file.childImageSharp.fixed}
         />
-        <div
+        <Container
           style={{
             margin: `0 auto`,
-            maxWidth: 960,
+            background: '#EEE',
             padding: `0px 1.0875rem 1.45rem`,
             paddingTop: 0,
+
           }}
         >
           {children}
@@ -82,7 +83,7 @@ const Layout = ({ children, hideSearch }) => (
               Radiks Server: {getApiServer()}
             </Typography>
           </footer>
-        </div>
+        </Container>
       </ThemeProvider>
     )}
   />

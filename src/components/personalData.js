@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Link } from 'gatsby'
 
 import {
@@ -11,17 +11,35 @@ import {
   Card,
   CardHeader,
   CardContent,
+  Box,
+  Container,
 } from '@material-ui/core'
 import CommentIcon from '@material-ui/icons/Note'
 import AppsIcon from '@material-ui/icons/Apps'
 import { styles } from './layout'
 import BlockstackProfile from './blockstackProfile'
+import { checkIsSignedIn, getUser } from '../app/services/blockstack'
 
-export default () => {
-  return (
-    <Card style={{ margin: 4 }}>
-      <CardHeader avatar={<BlockstackProfile />} />
-      <CardContent>
+class PersonalData extends Component {
+  state = {
+    isSignedIn: false,
+    loading: true,
+    userData: null,
+  }
+  componentDidMount() {
+    checkIsSignedIn().then(signedIn => {
+      this.setState({
+        loading: false,
+        isSignedIn: signedIn,
+        userData: getUser(),
+      })
+    })
+  }
+  render() {
+    const { isSignedIn } = this.state
+    let content
+    if (isSignedIn) {
+      content = (
         <List>
           <ListItem>
             <ListItemAvatar>
@@ -53,7 +71,25 @@ export default () => {
             />
           </ListItem>
         </List>
-      </CardContent>
-    </Card>
-  )
+      )
+    } else {
+      content = (
+        <Container>
+          <Typography>
+            <b>Blockstack</b> is a decentralized computing network for apps that
+            #cantbeevil.
+          </Typography>          
+        </Container>
+      )
+    }
+    return (
+      <Card style={{ margin: 4 }}>
+        <CardHeader avatar={<BlockstackProfile />} />
+        {content}
+        <CardContent />
+      </Card>
+    )
+  }
 }
+
+export default PersonalData

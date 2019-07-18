@@ -16,6 +16,10 @@ const styles = theme => ({
     color: theme.palette.common.white,
     textDecoration: 'none',
   },
+  titleIcon: {
+    textDecoration: 'none',
+    color: theme.palette.text.primary
+  },
 })
 
 const Header = ({
@@ -27,29 +31,29 @@ const Header = ({
   classes,
 }) => (
   <Container className={classes.header}>
-    <Grid container alignItems="center">
-      <Grid item xs={1}>
-        <Img fixed={fixedIcon} alt="icon" />
+    <Grid container alignContent="center">
+      <Grid item xs={1} align="center">
+        <Link to="/" className={classes.titleIcon}>
+          <Img fixed={fixedIcon} alt="icon" />
+          <Typography variant="body2">{siteDescription}</Typography>
+        </Link>
       </Grid>
-      <Grid item xs={11}>
-        <Typography variant="h3">
-          <Link to="/" className={classes.title}>
-            {siteTitle}
-          </Link>
-        </Typography>
+      <Grid item xs={11} container>
+        <Grid item xs={12}>
+          <Typography variant="h3">
+            <Link to="/" className={classes.title}>
+              {siteTitle}
+            </Link>
+          </Typography>
+        </Grid>
+        {!hideSearch && (
+          <>
+            <Grid item xs={12}>
+              <Search searchIndex={siteSearchIndex.index} />
+            </Grid>
+          </>
+        )}
       </Grid>
-      <Grid item xs={1} />
-      <Grid item xs={11}>
-        <Typography variant="body2">{siteDescription}</Typography>
-      </Grid>
-      {!hideSearch && (
-        <>
-          <Grid item xs={1} />
-          <Grid item xs={11}>
-            <Search searchIndex={siteSearchIndex.index} />
-          </Grid>
-        </>
-      )}
     </Grid>
   </Container>
 )
