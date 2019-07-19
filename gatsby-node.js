@@ -96,6 +96,7 @@ exports.onCreateNode = async ({
     return fileNodePromise
       .then(fileNode => {
         if (fileNode) {
+          console.log(fileNode) // helps when running yarn develop, not sure why
           node.localFile___NODE = fileNode.id
         }
 

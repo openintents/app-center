@@ -23,6 +23,7 @@ import {
   Box,
   Divider,
   Tooltip,
+  CardHeader,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import LaunchIcon from '@material-ui/icons/Launch'
@@ -175,12 +176,15 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
     }
     for (var month in comments) {
       allMonths.push(
-        <Typography key={`title-${month}`}>{monthsLabels[month]}</Typography>
-      )
-      allMonths.push(
-        <Container key={`list-${month}`}>
-          {comments[month].map(renderComment(month))}
-        </Container>
+        <Card
+          key={`title-${month}`}
+          style={{
+            margin: 4,
+          }}
+        >
+          <CardHeader title={monthsLabels[month]} />
+          <CardContent>{comments[month].map(renderComment(month))}</CardContent>
+        </Card>
       )
     }
     return allMonths
@@ -497,21 +501,22 @@ class AppDetails extends Component {
 
     const monthlyScoresInGrid = []
     for (var key = 0; key < months.length; key++) {
-      if (key < months.length - 1) {
-        monthlyScoresInGrid.push(
-          <React.Fragment key={key}>
-            {Rank(data, months[months.length - key - 1])}
-            <StyledCell key={`hr-${key}`} item xs={12}>
-              <hr />
-            </StyledCell>
-          </React.Fragment>
-        )
-      } else {
-        monthlyScoresInGrid.push(
-          <React.Fragment key={key}>
-            {Rank(data, months[months.length - key - 1])}
-          </React.Fragment>
-        )
+      const dataKey = months[months.length - key - 1]
+      if (data.hasOwnProperty(dataKey)) {
+        if (key < months.length - 1) {
+          monthlyScoresInGrid.push(
+            <React.Fragment key={key}>
+              {Rank(data, dataKey)}
+              <StyledCell key={`hr-${key}`} item xs={12}>
+                <hr />
+              </StyledCell>
+            </React.Fragment>
+          )
+        } else {
+          monthlyScoresInGrid.push(
+            <React.Fragment key={key}>{Rank(data, dataKey)}</React.Fragment>
+          )
+        }
       }
     }
     const icon =
@@ -563,50 +568,60 @@ class AppDetails extends Component {
               <LinkTab label="Comments" />
             </Tabs>
           </AppBar>
-          <br />
           {tabIndex === 0 && (
-            <Typography component="div">
-              <Grid container spacing={0}>
-                <StyledCell item md={4} xs={4}>
-                  <b>Month</b>
-                </StyledCell>
-                <StyledCell item md={2} xs={4}>
-                  <b>Rank</b>
-                </StyledCell>
-                <StyledCell item md={1} xs={4}>
-                  <b>Final Score</b>
-                </StyledCell>
-                <StyledCell item md={1} xs={2}>
-                  <Tooltip title="Democracy Earth reviews the interest for investors">
-                    <small>DE</small>
-                  </Tooltip>
-                </StyledCell>
-                <StyledCell item md={1} xs={2}>
-                  <Tooltip title="Product Hunt reviews the idea">
-                    <small>PH</small>
-                  </Tooltip>
-                </StyledCell>
-                <StyledCell item md={1} xs={2}>
-                  <Tooltip title="New Internet Labs reviews the protection of users' digital rights">
-                    <small>NIL</small>
-                  </Tooltip>
-                </StyledCell>
-                <StyledCell item md={1} xs={2}>
-                  <Tooltip title="TryMyUI reviews the usability and desirability">
-                    <small className="tooltiptext">TMUI</small>
-                  </Tooltip>
-                </StyledCell>
-                <StyledCell item md={1} xs={2}>
-                  <Tooltip title="Awario reviews the value of the brand">
-                    <small>AW</small>
-                  </Tooltip>
-                </StyledCell>
-                <StyledCell item xs={12}>
-                  <hr />
-                </StyledCell>
-                {monthlyScoresInGrid}
-              </Grid>
-            </Typography>
+            <Card
+              style={{
+                marginLeft: 4,
+                marginTop: 16,
+                marginRight: 4,
+                marginBottom: 4,
+              }}
+            >
+              <CardContent>
+                <Typography component="div">
+                  <Grid container spacing={0}>
+                    <StyledCell item md={4} xs={4}>
+                      <b>Month</b>
+                    </StyledCell>
+                    <StyledCell item md={2} xs={4}>
+                      <b>Rank</b>
+                    </StyledCell>
+                    <StyledCell item md={1} xs={4}>
+                      <b>Final Score</b>
+                    </StyledCell>
+                    <StyledCell item md={1} xs={2}>
+                      <Tooltip title="Democracy Earth reviews the interest for investors">
+                        <small>DE</small>
+                      </Tooltip>
+                    </StyledCell>
+                    <StyledCell item md={1} xs={2}>
+                      <Tooltip title="Product Hunt reviews the idea">
+                        <small>PH</small>
+                      </Tooltip>
+                    </StyledCell>
+                    <StyledCell item md={1} xs={2}>
+                      <Tooltip title="New Internet Labs reviews the protection of users' digital rights">
+                        <small>NIL</small>
+                      </Tooltip>
+                    </StyledCell>
+                    <StyledCell item md={1} xs={2}>
+                      <Tooltip title="TryMyUI reviews the usability and desirability">
+                        <small className="tooltiptext">TMUI</small>
+                      </Tooltip>
+                    </StyledCell>
+                    <StyledCell item md={1} xs={2}>
+                      <Tooltip title="Awario reviews the value of the brand">
+                        <small>AW</small>
+                      </Tooltip>
+                    </StyledCell>
+                    <StyledCell item xs={12}>
+                      <hr />
+                    </StyledCell>
+                    {monthlyScoresInGrid}
+                  </Grid>
+                </Typography>
+              </CardContent>
+            </Card>
           )}
 
           {tabIndex === 1 && (

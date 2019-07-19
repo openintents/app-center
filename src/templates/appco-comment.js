@@ -2,25 +2,14 @@ import React, { Component } from 'react'
 import { graphql } from 'gatsby'
 import Layout from '../components/layout'
 import Grid from '@material-ui/core/Grid'
-import {
-  getUser,
-  checkIsSignedIn,
-  redirectToSignIn,
-} from '../app/services/blockstack'
-import {
-  Container,
-  Typography,
-} from '@material-ui/core'
+import { getUser, checkIsSignedIn } from '../app/services/blockstack'
+import { Container, Typography } from '@material-ui/core'
 
-import {
-  UserComment,
-  PrivateUserComment,
-} from '../components/model'
+import { UserComment, PrivateUserComment } from '../components/model'
 import Img from 'gatsby-image'
 import UserCommentDialog from '../components/userCommentDialog'
 import SEO from '../components/seo'
 import { SmallAppDetails } from '../components/app'
-
 
 class AppComment extends Component {
   state = {
@@ -33,6 +22,7 @@ class AppComment extends Component {
     loadingComments: false,
     loadingPrivateComments: false,
     loadingData: true,
+    redirecting: false,
   }
 
   componentDidMount() {
@@ -45,7 +35,7 @@ class AppComment extends Component {
         this.loadComments()
       } else {
         redirectToSignIn(window.location.href)
-        this.setState({ isSignedIn: false })
+        this.setState({ isSignedIn: false, redirecting: true })
       }
     })
   }
@@ -82,8 +72,8 @@ class AppComment extends Component {
     this.setState({ visibility: event.target.value })
   }
 
-  handleCloseUpdate = () => {    
-      window.location.replace(window.location.origin + "/comment-thanks")  
+  handleCloseUpdate = () => {
+    window.location.replace(window.location.origin + '/comment-thanks')
   }
 
   handleChangeText = e => {
@@ -117,8 +107,7 @@ class AppComment extends Component {
 
   render() {
     const { data } = this.props
-    const { visibility, rating, userUpdate, updating } = this.state
-
+    const { visibility, rating, userUpdate, updating, isSignedIn } = this.state
     const icon =
       data.apps.localFile && data.apps.localFile.childImageSharp ? (
         <Img fixed={data.apps.localFile.childImageSharp.fixed} />
@@ -161,6 +150,8 @@ class AppComment extends Component {
           handleChangeText: this.handleChangeText,
           handleChangeRating: this.handleChangeRating,
           postComment: this.postComment,
+          modal: true,
+          isSignedIn: isSignedIn,
         })}
         <hr />
       </Layout>

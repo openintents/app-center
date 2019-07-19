@@ -32,8 +32,8 @@ import Img from 'gatsby-image'
 
 const smallStyles = {
   iconButton: {
-    width: 36,
-    height: 36,
+    width: 24,
+    height: 24,
     padding: 0,
   },
   icon: {

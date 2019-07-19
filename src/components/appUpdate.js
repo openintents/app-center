@@ -13,7 +13,7 @@ import LaunchIcon from '@material-ui/icons/Launch'
 import ReadIcon from '@material-ui/icons/Subject'
 
 import AppIcon from './appIcon'
-import { StaticQuery, navigate, graphql } from 'gatsby'
+import { Link, StaticQuery, navigate, graphql } from 'gatsby'
 
 export default ({ link, title, date, description, appcoId, apiComment }) => {
   return (
@@ -60,11 +60,22 @@ export default ({ link, title, date, description, appcoId, apiComment }) => {
         }
 
         return (
-          <Card style={{ marginTop: 4, marginLeft: 4, marginBottom: 12, marginRight: 4 }}>
+          <Card
+            style={{
+              marginTop: 4,
+              marginLeft: 4,
+              marginBottom: 12,
+              marginRight: 4,
+            }}
+          >
             <CardHeader
               title={title}
               subheader={date}
-              avatar={<AppIcon app={app} />}
+              avatar={
+                <Link to={`/appco/${appcoid}`}>
+                  <AppIcon app={app} />
+                </Link>
+              }
             />
             <CardContent>
               <Typography>{description}</Typography>

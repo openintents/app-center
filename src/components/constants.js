@@ -6,6 +6,7 @@ export const months = [
   'apr2019',
   'may2019',
   'jun2019',
+  'jul2019'
 ]
 
 export const monthsLabels = {
@@ -16,6 +17,7 @@ export const monthsLabels = {
   apr2019: 'Apr 2019',
   may2019: 'May 2019',
   jun2019: 'Jun 2019',
+  jul2019: 'Jul 2019'
 }
 
 export const monthStrings = [
