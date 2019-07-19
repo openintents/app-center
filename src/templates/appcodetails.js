@@ -22,6 +22,7 @@ import {
   Typography,
   Box,
   Divider,
+  Tooltip,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import LaunchIcon from '@material-ui/icons/Launch'
@@ -576,19 +577,29 @@ class AppDetails extends Component {
                   <b>Final Score</b>
                 </StyledCell>
                 <StyledCell item md={1} xs={2}>
-                  <small>DE</small>
+                  <Tooltip title="Democracy Earth reviews the interest for investors">
+                    <small>DE</small>
+                  </Tooltip>
                 </StyledCell>
                 <StyledCell item md={1} xs={2}>
-                  <small>PH</small>
+                  <Tooltip title="Product Hunt reviews the idea">
+                    <small>PH</small>
+                  </Tooltip>
                 </StyledCell>
                 <StyledCell item md={1} xs={2}>
-                  <small>NIL</small>
+                  <Tooltip title="New Internet Labs reviews the protection of users' digital rights">
+                    <small>NIL</small>
+                  </Tooltip>
                 </StyledCell>
                 <StyledCell item md={1} xs={2}>
-                  <small>TMUI</small>
+                  <Tooltip title="TryMyUI reviews the usability and desirability">
+                    <small className="tooltiptext">TMUI</small>
+                  </Tooltip>
                 </StyledCell>
                 <StyledCell item md={1} xs={2}>
-                  <small>AW</small>
+                  <Tooltip title="Awario reviews the value of the brand">
+                    <small>AW</small>
+                  </Tooltip>
                 </StyledCell>
                 <StyledCell item xs={12}>
                   <hr />

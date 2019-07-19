@@ -1,17 +1,12 @@
 import React, { Component } from 'react'
-import { Link } from 'gatsby'
+import { navigate } from 'gatsby'
 
 import {
   Typography,
-  ListItem,
-  ListItemText,
-  List,
-  ListItemAvatar,
-  Avatar,
   Card,
-  CardHeader,
   CardContent,
   Container,
+  Button,
 } from '@material-ui/core'
 import CommentIcon from '@material-ui/icons/Note'
 import AppsIcon from '@material-ui/icons/Apps'
@@ -39,37 +34,17 @@ class PersonalData extends Component {
     let content
     if (isSignedIn) {
       content = (
-        <List>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar>
-                <CommentIcon style={styles.smallIcon} />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText>
-              <Typography>
-                <Link to="/data/#comments">
-                  <b>Manage your comments</b>
-                </Link>{' '}
-              </Typography>
-            </ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar>
-                <AppsIcon style={styles.smallIcon} />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={
-                <Link to="/data/#apps">
-                  <b>Manage your apps</b>
-                </Link>
-              }
-              secondary="(For app publishers only)"
-            />
-          </ListItem>
-        </List>
+        <>
+          <Button color="primary" onClick={() => navigate('/data/#comments')}>
+            <CommentIcon style={styles.smallIcon} />
+            Comments
+          </Button>
+
+          <Button color="primary" onClick={() => navigate('/data/#apps')}>
+            <AppsIcon style={styles.smallIcon} />
+            Apps
+          </Button>
+        </>
       )
     } else {
       content = (
@@ -77,16 +52,22 @@ class PersonalData extends Component {
           <Typography>
             <b>Blockstack</b> is a decentralized computing network for apps that
             #cantbeevil.
-          </Typography>          
+          </Typography>
         </Container>
       )
     }
     return (
-      <Card style={{ margin: 4 }}>
-        <CardHeader avatar={<BlockstackProfile />} />
-        {content}
-        <CardContent />
-      </Card>
+      <>
+        <Typography variant="h5">Profile</Typography>
+        <Card style={{ margin: 4 }}>
+          <CardContent>
+            <Container align="center">
+              <BlockstackProfile />
+            </Container>
+            {content}
+          </CardContent>
+        </Card>
+      </>
     )
   }
 }

@@ -13,6 +13,10 @@ export const styles = {
     width: 36,
     height: 36,
   },
+  link: {
+    textDecoration: 'none',
+    color: '#72a7cf',
+  },
 }
 
 const theme = createMuiTheme({
@@ -41,10 +45,10 @@ const Layout = ({ children, hideSearch }) => (
         }
         file(
           sourceInstanceName: { eq: "images" }
-          relativePath: { eq: "icon.png" }
+          relativePath: { eq: "icon_text.png" }
         ) {
           childImageSharp {
-            fixed(width: 36, height: 36) {
+            fixed(width: 36, height: 64) {
               ...GatsbyImageSharpFixed
             }
           }
@@ -66,7 +70,6 @@ const Layout = ({ children, hideSearch }) => (
             background: '#EEE',
             padding: `0px 1.0875rem 1.45rem`,
             paddingTop: 0,
-
           }}
         >
           {children}

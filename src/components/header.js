@@ -35,7 +35,6 @@ const Header = ({
       <Grid item xs={1} align="center" >
         <Link to="/" className={classes.titleIcon}>
           <Img fixed={fixedIcon} alt="icon" />
-          <Typography variant="body2">{siteDescription}</Typography>
         </Link>
       </Grid>
       <Grid item xs={11} container>
