@@ -8,6 +8,8 @@ import { Avatar } from '@material-ui/core'
 import AccountIcon from '@material-ui/icons/AccountBox'
 import { BlockstackButton } from 'react-blockstack-button'
 import { styles } from './layout'
+import { navigateTo } from 'gatsby'
+
 
 class BlockstackProfile extends Component {
   state = {

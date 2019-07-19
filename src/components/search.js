@@ -27,7 +27,7 @@ const styles = theme => ({
     padding: 1,
     height: 50,
   }
-}
+})
 
 class Search extends Component {
   constructor(props) {
