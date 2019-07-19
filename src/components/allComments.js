@@ -9,6 +9,8 @@ import {
 } from '@material-ui/core'
 import { SmallRating } from '../app/mycomments'
 import Img from 'gatsby-image'
+import { navigateTo } from 'gatsby'
+
 
 class AllComments extends React.Component {
   state = {
@@ -78,7 +80,6 @@ class AllComments extends React.Component {
             <br />
             <SmallRating component="span" readOnly value={c.rating} />
           </>
-        )
         const comment = c.comment.toString()
         comments.push(
           <ListItem
