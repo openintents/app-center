@@ -27,7 +27,8 @@ import CloseIcon from '@material-ui/icons/Close'
 import LaunchIcon from '@material-ui/icons/Launch'
 import Code from '@material-ui/icons/Code'
 import NoteIcon from '@material-ui/icons/Note'
-
+import AppsIcon from '@material-ui/icons/Apps'
+import RemoveIcon from '@material-ui/icons/RemoveCircleOutline'
 import {
   UserComment,
   OwnerComment,
@@ -120,11 +121,12 @@ const Comments = (data, comments, isSignedIn) => {
     return <Typography>No comments yet</Typography>
   } else {
     return comments.map((c, key) => {
+      const comment = c.attrs.comment.toString()
       return (
-        <Card key={c._id}>
+        <Card key={c._id} style={{ margin: 4 }}>
           <CardContent>
             <Typography>
-              {c.attrs.comment}
+              {comment}
               <br />
               <small>
                 {c.attrs.createdBy || 'A user'}
@@ -154,10 +156,11 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
   } else {
     const allMonths = []
     const renderComment = month => (c, key) => {
+      const comment = c.attrs.comment.toString()
       return (
         <React.Fragment key={c._id}>
           <Typography component="div">
-            <Box>{c.attrs.comment}</Box>
+            <Box>{comment}</Box>
             <Box fontSize="small">{c.attrs.createdBy || 'A user'}</Box>
           </Typography>
           {key < comments[month].length - 1 && <Divider light />}
@@ -377,7 +380,6 @@ class AppDetails extends Component {
             object: this.props.data.apps.website,
           })
     await comment.save()
-    // await comment.insertOne()
     await this.loadComments()
     this.setState({ showUpdateDialog: false, updating: false })
   }
@@ -437,6 +439,7 @@ class AppDetails extends Component {
           disabled={isClaimingApp}
           onClick={() => this.removeApp()}
         >
+          <RemoveIcon style={styles.smallIcon} />
           Remove from my apps
         </Button>
         <Button variant="outlined" disabled={!data.apps.website} onClick={() => this.launchApp()}>
@@ -456,6 +459,7 @@ class AppDetails extends Component {
           variant="outlined"
         >
           Claim App
+          <AppsIcon style={styles.smallIcon} />
         </Button>
         <Button variant="outlined" disabled={!data.apps.website} onClick={() => this.launchApp()}>
           Try it <LaunchIcon style={styles.smallIcon} />
@@ -496,26 +500,32 @@ class AppDetails extends Component {
           description={data.apps.description}
           keywords={[data.apps.name, `application`, `blockstack`]}
         />
-        <Grid container alignItems="center" spacing={2}>
-          <Grid item>{icon}</Grid>
-          <Grid item>
-            <Typography variant="h3" align="center">
-              {data.apps.name}
-            </Typography>
-          </Grid>
-          <Grid item>{appActions}</Grid>
-        </Grid>
+        <Card style={{ margin: 4 }}>
+          <CardContent>
+            <Grid container alignItems="center" spacing={2}>
+              <Grid item xs={1} sm={1}>
+                {icon}
+              </Grid>
+              <Grid item xs={11} sm={7}>
+                <Typography variant="h3" align="center">
+                  {data.apps.name}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                {appActions}
+              </Grid>
+            </Grid>
 
-        <Container>
-          {SmallAppDetails({
-            description: data.apps.description,
-            lifetimeEarnings: data.apps.lifetimeEarnings,
-            lastCommit: data.apps.fields && data.apps.fields.lastCommit,
-            openSourceUrl: data.apps.openSourceUrl,
-            hideRewards: false,
-            showSourceLink: true,
-          })}
-        </Container>
+            {SmallAppDetails({
+              description: data.apps.description,
+              lifetimeEarnings: data.apps.lifetimeEarnings,
+              lastCommit: data.apps.fields && data.apps.fields.lastCommit,
+              openSourceUrl: data.apps.openSourceUrl,
+              hideRewards: false,
+              showSourceLink: true,
+            })}
+          </CardContent>
+        </Card>
         <StyledRoot>
           <AppBar position="static">
             <Tabs

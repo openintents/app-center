@@ -13,21 +13,21 @@ import Img from 'gatsby-image'
  * - `StaticQuery`: https://gatsby.app/staticquery
  */
 
-const Image = () => (
+const AppCoIcon = () => (
   <StaticQuery
     query={graphql`
       query {
-        placeholderImage: file(relativePath: { eq: "icon.png" }) {
+        appCoImage: file(relativePath: { eq: "appco.png" }) {
           childImageSharp {
-            fluid(maxWidth: 300) {
-              ...GatsbyImageSharpFluid
+            fixed(width: 24, height: 24) {
+              ...GatsbyImageSharpFixed
             }
           }
         }
       }
     `}
-    render={data => <Img fluid={data.placeholderImage.childImageSharp.fluid} />}
+    render={data => <Img fixed={data.appCoImage.childImageSharp.fixed} />}
   />
 )
 
-export default Image
+export default AppCoIcon

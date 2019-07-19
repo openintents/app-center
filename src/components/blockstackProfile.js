@@ -41,12 +41,14 @@ class BlockstackProfile extends Component {
             alt={userData.username}
             src={avatar}
             style={{ cursor: 'pointer' }}
+            onClick={() => navigateTo('data')}
           />
         )
       } else {
         return (
           <Avatar
             style={{ cursor: 'pointer', marginBottom: 1.45 + 'rem' }}
+            onClick={() => navigateTo('data')}
           >
             <AccountIcon style={styles.smallIcon} />
           </Avatar>

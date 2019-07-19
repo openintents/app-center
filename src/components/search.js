@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import { Index } from 'elasticlunr'
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles'
 import { Link, graphql, StaticQuery } from 'gatsby'
 import { List, ListItem, Typography, Grid, IconButton, InputBase, Paper } from '@material-ui/core'
 import { Apps } from '@material-ui/icons';
 import Img from 'gatsby-image'
-// Search component
 
 const styles = theme => ({
   margin: {
@@ -16,6 +15,11 @@ const styles = theme => ({
     backgroundColor:'white',
     padding: 4
   },
+  SearchField: {
+    borderRadius: 4,
+    color: theme.palette.text.primary,
+    backgroundColor: theme.palette.common.white,
+  },
   AppsIcon: {
     color:'gray',
   },
@@ -23,7 +27,7 @@ const styles = theme => ({
     padding: 1,
     height: 50,
   }
-});
+}
 
 class Search extends Component {
   constructor(props) {
@@ -35,7 +39,7 @@ class Search extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
     return (
       <StaticQuery
         query={graphql`
@@ -143,6 +147,6 @@ class Search extends Component {
 
 Search.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 
-export default withStyles(styles)(Search);
+export default withStyles(styles)(Search)
