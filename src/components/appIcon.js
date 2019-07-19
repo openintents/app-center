@@ -1,5 +1,4 @@
 import React from 'react'
-import { StaticQuery, graphql } from 'gatsby'
 import Img from 'gatsby-image'
 
 /*
@@ -13,21 +12,12 @@ import Img from 'gatsby-image'
  * - `StaticQuery`: https://gatsby.app/staticquery
  */
 
+const AppIcon = ({ app }) => {
+  if (app) {
+    return <Img fixed={app.node.localFile.childImageSharp.fixed} />
+  } else {
+    return <div style={{ width: 36, height: 36 }} />
+  }
+}
 
-const AppCenterIcon = () => (
-  <StaticQuery
-    query={graphql`
-      query {
-        appCenterIcon: file(relativePath: { eq: "icon.png" }) {
-          childImageSharp {
-            fixed(width: 36, height: 36) {
-              ...GatsbyImageSharpFixed
-            }
-          }
-        }
-      }
-    `}
-    render={data => <Img fixed={data.appCenterIcon.childImageSharp.fixed} />}
-  />
-)
-export default AppCenterIcon
+export default AppIcon

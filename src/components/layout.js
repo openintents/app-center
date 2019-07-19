@@ -4,14 +4,18 @@ import { StaticQuery, graphql } from 'gatsby'
 
 import Header from './header'
 import './layout.css'
-import { Typography, createMuiTheme } from '@material-ui/core'
+import { Typography, createMuiTheme, Container } from '@material-ui/core'
 import { getApiServer } from '../app/services/blockstack'
 import { ThemeProvider } from '@material-ui/styles'
 
 export const styles = {
   smallIcon: {
-    width: 24,
-    height: 24,
+    width: 36,
+    height: 36,
+  },
+  link: {
+    textDecoration: 'none',
+    color: '#72a7cf',
   },
 }
 
@@ -41,10 +45,10 @@ const Layout = ({ children, hideSearch }) => (
         }
         file(
           sourceInstanceName: { eq: "images" }
-          relativePath: { eq: "icon.png" }
+          relativePath: { eq: "icon_text.png" }
         ) {
           childImageSharp {
-            fixed(width: 24, height: 24) {
+            fixed(width: 36, height: 64) {
               ...GatsbyImageSharpFixed
             }
           }
@@ -54,16 +58,16 @@ const Layout = ({ children, hideSearch }) => (
     render={data => (
       <ThemeProvider theme={theme}>
         <Header
-          siteTitle={data.site.siteMetadata.title}
-          siteDescription={data.site.siteMetadata.description}
+          siteTitle={data.site.siteMetadata.description}
+          siteDescription={data.site.siteMetadata.title}
           siteSearchIndex={data.siteSearchIndex}
           hideSearch={hideSearch}
           fixedIcon={data.file.childImageSharp.fixed}
         />
-        <div
+        <Container
           style={{
             margin: `0 auto`,
-            maxWidth: 960,
+            background: '#EEE',
             padding: `0px 1.0875rem 1.45rem`,
             paddingTop: 40,
           }}
@@ -82,7 +86,7 @@ const Layout = ({ children, hideSearch }) => (
               Radiks Server: {getApiServer()}
             </Typography>
           </footer>
-        </div>
+        </Container>
       </ThemeProvider>
     )}
   />

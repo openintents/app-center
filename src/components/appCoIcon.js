@@ -19,7 +19,7 @@ const AppCoIcon = () => (
       query {
         appCoImage: file(relativePath: { eq: "appco.png" }) {
           childImageSharp {
-            fixed(width: 24, height: 24) {
+            fixed(width: 36, height: 36) {
               ...GatsbyImageSharpFixed
             }
           }

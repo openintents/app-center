@@ -16,6 +16,10 @@ const styles = theme => ({
     color: theme.palette.common.white,
     textDecoration: 'none',
   },
+  titleIcon: {
+    textDecoration: 'none',
+    color: theme.palette.text.primary
+  },
 })
 
 const Header = ({

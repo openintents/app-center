@@ -9,10 +9,19 @@ class BlogPostTemplate extends React.Component {
   render() {
     const post = this.props.data.markdownRemark
     const { previous, next } = this.props.pageContext
-
+    const image = post.frontmatter.cover_image.childImageSharp.fluid.src
     return (
       <Layout location={this.props.location}>
-        <SEO title={post.frontmatter.title} description={post.excerpt} />
+        <SEO
+          title={post.frontmatter.title}
+          description={post.excerpt}
+          meta={[
+            {
+              name: `og:image`,
+              content: image,
+            },
+          ]}
+        />
         <Img fluid={post.frontmatter.cover_image.childImageSharp.fluid} />
         <h1
           style={{

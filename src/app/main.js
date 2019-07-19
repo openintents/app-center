@@ -1,10 +1,21 @@
 import React from 'react'
-import { graphql, Link, StaticQuery } from 'gatsby'
+import { graphql, Link, StaticQuery, navigate } from 'gatsby'
 import { encryptContent, loadMyData } from './services/blockstack'
-import { UserComment, OwnerComment, PrivateUserComment } from '../components/model'
-import { Typography, ListItem, ListItemText, List } from '@material-ui/core'
+import {
+  UserComment,
+  OwnerComment,
+  PrivateUserComment,
+} from '../components/model'
+import {
+  Typography,
+  ListItem,
+  ListItemText,
+  List,
+  ListItemAvatar,
+} from '@material-ui/core'
 import { User } from 'radiks/lib'
-import { SmallRating } from './mycomments';
+import { SmallRating } from './mycomments'
+import Img from 'gatsby-image'
 
 class Main extends React.Component {
   state = {
@@ -18,29 +29,35 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    User.createWithCurrentUser().then(() => {
-      loadMyData().then(content => {
-        this.setState({
-          myApps: content.myApps,
-          loadingApps: false,
-          loading: this.state.loadingComments && this.state.loadingUpdates,
+    if (window.location.hash === '#apps') {
+      navigate('/data/apps')
+    } else if (window.location.hash === '#comments') {
+      navigate('/data/comments')
+    } else {
+      User.createWithCurrentUser().then(() => {
+        loadMyData().then(content => {
+          this.setState({
+            myApps: content.myApps,
+            loadingApps: false,
+            loading: this.state.loadingComments && this.state.loadingUpdates,
+          })
+        })
+        UserComment.fetchOwnList().then(myComments => {
+          this.setState({
+            myComments,
+            loadingComments: false,
+            loading: this.state.loadingApps && this.state.loadingUpdates,
+          })
+        })
+        OwnerComment.fetchOwnList().then(myUpdates => {
+          this.setState({
+            myUpdates,
+            loadingUpdates: false,
+            loading: this.state.loadingApps && this.state.loadingComments,
+          })
         })
       })
-      UserComment.fetchOwnList().then(myComments => {
-        this.setState({
-          myComments,
-          loadingComments: false,
-          loading: this.state.loadingApps && this.state.loadingUpdates,
-        })
-      })
-      OwnerComment.fetchOwnList().then(myUpdates => {
-        this.setState({
-          myUpdates,
-          loadingUpdates: false,
-          loading: this.state.loadingApps && this.state.loadingComments,
-        })
-      })
-    })
+    }
   }
 
   handleClick(event) {
@@ -98,10 +115,6 @@ class Main extends React.Component {
         const apps = data.allApps.edges.filter(
           e => e.node.website === c.attrs.object
         )
-        const appLabel =
-          apps.length === 1
-            ? `For ${apps[0].node.name}`
-            : `For ${c.attrs.object}`
         const rating = [
           UserComment.modelName(),
           PrivateUserComment.modelName(),
@@ -111,10 +124,21 @@ class Main extends React.Component {
             <SmallRating component="span" readOnly value={c.attrs.rating} />
           </>
         ) : null
+        const icon =
+          apps.length > 0 &&
+          apps[0].node.localFile &&
+          apps[0].node.localFile.childImageSharp ? (
+            <Img fixed={apps[0].node.localFile.childImageSharp.fixed} />
+          ) : (
+            <div width="36" height="36" />
+          )
+        const appLabel =
+          apps.length === 1 ? <>{apps[0].node.name}</> : <>{c.attrs.object}</>
 
         if (apps.length === 1) {
           comments.push(
             <ListItem key={c._id}>
+              <ListItemAvatar>{icon}</ListItemAvatar>
               <ListItemText
                 primary={<>{c.attrs.comment}</>}
                 secondary={
@@ -129,6 +153,7 @@ class Main extends React.Component {
         } else {
           comments.push(
             <ListItem key={c._id}>
+              <ListItemAvatar>{icon}</ListItemAvatar>
               <ListItemText primary={<>{c.attrs.comment}</>} />
             </ListItem>
           )

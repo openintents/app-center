@@ -42,6 +42,15 @@ class AllComments extends React.Component {
         //we can make another call here to get the owner comments too from the api
       })
       .then(comments => {
+        comments.sort((c1, c2) => {
+          if (c1.createdAt - c2.createdAt > 0) {
+            return -1
+          } else if (c1.createdAt - c2.createdAt < 0) {
+            return 1
+          } else {
+            return 0
+          }
+        })
         this.setState({
           loadingAllComments: false,
           loading: false,
@@ -71,11 +80,12 @@ class AllComments extends React.Component {
               fixed={apps[0].node.localFile.childImageSharp.fixed}
             />
           ) : (
-            <div width="24px" height="24px" />
+            <div width="36" height="36" />
           )
         const appLabel = apps.length === 1
             ? `${apps[0].node.name}`
             : `${c.object}`
+        
         const rating = <>
             <br />
             <SmallRating component="span" readOnly value={c.rating} />
@@ -130,7 +140,7 @@ class AllComments extends React.Component {
                   localFile {
                     id
                     childImageSharp {
-                      fixed(width: 24, height: 24) {
+                      fixed(width: 36, height: 36) {
                         ...GatsbyImageSharpFixed
                       }
                     }
