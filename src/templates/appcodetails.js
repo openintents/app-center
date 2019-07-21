@@ -279,7 +279,7 @@ class AppDetails extends Component {
   }
 
   goTo(url) {
-     window.open(url, "_blank")
+     window.open(url, "noopener")
   }
 
 
@@ -491,7 +491,7 @@ class AppDetails extends Component {
     }
     const icon =
       data.apps.localFile && data.apps.localFile.childImageSharp ? (
-        <Img fixed={data.apps.localFile.childImageSharp} />
+        <Img fixed={data.apps.localFile.childImageSharp.fixed} />
       ) : null
     return (
       <Layout>

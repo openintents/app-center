@@ -15,7 +15,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Search from './search'
 import BlockstackProfile from './blockstackProfile'
-import { navigateTo } from 'gatsby'
+import { navigate } from 'gatsby'
 
 
 const useStyles = makeStyles(theme => ({
@@ -120,7 +120,7 @@ export default function PrimarySearchAppBar(searchIndex) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={() => navigateTo('data')}>Profile</MenuItem>
+      <MenuItem onClick={() => navigate('data')}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
     </Menu>
   );
@@ -170,7 +170,7 @@ export default function PrimarySearchAppBar(searchIndex) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography onClick={() => navigateTo('/')} className={classes.title} variant="h6" noWrap>
+          <Typography onClick={() => navigate('/')} className={classes.title} variant="h6" noWrap>
             OI App Center
           </Typography>
           <div className={classes.search}>

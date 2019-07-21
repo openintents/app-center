@@ -68,7 +68,7 @@ class Search extends Component {
                 <Apps className={classes.AppsIcon} />
               </IconButton>
               <InputBase
-                placeholder="Search…"
+                placeholder="Find apps by name, category,.."
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,

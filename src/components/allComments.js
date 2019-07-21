@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core'
 import { SmallRating } from '../app/mycomments'
 import Img from 'gatsby-image'
-import { navigateTo } from 'gatsby'
+import { navigate } from 'gatsby'
 
 
 class AllComments extends React.Component {
