@@ -22,6 +22,8 @@ import {
   Typography,
   Box,
   Divider,
+  Tooltip,
+  CardHeader,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import LaunchIcon from '@material-ui/icons/Launch'
@@ -43,6 +45,7 @@ import OwnerCommentDialog from '../components/ownerCommentDialog'
 import SEO from '../components/seo'
 import { SmallAppDetails } from '../components/app'
 import { styles } from '../components/layout'
+import { SmallRating } from '../app/mycomments'
 
 const StyledRoot = styled.div`
   flexgrow: 1;
@@ -122,6 +125,11 @@ const Comments = (data, comments, isSignedIn) => {
   } else {
     return comments.map((c, key) => {
       const comment = c.attrs.comment.toString()
+
+      const rating = (
+        <SmallRating component="span" readOnly value={c.attrs.rating} />
+      )
+
       return (
         <Card key={c._id} style={{ margin: 4 }}>
           <CardContent>
@@ -133,6 +141,7 @@ const Comments = (data, comments, isSignedIn) => {
                 {' - '}
                 {new Date(c.attrs.createdAt).toLocaleDateString()}
               </small>
+              {rating}
             </Typography>
           </CardContent>
         </Card>
@@ -169,12 +178,15 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
     }
     for (var month in comments) {
       allMonths.push(
-        <Typography key={`title-${month}`}>{monthsLabels[month]}</Typography>
-      )
-      allMonths.push(
-        <Container key={`list-${month}`}>
-          {comments[month].map(renderComment(month))}
-        </Container>
+        <Card
+          key={`title-${month}`}
+          style={{
+            margin: 4,
+          }}
+        >
+          <CardHeader title={monthsLabels[month]} />
+          <CardContent>{comments[month].map(renderComment(month))}</CardContent>
+        </Card>
       )
     }
     return allMonths
@@ -193,6 +205,8 @@ function LinkTab(props) {
   )
 }
 
+const hashes = ['#', '#updates', '#comments']
+
 class AppDetails extends Component {
   state = {
     isClaimedApp: false,
@@ -209,6 +223,11 @@ class AppDetails extends Component {
   }
 
   componentDidMount() {
+    if (window.location.hash === '#updates') {
+      this.setState({ tabIndex: 1 })
+    } else if (window.location.hash === '#comments') {
+      this.setState({ tabIndex: 2 })
+    }
     checkIsSignedIn().then(isSignedIn => {
       if (isSignedIn) {
         const { data } = this.props
@@ -340,6 +359,7 @@ class AppDetails extends Component {
 
   handleChangeTabIndex = (e, tabIndex) => {
     e.preventDefault()
+    window.location.hash = hashes[tabIndex]
     this.setState({ tabIndex })
   }
 
@@ -428,16 +448,24 @@ class AppDetails extends Component {
     const appActions = isClaimedApp ? (
       <>
         <Button
-          variant="outlined"
+          disabled={!data.apps.website}
+          onClick={() => this.launchApp()}
+          color="primary"
+        >
+          <LaunchIcon style={styles.smallIcon} />
+          Try now
+        </Button>
+        <Button
           onClick={() => this.setState({ showUpdateDialog: true })}
+          color="primary"
         >
           <NoteIcon style={styles.smallIcon} />
           Post progress update
         </Button>{' '}
         <Button
-          variant="outlined"
           disabled={isClaimingApp}
           onClick={() => this.removeApp()}
+          color="secondary"
         >
           <RemoveIcon style={styles.smallIcon} />
           Remove from my apps
@@ -456,7 +484,6 @@ class AppDetails extends Component {
           onClick={() => {
             this.claimApp()
           }}
-          variant="outlined"
         >
           Claim App
           <AppsIcon style={styles.smallIcon} />
@@ -472,21 +499,22 @@ class AppDetails extends Component {
 
     const monthlyScoresInGrid = []
     for (var key = 0; key < months.length; key++) {
-      if (key < months.length - 1) {
-        monthlyScoresInGrid.push(
-          <React.Fragment key={key}>
-            {Rank(data, months[months.length - key - 1])}
-            <StyledCell key={`hr-${key}`} item xs={12}>
-              <hr />
-            </StyledCell>
-          </React.Fragment>
-        )
-      } else {
-        monthlyScoresInGrid.push(
-          <React.Fragment key={key}>
-            {Rank(data, months[months.length - key - 1])}
-          </React.Fragment>
-        )
+      const dataKey = months[months.length - key - 1]
+      if (data.hasOwnProperty(dataKey)) {
+        if (key < months.length - 1) {
+          monthlyScoresInGrid.push(
+            <React.Fragment key={key}>
+              {Rank(data, dataKey)}
+              <StyledCell key={`hr-${key}`} item xs={12}>
+                <hr />
+              </StyledCell>
+            </React.Fragment>
+          )
+        } else {
+          monthlyScoresInGrid.push(
+            <React.Fragment key={key}>{Rank(data, dataKey)}</React.Fragment>
+          )
+        }
       }
     }
     const icon =
@@ -538,40 +566,60 @@ class AppDetails extends Component {
               <LinkTab label="Comments" />
             </Tabs>
           </AppBar>
-          <br />
           {tabIndex === 0 && (
-            <Typography component="div">
-              <Grid container spacing={0}>
-                <StyledCell item md={4} xs={4}>
-                  <b>Month</b>
-                </StyledCell>
-                <StyledCell item md={2} xs={4}>
-                  <b>Rank</b>
-                </StyledCell>
-                <StyledCell item md={1} xs={4}>
-                  <b>Final Score</b>
-                </StyledCell>
-                <StyledCell item md={1} xs={2}>
-                  <small>DE</small>
-                </StyledCell>
-                <StyledCell item md={1} xs={2}>
-                  <small>PH</small>
-                </StyledCell>
-                <StyledCell item md={1} xs={2}>
-                  <small>NIL</small>
-                </StyledCell>
-                <StyledCell item md={1} xs={2}>
-                  <small>TMUI</small>
-                </StyledCell>
-                <StyledCell item md={1} xs={2}>
-                  <small>AW</small>
-                </StyledCell>
-                <StyledCell item xs={12}>
-                  <hr />
-                </StyledCell>
-                {monthlyScoresInGrid}
-              </Grid>
-            </Typography>
+            <Card
+              style={{
+                marginLeft: 4,
+                marginTop: 16,
+                marginRight: 4,
+                marginBottom: 4,
+              }}
+            >
+              <CardContent>
+                <Typography component="div">
+                  <Grid container spacing={0}>
+                    <StyledCell item md={4} xs={4}>
+                      <b>Month</b>
+                    </StyledCell>
+                    <StyledCell item md={2} xs={4}>
+                      <b>Rank</b>
+                    </StyledCell>
+                    <StyledCell item md={1} xs={4}>
+                      <b>Final Score</b>
+                    </StyledCell>
+                    <StyledCell item md={1} xs={2}>
+                      <Tooltip title="Democracy Earth reviews the interest for investors">
+                        <small>DE</small>
+                      </Tooltip>
+                    </StyledCell>
+                    <StyledCell item md={1} xs={2}>
+                      <Tooltip title="Product Hunt reviews the idea">
+                        <small>PH</small>
+                      </Tooltip>
+                    </StyledCell>
+                    <StyledCell item md={1} xs={2}>
+                      <Tooltip title="New Internet Labs reviews the protection of users' digital rights">
+                        <small>NIL</small>
+                      </Tooltip>
+                    </StyledCell>
+                    <StyledCell item md={1} xs={2}>
+                      <Tooltip title="TryMyUI reviews the usability and desirability">
+                        <small className="tooltiptext">TMUI</small>
+                      </Tooltip>
+                    </StyledCell>
+                    <StyledCell item md={1} xs={2}>
+                      <Tooltip title="Awario reviews the value of the brand">
+                        <small>AW</small>
+                      </Tooltip>
+                    </StyledCell>
+                    <StyledCell item xs={12}>
+                      <hr />
+                    </StyledCell>
+                    {monthlyScoresInGrid}
+                  </Grid>
+                </Typography>
+              </CardContent>
+            </Card>
           )}
 
           {tabIndex === 1 && (
@@ -647,7 +695,7 @@ class AppDetails extends Component {
             handleChangeVisibility: this.handleChangeVisibility,
             handleChangeText: this.handleChangeText,
             saveDraftUpdate: this.saveDraftUpdate,
-            postComment: this.postComment,
+            postComment: this.postUpdate,
           })}
 
         <hr />

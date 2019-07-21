@@ -8,20 +8,16 @@ import { Apps } from '@material-ui/icons';
 import Img from 'gatsby-image'
 
 const styles = theme => ({
-  margin: {
-    margin: theme.spacing(1),//new syntax for spacing in mui
-    // borderRadius: 3,
-    // color:'gray',
-    backgroundColor:'white',
-    padding: 4
-  },
   SearchField: {
     borderRadius: 4,
     color: theme.palette.text.primary,
     backgroundColor: theme.palette.common.white,
   },
   AppsIcon: {
-    color:'gray',
+    color: 'gray',
+  },
+  SearchResult: {
+    color: theme.palette.common.white,
   },
   paper: {
     padding: 1,
@@ -51,7 +47,7 @@ class Search extends Component {
                   localFile {
                     id
                     childImageSharp {
-                      fixed(width: 24, height: 24) {
+                      fixed(width: 36, height: 36) {
                         ...GatsbyImageSharpFixed
                       }
                     }
@@ -91,30 +87,26 @@ class Search extends Component {
                         fixed={appNodes[0].node.localFile.childImageSharp.fixed}
                       />
                     ) : (
-                      <div width="24px" height="24px" />
+                      <div width="36" height="36" />
                     )
                   return (
-                    <ListItem key={page.id}>
-                      <Link
-                        to={'/appco/' + page.appcoid}
-                        style={{
-                          color: `white`,
-                          fontWeight: 'bold',
-                          textDecoration: `none`,
-                        }}
-                      >
-                        <Grid container>
-                          <Grid item xs={1}>
-                            {icon}
-                          </Grid>
-                          <Grid item xs={11}>
-                            <Typography>
-                              <b>{page.name}</b>
-                              {': ' + page.category} {' : ' + page.description}
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                      </Link>
+                    <ListItem
+                      key={page.id}
+                      button
+                      onClick={() => {
+                        navigate('/appco/' + page.appcoid)
+                      }}
+                    >
+                      <ListItemAvatar>{icon}</ListItemAvatar>
+                      <ListItemText>
+                        <Typography
+                          align="left"
+                          className={classes.SearchResult}
+                        >
+                          <b>{page.name}</b>
+                          {': ' + page.category} {' : ' + page.description}
+                        </Typography>
+                      </ListItemText>
                     </ListItem>
                   )
                 })}

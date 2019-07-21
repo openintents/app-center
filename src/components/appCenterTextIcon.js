@@ -18,9 +18,9 @@ const AppCenterIcon = () => (
   <StaticQuery
     query={graphql`
       query {
-        appCenterIcon: file(relativePath: { eq: "icon.png" }) {
+        appCenterIcon: file(relativePath: { eq: "icon_text.png" }) {
           childImageSharp {
-            fixed(width: 36, height: 36) {
+            fixed(width: 36, height: 64) {
               ...GatsbyImageSharpFixed
             }
           }

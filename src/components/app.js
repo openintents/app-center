@@ -6,8 +6,8 @@ import {
   ListItemSecondaryAction,
   ListItemAvatar,
   Avatar,
-  Typography,
   IconButton,
+  Typography,
 } from '@material-ui/core'
 import AppIcon from '@material-ui/icons/Apps'
 import GetAppIcon from '@material-ui/icons/Launch'
@@ -41,7 +41,6 @@ export const SmallAppDetails = ({
       lastUpdate = commitFormat.format(lastCommitDate)
     }
   }
-
   return (
     <React.Fragment>
       <Typography component="span" variant="body2" color="textPrimary">
@@ -53,7 +52,7 @@ export const SmallAppDetails = ({
             <br />
             Rewards: <b>{earnings}</b>{' '}
           </>
-        )}
+        )}     
         {showSourceLink && openSourceUrl && (
           <>
             <br />
@@ -120,7 +119,7 @@ export const query = graphql`
   fragment AppIcon on apps {
     localFile {
       childImageSharp {
-        fixed(width: 24, height: 24) {
+        fixed(width: 36, height: 36) {
           ...GatsbyImageSharpFixed
         }
       }
