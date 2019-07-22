@@ -7,6 +7,7 @@ import {
   CardContent,
   Container,
   Button,
+  CardActions,
 } from '@material-ui/core'
 import CommentIcon from '@material-ui/icons/Note'
 import AppsIcon from '@material-ui/icons/Apps'
@@ -66,6 +67,19 @@ class PersonalData extends Component {
             </Container>
             {content}
           </CardContent>
+          {!isSignedIn && (
+            <CardActions>
+              <Container>
+                <Button
+                  size="small"
+                  color="primary"
+                  onClick={() => navigate('data/login')}
+                >
+                  Learn more
+                </Button>
+              </Container>
+            </CardActions>
+          )}
         </Card>
       </>
     )

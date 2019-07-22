@@ -96,7 +96,6 @@ exports.onCreateNode = async ({
     return fileNodePromise
       .then(fileNode => {
         if (fileNode) {
-          console.log(fileNode) // helps when running yarn develop, not sure why
           node.localFile___NODE = fileNode.id
         }
 
@@ -127,13 +126,11 @@ exports.onCreateNode = async ({
       })
   } else if (node.internal.type === `MarkdownRemark`) {
     const value = createFilePath({ node, getNode })
-    return createNodeField({
+    createNodeField({
       name: `slug`,
       node,
       value,
     })
-  } else {
-    return Promise.resolve()
   }
 }
 

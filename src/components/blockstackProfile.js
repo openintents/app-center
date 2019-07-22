@@ -28,6 +28,11 @@ class BlockstackProfile extends Component {
 
   render() {
     const { isSignedIn, userData } = this.state
+    let  variant = this.props.variant
+    if (!variant) {
+      variant = "light"
+    }
+
     if (isSignedIn) {
       let avatars, avatar
       if (userData.profile && userData.profile.image) {
@@ -56,7 +61,7 @@ class BlockstackProfile extends Component {
         )
       }
     } else {
-      return <BlockstackButton variant="light" onClick={() => this.signIn()} />
+      return <BlockstackButton variant={variant} onClick={() => this.signIn()} />
     }
   }
 }

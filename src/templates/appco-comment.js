@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { graphql } from 'gatsby'
 import Layout from '../components/layout'
 import Grid from '@material-ui/core/Grid'
-import { getUser, checkIsSignedIn } from '../app/services/blockstack'
+import { getUser, checkIsSignedIn, redirectToSignIn } from '../app/services/blockstack'
 import { Container, Typography } from '@material-ui/core'
 
 import { UserComment, PrivateUserComment } from '../components/model'
