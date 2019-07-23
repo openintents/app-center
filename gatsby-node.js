@@ -80,9 +80,9 @@ exports.onCreateNode = async ({
   const { createNodeField, createNode } = actions
   if (node.internal.type === `apps`) {
     let fileNodePromise
-    if (node.imageUrl && node.imageUrl.trim()) {
+    if (node.imgixImageUrl && node.imgixImageUrl.trim()) {
       fileNodePromise = createRemoteFileNode({
-        url: node.imageUrl.trim(),
+        url: node.imgixImageUrl.trim(),
         parentNodeId: node.id,
         store,
         cache,
@@ -184,6 +184,7 @@ createPosts = (graphql, actions) => {
     return null
   })
 }
+
 exports.createPages = async ({ graphql, actions }) => {
   createPosts(graphql, actions)
 
