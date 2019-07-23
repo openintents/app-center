@@ -2,8 +2,24 @@ import React from 'react'
 import { Link, navigate } from 'gatsby'
 import { getUser, checkIsSignedIn, logout } from '../services/blockstack'
 import { Typography } from '@material-ui/core'
+import { withStyles } from '@material-ui/styles'
 
-export default class NavBar extends React.Component {
+const styles = theme => {
+  return {
+    root: {
+      display: 'flex',
+      flex: '1',
+      justifyContent: 'space-between',
+      borderBottom: `1px solid ${theme.palette.secondary.light}`,
+      backgroundColor: theme.palette.secondary.main,
+      padding: 4,
+      marginLeft: `-1rem`,
+      marginRight: '-1rem'
+    },
+  }
+}
+
+class NavBar extends React.Component {
   state = { checking: true, signedIn: false }
   componentDidMount = () => {
     checkIsSignedIn().then(signedIn =>
@@ -14,6 +30,7 @@ export default class NavBar extends React.Component {
   render() {
     const content = { message: '', login: true }
     const { checking, signedIn } = this.state
+    const { classes } = this.props
     if (checking) {
       content.message = 'stacking blocks...'
     } else if (signedIn) {
@@ -30,15 +47,7 @@ export default class NavBar extends React.Component {
       content.message = 'You are not logged in'
     }
     return (
-      <div
-        style={{
-          display: 'flex',
-          flex: '1',
-          justifyContent: 'space-between',
-          borderBottom: '1px solid #d1c1e0',
-          backgroundColor: 'aliceblue',
-        }}
-      >
+      <div className={classes.root}>
         <Typography component="span">{content.message}</Typography>
 
         <nav>
@@ -68,3 +77,5 @@ export default class NavBar extends React.Component {
     )
   }
 }
+
+export default withStyles(styles)(NavBar)

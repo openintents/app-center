@@ -68,7 +68,7 @@ const Layout = ({ children, hideSearch }) => (
           style={{
             margin: `0 auto`,
             background: '#EEE',
-            padding: `0px 1.0875rem 1.45rem`,
+            padding: `0px 1rem 1.5rem`,
             paddingTop: 0,
           }}
         >
