@@ -135,7 +135,7 @@ const Comments = (data, comments, isSignedIn) => {
               {comment}
               <br />
               <small>
-                {c.attrs.createdBy || 'A user'}
+                {c.attrs.username || 'A user'}
                 {' - '}
                 {new Date(c.attrs.createdAt).toLocaleDateString()}
               </small>
@@ -168,7 +168,7 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
         <React.Fragment key={c._id}>
           <Typography component="div">
             <Box>{comment}</Box>
-            <Box fontSize="small">{c.attrs.createdBy || 'A user'}</Box>
+            <Box fontSize="small">{c.attrs.username || 'A user'}</Box>
           </Typography>
           {key < comments[month].length - 1 && <Divider light />}
         </React.Fragment>
@@ -384,7 +384,6 @@ class AppDetails extends Component {
             comment: userUpdate,
             rating,
             object: this.props.data.apps.website,
-            createdBy: userData.name,
           })
         : new PrivateUserComment({
             comment: userUpdate,
@@ -402,7 +401,6 @@ class AppDetails extends Component {
     await new OwnerComment({
       comment: userUpdate,
       object: this.props.data.apps.website,
-      createdBy: userData.name,
     }).save()
 
     await this.loadComments()

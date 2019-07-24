@@ -86,14 +86,13 @@ class AppComment extends Component {
 
   postComment = async () => {
     this.setState({ updating: true })
-    const { userUpdate, visibility, userData, rating } = this.state
+    const { userUpdate, visibility, rating } = this.state
     const comment =
       visibility === 'public'
         ? new UserComment({
             comment: userUpdate,
             rating,
             object: this.props.data.apps.website,
-            createdBy: userData.name,
           })
         : new PrivateUserComment({
             comment: userUpdate,

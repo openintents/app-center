@@ -2,10 +2,6 @@ const express = require('express');
 const cors = require('cors')
 const expressWS = require('express-ws');
 const { setup } = require('radiks-server');
-import {
-  UserComment,
-  OwnerComment
-} from '../src/components/model'
 const makeApiController = require('./makeApiController');
 
 const app = express();

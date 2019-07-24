@@ -621,3 +621,13 @@ pre tt:after {
     font-size: 100%;
   }
 }
+
+
+.gatsby-image-wrapper {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.appItem:hover{
+box-shadow: 1px 1px 9px 1px #cf9a72;
+}
