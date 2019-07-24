@@ -11,9 +11,10 @@ import {
 } from '@material-ui/core'
 import CommentIcon from '@material-ui/icons/Note'
 import AppsIcon from '@material-ui/icons/Apps'
+import ExitIcon from '@material-ui/icons/ExitToApp'
 import { styles } from './layout'
 import BlockstackProfile from './blockstackProfile'
-import { checkIsSignedIn, getUser } from '../app/services/blockstack'
+import { checkIsSignedIn, getUser, logout } from '../app/services/blockstack'
 
 class PersonalData extends Component {
   state = {
@@ -34,19 +35,7 @@ class PersonalData extends Component {
     const { isSignedIn } = this.state
     let content
     if (isSignedIn) {
-      content = (
-        <>
-          <Button color="primary" onClick={() => navigate('/data/#comments')}>
-            <CommentIcon style={styles.smallIcon} />
-            Comments
-          </Button>
-
-          <Button color="primary" onClick={() => navigate('/data/#apps')}>
-            <AppsIcon style={styles.smallIcon} />
-            Apps
-          </Button>
-        </>
-      )
+      content = null
     } else {
       content = (
         <Container>
@@ -76,6 +65,29 @@ class PersonalData extends Component {
                   onClick={() => navigate('data/login')}
                 >
                   Learn more
+                </Button>
+              </Container>
+            </CardActions>
+          )}
+          {isSignedIn && (
+            <CardActions>
+              <Container align="center">
+                <Button
+                  color="primary"
+                  onClick={() => navigate('/data/#comments')}
+                >
+                  <CommentIcon style={styles.smallIcon} />
+                  Comments
+                </Button>
+                <br />
+                <Button color="primary" onClick={() => navigate('/data/#apps')}>
+                  <AppsIcon style={styles.smallIcon} />
+                  Apps
+                </Button>
+                <br />
+                <Button color="primary" onClick={() => logout()}>
+                  <ExitIcon style={styles.smallIcon} />
+                  Logout
                 </Button>
               </Container>
             </CardActions>

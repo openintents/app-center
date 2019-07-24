@@ -14,23 +14,27 @@ class BlockstackProfile extends Component {
   state = {
     isSignedIn: false,
     isLoading: true,
+    redirectUrl: null,
   }
 
   componentDidMount() {
+    if (this.props.redirectToHere) {
+      this.setState({ redirectUrl: window.location.href })
+    }
     checkIsSignedIn().then(signedIn => {
       this.setState({ isSignedIn: signedIn, userData: getUser() })
     })
   }
 
   signIn() {
-    redirectToSignIn()
+    redirectToSignIn(this.state.redirectUrl)
   }
 
   render() {
     const { isSignedIn, userData } = this.state
-    let  variant = this.props.variant
+    let { variant } = this.props
     if (!variant) {
-      variant = "light"
+      variant = 'light'
     }
 
     if (isSignedIn) {
@@ -61,7 +65,9 @@ class BlockstackProfile extends Component {
         )
       }
     } else {
-      return <BlockstackButton variant={variant} onClick={() => this.signIn()} />
+      return (
+        <BlockstackButton variant={variant} onClick={() => this.signIn()} />
+      )
     }
   }
 }

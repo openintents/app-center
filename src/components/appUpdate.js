@@ -99,7 +99,7 @@ export default ({ link, title, date, description, appcoId, apiComment }) => {
                     size="small"
                     color="primary"
                     onClick={() => {
-                      navigate(`/appco/${appcoid}/comment`)
+                      navigate(`/appco/${appcoid}/?newComment=true#comments`)
                     }}
                   >
                     <StarIcon />

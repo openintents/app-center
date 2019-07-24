@@ -154,7 +154,6 @@ class IndexPage extends Component {
       posts.splice(index, 0, { type: 'apiUpdate', post: c })
     }
     const postComponents = posts.map(p => {
-      console.log(p)
       if (p.type === 'appCoMonth') {
         return (
           <AppCoMonth
@@ -196,20 +195,15 @@ class IndexPage extends Component {
             },
           ]}
         />
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div>
+        <Grid container spacing={2} style={{ paddingTop: 40 }}>
+          <Grid item xs={12} sm={8}>
             <Card style={{ margin: 24 }}>
               <CardContent>
                 <Grid container alignItems="center">
-                  <Grid item xs={12} sm={2}>
+                  <Grid item xs={12} md={2}>
                     <Img fluid={data.togetherImage.childImageSharp.fluid} />
                   </Grid>
-                  <Grid item xs={12} sm={10} container>
+                  <Grid item xs={12} md={10} container>
                     <Grid item xs={12}>
                       <Typography variant="h6" align="center">
                         Help the community and add your review
@@ -245,21 +239,16 @@ class IndexPage extends Component {
               News and Updates
             </Typography>
             {postComponents}
-            <Typography variant="body2">
-              <a href="https://docs.blockstack.org/develop/mining_intro.html">
-                Read more about the App Mining program
-              </a>
-            </Typography>
-          </div>
-          <div
-            style={{
-              paddingLeft: '3rem',
-            }}
-          >
-            <PersonalData />
+          </Grid>
+          <Grid item xs={12} sm={4}>
             <AllComments />
-          </div>
-        </div>
+          </Grid>
+        </Grid>
+        <Typography variant="body2">
+          <a href="https://docs.blockstack.org/develop/mining_intro.html">
+            Read more about the App Mining program
+          </a>
+        </Typography>
       </Layout>
     )
   }
@@ -290,7 +279,7 @@ export const query = graphql`
     }
     togetherImage: file(relativePath: { eq: "together.jpg" }) {
       childImageSharp {
-        fluid(maxWidth: 128) {
+        fluid(maxWidth: 500) {
           ...GatsbyImageSharpFluid
         }
       }

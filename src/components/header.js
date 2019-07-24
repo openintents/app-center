@@ -31,12 +31,12 @@ const Header = ({
 }) => (
   <Container className={classes.header}>
     <Grid container alignContent="center" spacing={2}>
-      <Grid item xs={1} align="center">
+      <Grid item xs={12} sm={1} align="center">
         <Link to="/" className={classes.titleIcon}>
           <Img fixed={fixedIcon} alt="icon" />
         </Link>
       </Grid>
-      <Grid item xs={11} container>
+      <Grid item xs={12} sm={11} container>
         <Grid item xs={12}>
           <Typography variant="h3">
             <Link to="/" className={classes.title}>

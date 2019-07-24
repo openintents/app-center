@@ -7,6 +7,7 @@ import './layout.css'
 import { Typography, createMuiTheme, Container } from '@material-ui/core'
 import { getApiServer } from '../app/services/blockstack'
 import { ThemeProvider } from '@material-ui/styles'
+import PrimaryAppBar from './appBar'
 
 export const styles = {
   smallIcon: {
@@ -57,19 +58,16 @@ const Layout = ({ children, hideSearch }) => (
     `}
     render={data => (
       <ThemeProvider theme={theme}>
-        <Header
-          siteTitle={data.site.siteMetadata.description}
-          siteDescription={data.site.siteMetadata.title}
+        <PrimaryAppBar
           siteSearchIndex={data.siteSearchIndex}
-          hideSearch={hideSearch}
           fixedIcon={data.file.childImageSharp.fixed}
+          hideSearch={hideSearch}
         />
         <Container
           style={{
             margin: `0 auto`,
             background: '#EEE',
             padding: `0px 1rem 1.5rem`,
-            paddingTop: 40,
           }}
         >
           {children}

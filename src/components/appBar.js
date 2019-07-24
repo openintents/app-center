@@ -1,20 +1,18 @@
-import React from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
+import React from 'react'
+import { fade, makeStyles } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import IconButton from '@material-ui/core/IconButton'
+import Typography from '@material-ui/core/Typography'
+import MenuItem from '@material-ui/core/MenuItem'
+import Menu from '@material-ui/core/Menu'
+import MoreIcon from '@material-ui/icons/MoreVert'
 import Search from './search'
-import BlockstackProfile from './blockstackProfile'
+import BlockstackAvatar from './blockstackAvatar'
 import { navigate } from 'gatsby'
-
+import { logout } from '../app/services/blockstack'
+import Img from 'gatsby-image'
+import { Container } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -25,18 +23,14 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     display: 'none',
-    cursor:'pointer',
+    cursor: 'pointer',
+    color: theme.palette.common.white,
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
   },
   search: {
     position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: '100%',
@@ -78,36 +72,40 @@ const useStyles = makeStyles(theme => ({
     },
   },
   websiteTitle: {
-    cursor: 'pointer'
-  }
-}));
+    cursor: 'pointer',
+  },
+}))
 
-export default function PrimarySearchAppBar(searchIndex) {
-  const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+export default function PrimaryAppBar({
+  siteSearchIndex,
+  fixedIcon,
+  hideSearch,
+}) {
+  const classes = useStyles()
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const isMenuOpen = Boolean(anchorEl)
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
   function handleProfileMenuOpen(event) {
-    setAnchorEl(event.currentTarget);
+    setAnchorEl(event.currentTarget)
   }
 
   function handleMobileMenuClose() {
-    setMobileMoreAnchorEl(null);
+    setMobileMoreAnchorEl(null)
   }
 
   function handleMenuClose() {
-    setAnchorEl(null);
-    handleMobileMenuClose();
+    setAnchorEl(null)
+    handleMobileMenuClose()
   }
 
   function handleMobileMenuOpen(event) {
-    setMobileMoreAnchorEl(event.currentTarget);
+    setMobileMoreAnchorEl(event.currentTarget)
   }
 
-  const menuId = 'primary-search-account-menu';
+  const menuId = 'primary-menu'
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -118,12 +116,13 @@ export default function PrimarySearchAppBar(searchIndex) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={() => navigate('data')}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
+      <MenuItem onClick={() => navigate('/data/#comments')}>Comments</MenuItem>
+      <MenuItem onClick={() => navigate('/data/#apps')}>Apps</MenuItem>
+      <MenuItem onClick={() => logout()}>Logout</MenuItem>
     </Menu>
-  );
+  )
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
+  const mobileMenuId = 'primary-menu-mobile'
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
@@ -134,27 +133,11 @@ export default function PrimarySearchAppBar(searchIndex) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton aria-label="Show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="Account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+      <MenuItem onClick={() => navigate('/data/#comments')}>Comments</MenuItem>
+      <MenuItem onClick={() => navigate('/data/#apps')}>Apps</MenuItem>
+      <MenuItem onClick={() => logout()}>Logout</MenuItem>
     </Menu>
-  );
+  )
 
   return (
     <div className={classes.grow}>
@@ -163,24 +146,27 @@ export default function PrimarySearchAppBar(searchIndex) {
           <IconButton
             edge="start"
             className={classes.menuButton}
-            color="inherit"
-            aria-label="Open drawer"
+            aria-label="Icon"
           >
-            <MenuIcon />
+            <Img fixed={fixedIcon} alt="icon" />
           </IconButton>
-          <Typography onClick={() => navigate('/')} className={classes.title} variant="h6" noWrap>
-            OI App Center
+
+          <Typography
+            onClick={() => navigate('/')}
+            className={classes.title}
+            variant="h5"
+            noWrap
+          >
+            App reviews done right!
           </Typography>
-          <div className={classes.search}>
-            <Search searchIndex={searchIndex} />
-          </div>
+
+          {!hideSearch && (
+            <div className={classes.search}>
+              <Search searchIndex={siteSearchIndex.index} />
+            </div>
+          )}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="Show 1 new notifications" color="inherit">
-              <Badge badgeContent={1} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
             <IconButton
               edge="end"
               aria-label="Account of current user"
@@ -189,7 +175,7 @@ export default function PrimarySearchAppBar(searchIndex) {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <BlockstackProfile />
+              <BlockstackAvatar />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
@@ -208,5 +194,5 @@ export default function PrimarySearchAppBar(searchIndex) {
       {renderMobileMenu}
       {renderMenu}
     </div>
-  );
+  )
 }

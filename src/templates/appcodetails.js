@@ -134,12 +134,12 @@ const Comments = (data, comments, isSignedIn) => {
             <Typography>
               {comment}
               <br />
+              {rating}
               <small>
                 {c.attrs.username || 'A user'}
                 {' - '}
                 {new Date(c.attrs.createdAt).toLocaleDateString()}
               </small>
-              {rating}
             </Typography>
           </CardContent>
         </Card>
@@ -226,6 +226,10 @@ class AppDetails extends Component {
     } else if (window.location.hash === '#comments') {
       this.setState({ tabIndex: 2 })
     }
+    const urlParams = new URLSearchParams(window.location.search)
+    const newComment = urlParams.get('newComment')
+    this.setState({ showUpdateDialog: newComment === 'true' })
+
     checkIsSignedIn().then(isSignedIn => {
       if (isSignedIn) {
         const { data } = this.props
@@ -528,7 +532,7 @@ class AppDetails extends Component {
           description={data.apps.description}
           keywords={[data.apps.name, `application`, `blockstack`]}
         />
-        <Card style={{ margin: 4 }}>
+        <Card style={{ margin: 4, marginTop: 40 }}>
           <CardContent>
             <Grid container alignItems="center" spacing={2}>
               <Grid item xs={1} sm={1}>

@@ -22,7 +22,7 @@ const CommentThanks = () => (
       </CardContent>
       <CardActions>
         <Button color="primary" onClick={() => navigate('/')}>
-          Continue reviewing
+          Do more reviews
         </Button>
       </CardActions>
     </Card>

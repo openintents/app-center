@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { graphql } from 'gatsby'
 import Layout from '../components/layout'
 import Grid from '@material-ui/core/Grid'
-import { getUser, checkIsSignedIn, redirectToSignIn } from '../app/services/blockstack'
+import { getUser, checkIsSignedIn } from '../app/services/blockstack'
 import { Container, Typography } from '@material-ui/core'
 
 import { UserComment, PrivateUserComment } from '../components/model'
@@ -21,22 +21,24 @@ class AppComment extends Component {
     privateComments: [],
     loadingComments: false,
     loadingPrivateComments: false,
+    loadingUser: true,
     loadingData: true,
-    redirecting: false,
   }
 
   componentDidMount() {
     checkIsSignedIn().then(isSignedIn => {
-      if (isSignedIn) {
-        this.setState({
-          isSignedIn: true,
-          userData: getUser(),
-        })
-        this.loadComments()
-      } else {
-        redirectToSignIn(window.location.href)
-        this.setState({ isSignedIn: false, redirecting: true })
-      }
+      setTimeout(() => {
+        if (isSignedIn) {
+          this.setState({
+            loadingUser: false,
+            isSignedIn: true,
+            userData: getUser(),
+          })
+          this.loadComments()
+        } else {
+          this.setState({ isSignedIn: false, loadingUser: false })
+        }
+      }, 2000)
     })
   }
 
@@ -106,7 +108,14 @@ class AppComment extends Component {
 
   render() {
     const { data } = this.props
-    const { visibility, rating, userUpdate, updating, isSignedIn } = this.state
+    const {
+      visibility,
+      rating,
+      userUpdate,
+      updating,
+      isSignedIn,
+      loadingUser,
+    } = this.state
     const icon =
       data.apps.localFile && data.apps.localFile.childImageSharp ? (
         <Img fixed={data.apps.localFile.childImageSharp.fixed} />
@@ -150,7 +159,8 @@ class AppComment extends Component {
           handleChangeRating: this.handleChangeRating,
           postComment: this.postComment,
           modal: true,
-          isSignedIn: isSignedIn,
+          isSignedIn,
+          loadingUser,
         })}
         <hr />
       </Layout>
