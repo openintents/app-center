@@ -18,13 +18,12 @@ const styles = theme => ({
   },
   titleIcon: {
     textDecoration: 'none',
-    color: theme.palette.text.primary
+    color: theme.palette.text.primary,
   },
 })
 
 const Header = ({
   siteTitle,
-  siteDescription,
   siteSearchIndex,
   hideSearch,
   fixedIcon,
@@ -32,7 +31,7 @@ const Header = ({
 }) => (
   <Container className={classes.header}>
     <Grid container alignContent="center" spacing={2}>
-      <Grid item xs={1} align="center" >
+      <Grid item xs={1} align="center">
         <Link to="/" className={classes.titleIcon}>
           <Img fixed={fixedIcon} alt="icon" />
         </Link>

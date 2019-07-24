@@ -5,7 +5,6 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   ListItemAvatar,
-  Avatar,
   IconButton,
   Typography,
 } from '@material-ui/core'
@@ -48,7 +47,7 @@ export const SmallAppDetails = ({
         {!hideRewards && (
           <>
             <br />
-            rewards: {earnings}{' '}
+            Rewards: {earnings}{' '}
           </>
         )}
         {showSourceLink && openSourceUrl && (
@@ -58,11 +57,11 @@ export const SmallAppDetails = ({
               Source code
             </a>
           </>
-        )}     
+        )}
         {showSourceLink && openSourceUrl && (
           <>
             <br />
-            last update: {lastUpdate}
+            Last update: {lastUpdate}
           </>
         )}
       </Typography>
@@ -73,6 +72,7 @@ export const SmallAppDetails = ({
 const App = ({ data, hideRewards, showSourceLink }) => {
   return (
     <ListItem
+      className={'appItem'}
       dense
       alignItems="flex-start"
       button={!data.hideDetailsLink}
@@ -84,16 +84,12 @@ const App = ({ data, hideRewards, showSourceLink }) => {
     >
       {data.localFile && data.localFile.childImageSharp && (
         <ListItemAvatar>
-          <Avatar>
-            <Img fixed={data.localFile.childImageSharp.fixed} />
-          </Avatar>
+          <Img fixed={data.localFile.childImageSharp.fixed} />
         </ListItemAvatar>
       )}
       {(!data.localFile || !data.localFile.childImageSharp) && (
         <ListItemAvatar>
-          <Avatar>
-            <AppIcon style={styles.smallIcon} />
-          </Avatar>
+          <AppIcon style={styles.smallIcon} />
         </ListItemAvatar>
       )}
 

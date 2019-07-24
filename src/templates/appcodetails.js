@@ -377,7 +377,7 @@ class AppDetails extends Component {
 
   postComment = async () => {
     this.setState({ updating: true })
-    const { userUpdate, visibility, userData, rating } = this.state
+    const { userUpdate, visibility, rating } = this.state
     const comment =
       visibility === 'public'
         ? new UserComment({
@@ -397,7 +397,7 @@ class AppDetails extends Component {
 
   postUpdate = async () => {
     this.setState({ updating: true })
-    const { userUpdate, userData } = this.state
+    const { userUpdate } = this.state
     await new OwnerComment({
       comment: userUpdate,
       object: this.props.data.apps.website,
@@ -492,7 +492,7 @@ class AppDetails extends Component {
           }}
         >
           <AppsIcon style={styles.smallIcon} />
-          Claim this app
+          Claim app
         </Button>
       </>
     )
@@ -698,7 +698,7 @@ export const query = graphql`
       ...AppInformation
       localFile {
         childImageSharp {
-          fixed(width: 80, height: 80) {
+          fixed(width: 100, height: 100) {
             ...GatsbyImageSharpFixed
           }
         }
