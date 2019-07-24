@@ -5,8 +5,6 @@ import { withStyles } from '@material-ui/core/styles'
 import { graphql, StaticQuery, navigate } from 'gatsby'
 import {
   Typography,
-  Paper,
-  IconButton,
   TextField,
   Container,
   InputAdornment,
@@ -93,7 +91,6 @@ class Search extends Component {
     event,
     { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }
   ) => {
-    console.log(suggestion, suggestionValue)
     navigate('/appco/' + suggestion.appcoid)
   }
 
@@ -167,8 +164,6 @@ class Search extends Component {
   }
 
   onChange = (event, { newValue, method }) => {
-    console.log(this.state.query, newValue, method)
-
     this.setState({
       query: newValue,
     })

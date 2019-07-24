@@ -1,5 +1,5 @@
 import React from 'react'
-import { fade, makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
@@ -12,7 +12,6 @@ import BlockstackAvatar from './blockstackAvatar'
 import { navigate } from 'gatsby'
 import { logout } from '../app/services/blockstack'
 import Img from 'gatsby-image'
-import { Container } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
   grow: {
