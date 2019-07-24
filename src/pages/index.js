@@ -68,6 +68,17 @@ class IndexPage extends Component {
       {
         type: 'appUpdate',
         post: {
+          link: 'https://www.bloco.io/blog/2019/blockstack-android-tips',
+          title: 'Blockstack Android Tips',
+          date: new Date('2019-07-14'),
+          description:
+            'When developing the Envelop Android app using the Blockstack Android library, I ran into some important gotchas. I wanted to share them for whoever starts on the same path.',
+          appcoId: '1453',
+        },
+      },
+      {
+        type: 'appUpdate',
+        post: {
           link:
             'https://blog.graphitedocs.com/the-simple-way-to-remain-gdpr-compliant/',
           title: 'The Simple Way to Remain GDPR Compliant',
