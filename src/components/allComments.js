@@ -160,7 +160,7 @@ class AllComments extends React.Component {
             )}
             {!loading && (
               <>
-                <Typography variant="h5">Comments</Typography>
+                <Typography variant="h5">Latest from the Community</Typography>
                 {this.renderComments(apiComments, data)}
               </>
             )}

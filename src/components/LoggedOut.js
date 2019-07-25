@@ -8,6 +8,7 @@ import {
   Container,
   Button,
   CardActions,
+  CircularProgress,
 } from '@material-ui/core'
 import { redirectToSignIn } from '../app/services/blockstack'
 import { LayoutContext } from './layout'
@@ -17,7 +18,7 @@ class LoggedOut extends Component {
   static contextType = LayoutContext
 
   render() {
-    const { isSignedIn } = this.context
+    const { isSignedIn, checking } = this.context
     if (isSignedIn) {
       return null
     } else {
@@ -25,10 +26,13 @@ class LoggedOut extends Component {
         <Card style={{ margin: 4 }}>
           <CardContent>
             <Container align="center">
-              <BlockstackButton
-                variant="blue"
-                onClick={() => redirectToSignIn()}
-              />
+              {!checking && (
+                <BlockstackButton
+                  variant="blue"
+                  onClick={() => redirectToSignIn()}
+                />
+              )}
+              {checking && <CircularProgress size={36} />}
             </Container>
             <Container>
               <Typography>

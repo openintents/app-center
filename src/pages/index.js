@@ -207,7 +207,7 @@ export default ({ data }) => {
       />
       <Grid container spacing={2} style={{ paddingTop: 40 }}>
         <Grid item xs={12} sm={8}>
-          <Card style={{ margin: 24 }}>
+          <Card style={{ margin: 4 }}>
             <CardContent>
               <Grid container alignItems="center">
                 <Grid item xs={12} md={2}>
@@ -245,13 +245,13 @@ export default ({ data }) => {
               </Grid>
             </CardContent>
           </Card>
+          <LoggedOut />
           <Typography variant="h5" align="center">
             News and Updates
           </Typography>
           {postComponents}
         </Grid>
         <Grid item xs={12} sm={4}>
-          <LoggedOut />
           <AllComments />
         </Grid>
       </Grid>

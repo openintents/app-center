@@ -525,7 +525,7 @@ class AppDetails extends Component {
       data.apps.localFile && data.apps.localFile.childImageSharp ? (
         <Img fixed={data.apps.localFile.childImageSharp.fixed} />
       ) : (
-        <AppsIcon style={styles.smallIcon} />
+        <AppsIcon style={styles.bigIcon} />
       )
     return (
       <Layout>

@@ -13,6 +13,10 @@ export const styles = {
     width: 36,
     height: 36,
   },
+  bigIcon: {
+    width: 100,
+    height: 100,
+  },
   link: {
     textDecoration: 'none',
     color: '#72a7cf',
