@@ -12,8 +12,6 @@ import {
   Button,
   CircularProgress,
   Container,
-  Typography,
-  Box,
 } from '@material-ui/core'
 import Rating from 'material-ui-rating'
 import BlockstackProfile from './blockstackProfile'
