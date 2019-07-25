@@ -1,6 +1,7 @@
 import React from 'react'
 import { saveMyData, loadMyData } from './services/blockstack'
-import AppSelector from './components/AppSelector'
+import AppSelector2 from './components/AppSelector2'
+import { Typography, Container, CircularProgress } from '@material-ui/core'
 
 class MyApps extends React.Component {
   state = {
@@ -23,9 +24,14 @@ class MyApps extends React.Component {
 
     return (
       <>
-        {loading && <>Loading...</>}
+        {loading && (
+          <Container style={{ margin: 40 }}>
+            <CircularProgress size={36} />
+            <Typography component="span"> Loading apps...</Typography>
+          </Container>
+        )}
         {!loading && (
-          <AppSelector
+          <AppSelector2
             myApps={myApps}
             onSubmitApps={values => this.saveMyApps(values)}
           />

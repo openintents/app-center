@@ -3,7 +3,7 @@ import { Avatar, CircularProgress } from '@material-ui/core'
 import AccountIcon from '@material-ui/icons/AccountBox'
 import { styles, LayoutContext } from './layout'
 
-export default () => {
+export default function BlockstackAvatar() {
   const { isSignedIn, user: userData, checking } = useContext(LayoutContext)
 
   if (isSignedIn) {

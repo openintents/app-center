@@ -11,6 +11,11 @@ import {
   IconButton,
   withStyles,
   ListItemAvatar,
+  CircularProgress,
+  Container,
+  CardHeader,
+  Card,
+  CardContent,
 } from '@material-ui/core'
 import {
   UserComment,
@@ -24,6 +29,7 @@ import {
 } from '../components/model'
 import DeleteIcon from '@material-ui/icons/Delete'
 import AppsIcon from '@material-ui/icons/Apps'
+import CommentIcon from '@material-ui/icons/Note'
 import Rating from 'material-ui-rating'
 import { User } from 'radiks/lib'
 import UserCommentDialog from '../components/userCommentDialog'
@@ -150,6 +156,11 @@ class MyComments extends React.Component {
           e => e.node.website === c.attrs.object
         )
 
+        const isNotPublic = [
+          DraftOwnerComment.modelName(),
+          PrivateUserComment.modelName(),
+        ].includes(c.modelName())
+
         const rating = [
           UserComment.modelName(),
           PrivateUserComment.modelName(),
@@ -179,9 +190,16 @@ class MyComments extends React.Component {
                 <>
                   {appLabel}
                   {rating}
+                  {isNotPublic && (
+                    <>
+                      <br />
+                      not published
+                    </>
+                  )}
                 </>
               }
             />
+
             <ListItemSecondaryAction onClick={() => this.handleDeleteClick(c)}>
               <IconButton aria-label="Delete">
                 <DeleteIcon stlye={styles.smallIcon} />
@@ -287,16 +305,26 @@ class MyComments extends React.Component {
         `}
         render={data => (
           <>
-            {loading && <>Loading...</>}
+            {loading && (
+              <Container style={{ margin: 40 }}>
+                <CircularProgress size={36} />
+                <Typography component="span"> Loading comments...</Typography>
+              </Container>
+            )}
             {!loading && (
-              <>
-                <Typography variant="h5">Comments</Typography>
-                {this.renderComments(myComments, data)}
-                {this.renderComments(myPrivateComments, data)}
-                <Divider light />
-                {this.renderComments(myUpdates, data)}
-                {this.renderComments(myDraftUpdates, data)}
-              </>
+              <Card style={{ margin: 4 }}>
+                <CardHeader
+                  title={<Typography variant="h5">Comments</Typography>}
+                  avatar={<CommentIcon style={styles.smallIcon} />}
+                />
+                <CardContent>
+                  {this.renderComments(myComments, data)}
+                  {this.renderComments(myPrivateComments, data)}
+                  <Divider light />
+                  {this.renderComments(myUpdates, data)}
+                  {this.renderComments(myDraftUpdates, data)}
+                </CardContent>
+              </Card>
             )}
             {UserCommentDialog({
               userUpdate,

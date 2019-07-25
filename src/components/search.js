@@ -2,13 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Index } from 'elasticlunr'
 import { withStyles } from '@material-ui/core/styles'
-import { graphql, StaticQuery, navigate } from 'gatsby'
-import {
-  Typography,
-  TextField,
-  InputAdornment,
-  Box,
-} from '@material-ui/core'
+import { graphql, StaticQuery } from 'gatsby'
+import { Typography, TextField, InputAdornment, Box } from '@material-ui/core'
 import { Apps } from '@material-ui/icons'
 import Img from 'gatsby-image'
 import Autosuggest from 'react-autosuggest'
@@ -99,7 +94,8 @@ class Search extends Component {
     event,
     { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }
   ) => {
-    navigate('/appco/' + suggestion.appcoid)
+    const { suggestionSelectedCallback } = this.props
+    suggestionSelectedCallback(suggestion)
   }
 
   renderSuggestionsContainer = ({ containerProps, children }) => {
@@ -209,6 +205,7 @@ class Search extends Component {
 
 Search.propTypes = {
   classes: PropTypes.object.isRequired,
+  suggestionSelectedCallback: PropTypes.func.isRequired,
 }
 
 export default withStyles(searchStyles)(Search)

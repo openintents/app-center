@@ -21,20 +21,13 @@ const styles = theme => {
 }
 
 const NavBar = ({ classes }) => {
-  let { checking, user, isSignedIn } = useContext(LayoutContext)
+  let { checking, isSignedIn } = useContext(LayoutContext)
 
   const content = { message: '', login: true }
   if (checking) {
     content.message = 'stacking blocks...'
   } else if (isSignedIn) {
-    let name = user.profile && user.profile.name
-    if (!name) {
-      name = user.username
-    }
-    if (!name) {
-      name = user.decentralizedId
-    }
-    content.message = `Hello, ${name} (${user.username})`
+    content.message = null
   } else {
     content.message = 'You are not logged in'
   }
@@ -46,9 +39,9 @@ const NavBar = ({ classes }) => {
         <Typography>
           <Link to="/data/">Overview</Link>
           {` `}
-          <Link to="/data/comments">My Comments</Link>
+          <Link to="/data/comments">Comments</Link>
           {` `}
-          <Link to="/data/apps">My Apps</Link>
+          <Link to="/data/apps">Apps</Link>
           {` `}
           {isSignedIn ? (
             <a

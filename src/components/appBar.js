@@ -164,7 +164,12 @@ export default function PrimaryAppBar({
 
           {!hideSearch && (
             <div className={classes.search}>
-              <Search searchIndex={siteSearchIndex.index} />
+              <Search
+                searchIndex={siteSearchIndex.index}
+                suggestionSelectedCallback={suggestion => {
+                  navigate('/appco/' + suggestion.appcoid)
+                }}
+              />
             </div>
           )}
           <div className={classes.grow} />

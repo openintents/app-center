@@ -1,255 +1,85 @@
 import React from 'react'
-import { graphql, Link, StaticQuery, navigate } from 'gatsby'
-import { encryptContent, loadMyData } from './services/blockstack'
-import {
-  UserComment,
-  OwnerComment,
-  PrivateUserComment,
-} from '../components/model'
+import { navigate } from 'gatsby'
 import {
   Typography,
-  ListItem,
-  ListItemText,
-  List,
-  ListItemAvatar,
+  Container,
+  Button,
+  CardHeader,
+  CardContent,
+  CardActions,
+  Card,
 } from '@material-ui/core'
-import { User } from 'radiks/lib'
-import { SmallRating } from './mycomments'
-import Img from 'gatsby-image'
 import AppsIcon from '@material-ui/icons/Apps'
-import { styles } from '../components/layout'
+import CommentIcon from '@material-ui/icons/Comment'
+import LockIcon from '@material-ui/icons/Lock'
+import DBIcon from '@material-ui/icons/Storage'
+import { styles, LayoutContext } from '../components/layout'
+import BlockstackAvatar from '../components/blockstackAvatar'
+import { getAppBucketUrl } from 'blockstack'
 
 class Main extends React.Component {
-  state = {
-    myApps: {},
-    myComments: [],
-    myUpdates: [],
-    loadingApps: true,
-    loadingComments: true,
-    loadingUpdates: true,
-    loading: true,
-  }
+  static contextType = LayoutContext
+
+  state = { storageLocation: null }
 
   componentDidMount() {
     if (window.location.hash === '#apps') {
       navigate('/data/apps')
     } else if (window.location.hash === '#comments') {
       navigate('/data/comments')
-    } else {
-      User.createWithCurrentUser().then(() => {
-        loadMyData().then(content => {
-          this.setState({
-            myApps: content.myApps,
-            loadingApps: false,
-            loading: this.state.loadingComments && this.state.loadingUpdates,
-          })
-        })
-        UserComment.fetchOwnList().then(myComments => {
-          this.setState({
-            myComments,
-            loadingComments: false,
-            loading: this.state.loadingApps && this.state.loadingUpdates,
-          })
-        })
-        OwnerComment.fetchOwnList().then(myUpdates => {
-          this.setState({
-            myUpdates,
-            loadingUpdates: false,
-            loading: this.state.loadingApps && this.state.loadingComments,
-          })
-        })
-      })
     }
-  }
-
-  handleClick(event) {
-    const encryptedMessage = encryptContent(this.state.message)
-    this.setState({ encryptedMessage })
-  }
-
-  handleChange(event) {
-    this.setState({ message: event.target.value })
-  }
-
-  renderApps(myApps, data) {
-    const apps = []
-    if (myApps) {
-      Object.keys(myApps).forEach(key => {
-        if (myApps[key]) {
-          const appEditLink = `/appco/${key.substr(4)}`
-          const app = data.allApps.edges.filter(edge => {
-            return edge.node.appcoid.toString() === key.substr(4)
-          })[0].node
-          apps.push(
-            <ListItem key={app.appcoid}>
-              <ListItemText
-                primary={
-                  <>
-                    <Link to={appEditLink}>{app.name}</Link>
-                  </>
-                }
-              />
-            </ListItem>
-          )
-        }
-      })
-    } else {
-      apps.push(
-        <ListItem key="empty">
-          <ListItemText
-            primary={
-              <>
-                <Link to="/data/apps">Add your apps</Link>
-              </>
-            }
-          />
-        </ListItem>
-      )
-    }
-    return <List>{apps}</List>
-  }
-
-  renderComments(myComments, data) {
-    const comments = []
-
-    if (myComments && myComments.length > 0) {
-      myComments.forEach(c => {
-        const apps = data.allApps.edges.filter(
-          e => e.node.website === c.attrs.object
-        )
-        const rating = [
-          UserComment.modelName(),
-          PrivateUserComment.modelName(),
-        ].includes(c.modelName()) ? (
-          <>
-            <br />
-            <SmallRating component="span" readOnly value={c.attrs.rating} />
-          </>
-        ) : null
-        const icon =
-          apps.length > 0 &&
-          apps[0].node.localFile &&
-          apps[0].node.localFile.childImageSharp ? (
-            <Img fixed={apps[0].node.localFile.childImageSharp.fixed} />
-          ) : (
-            <AppsIcon style={styles.smallIcon} />
-          )
-        const appLabel =
-          apps.length === 1 ? <>{apps[0].node.name}</> : <>{c.attrs.object}</>
-
-        if (apps.length === 1) {
-          comments.push(
-            <ListItem key={c._id}>
-              <ListItemAvatar>{icon}</ListItemAvatar>
-              <ListItemText
-                primary={<>{c.attrs.comment}</>}
-                secondary={
-                  <>
-                    {appLabel}
-                    {rating}
-                  </>
-                }
-              />
-            </ListItem>
-          )
-        } else {
-          comments.push(
-            <ListItem key={c._id}>
-              <ListItemAvatar>{icon}</ListItemAvatar>
-              <ListItemText primary={<>{c.attrs.comment}</>} />
-            </ListItem>
-          )
-        }
-      })
-    } else {
-      comments.push(
-        <ListItem key="empty">
-          <ListItemText
-            primary={
-              <>
-                <Link to="/appco-foss">Add comments to a few apps</Link>
-              </>
-            }
-          />
-        </ListItem>
-      )
-    }
-    return <List>{comments}</List>
-  }
-
-  renderUpdates(myUpdates, data) {
-    const updates = []
-    if (myUpdates) {
-      console.log(myUpdates)
-      myUpdates.forEach(c => {
-        const apps = data.allApps.edges.filter(
-          e => e.node.website === c.attrs.object
-        )
-        let comment
-        if (
-          typeof c.attrs.comment === 'string' ||
-          c.attrs.comment instanceof String
-        ) {
-          comment = c.attrs.comment
-        } else {
-          comment = '** Decryption failed. **'
-        }
-        if (apps.length === 1) {
-          updates.push(
-            <ListItem key={c._id}>
-              <ListItemText
-                primary={<>{comment}</>}
-                secondary={<>For {apps[0].node.name}</>}
-              />
-            </ListItem>
-          )
-        } else {
-          updates.push(
-            <ListItem key={c._id}>
-              <ListItemText primary={<>{comment}</>} />
-            </ListItem>
-          )
-        }
-      })
-    } else {
-      updates.push(
-        <ListItem>
-          <ListItemText primary="Add updates to your apps" />
-        </ListItem>
-      )
-    }
-    return <List>{updates}</List>
   }
 
   render() {
-    const { myApps, myComments, myUpdates } = this.state
+    const { isSignedIn, user } = this.context
 
+    if (!isSignedIn) {
+      return null
+    }
+    if (isSignedIn) {
+      getAppBucketUrl(user.hubUrl, user.appPrivateKey).then(storageLocation =>
+        this.setState({ storageLocation })
+      )
+    }
+    const { storageLocation } = this.state
     return (
-      <StaticQuery
-        query={graphql`
-          query MainAppsQuery {
-            allApps(sort: { fields: [name] }) {
-              edges {
-                node {
-                  ...AppInformation
-                  ...AppIcon
-                }
-              }
-            }
-          }
-        `}
-        render={data => (
-          <>
-            <Typography variant="h3">Overview</Typography>
-            <Typography variant="h4">Your Comments</Typography>
-            {this.renderComments(myComments, data)}
-            <Typography variant="h4">Your Apps</Typography>
-            {this.renderApps(myApps, data)}
-            <Typography variant="h4">Your App Updates</Typography>
-            {this.renderUpdates(myUpdates, data)}
-          </>
-        )}
-      />
+      <Card style={{ margin: 4 }}>
+        <CardHeader
+          title={<>Data owned by {user.profile.name}</>}
+          avatar={<BlockstackAvatar />}
+        />
+        <CardContent>
+          <Container style={{ paddingTop: 4 }}>
+            <LockIcon style={styles.smallIcon} />
+            <Typography variant="body1">
+              {user.username && (
+                <>
+                  All data is secured with blockstack id: <b>{user.username}</b>
+                </>
+              )}
+              {!user.username && (
+                <>
+                  All data is secured with the following address:{' '}
+                  <b>{user.identityAddress}</b>
+                </>
+              )}
+            </Typography>
+
+            <DBIcon style={styles.smallIcon} />
+            <Typography variant="body1">
+              Reviews and all data is stored on: <b>{storageLocation}</b>
+            </Typography>
+          </Container>
+        </CardContent>
+        <CardActions>
+          <Button color="primary" onClick={() => navigate('/data/comments')}>
+            <CommentIcon style={styles.smallIcon} /> Manage comments
+          </Button>{' '}
+          <Button color="primary" onClick={() => navigate('/data/apps')}>
+            <AppsIcon style={styles.smallIcon} /> Manage app
+          </Button>
+        </CardActions>
+      </Card>
     )
   }
 }
