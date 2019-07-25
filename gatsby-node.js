@@ -68,6 +68,31 @@ getLastCommit = openSourceUrl => {
   }
 }
 
+async function addLocalFileNode(
+  node,
+  imagePropertyName,
+  store,
+  cache,
+  createNode,
+  createNodeId,
+  _auth
+) {
+  if (node[imagePropertyName] && node[imagePropertyName].trim()) {
+    const fileNode = await createRemoteFileNode({
+      url: node[imagePropertyName].trim(),
+      parentNodeId: node.id,
+      store,
+      cache,
+      createNode,
+      createNodeId,
+      auth: _auth,
+    })
+    if (fileNode) {
+      node.localFile___NODE = fileNode.id
+    }
+  }
+}
+
 exports.onCreateNode = async ({
   node,
   getNode,
@@ -79,54 +104,55 @@ exports.onCreateNode = async ({
 }) => {
   const { createNodeField, createNode } = actions
   if (node.internal.type === `apps`) {
-    let fileNodePromise
-    if (node.imgixImageUrl && node.imgixImageUrl.trim()) {
-      fileNodePromise = createRemoteFileNode({
-        url: node.imgixImageUrl.trim(),
-        parentNodeId: node.id,
+    try {
+      await addLocalFileNode(
+        node,
+        'imgixImageUrl',
         store,
         cache,
         createNode,
         createNodeId,
-        auth: _auth,
-      })
-    } else {
-      fileNodePromise = Promise.resolve(null)
+        _auth
+      )
+    } catch (e) {
+      console.log(`file node error ${node.name}`, e)
+      try {
+        await addLocalFileNode(
+          node,
+          'imageUrl',
+          store,
+          cache,
+          createNode,
+          createNodeId,
+          _auth
+        )
+      } catch (e) {
+        console.log(`file node error2 ${node.name}`, e)
+      }
     }
-    return fileNodePromise
-      .then(fileNode => {
-        if (fileNode) {
-          node.localFile___NODE = fileNode.id
-        }
 
-        if (node.openSourceUrl && node.openSourceUrl !== '') {
-          const lastCommit =
-            process.env.GATSBY_GITHUB_TOKEN === 'INVALID'
-              ? Promise.resolve('N/A')
-              : getLastCommit(node.openSourceUrl)
-          return lastCommit
-            .then(r => {
-              createNodeField({
-                node,
-                name: `lastCommit`,
-                value: r,
-                type: 'String',
-              })
-            })
-            .catch(e => {
-              console.log('createNodeField error ', e)
-              throw e
-            })
-        }
-      })
-      .catch(e => {
-        console.log('fileNode error ', e)
-        Promise.resolve('N/A')
-        // throw e
-      })
+    if (node.openSourceUrl && node.openSourceUrl !== '') {
+      const lastCommit =
+        process.env.GATSBY_GITHUB_TOKEN === 'INVALID'
+          ? Promise.resolve('N/A')
+          : getLastCommit(node.openSourceUrl)
+      try {
+        commitString = await lastCommit
+
+        await createNodeField({
+          node,
+          name: `lastCommit`,
+          value: commitString,
+          type: 'String',
+        })
+      } catch (e) {
+        console.log(`last commit error ${node.name}`, e)
+        throw e
+      }
+    }
   } else if (node.internal.type === `MarkdownRemark`) {
     const value = createFilePath({ node, getNode })
-    createNodeField({
+    await createNodeField({
       name: `slug`,
       node,
       value,
