@@ -6,14 +6,16 @@ import { graphql, StaticQuery, navigate } from 'gatsby'
 import {
   Typography,
   TextField,
-  Container,
   InputAdornment,
+  Box,
 } from '@material-ui/core'
 import { Apps } from '@material-ui/icons'
 import Img from 'gatsby-image'
 import Autosuggest from 'react-autosuggest'
+import AppsIcon from '@material-ui/icons/Apps'
+import { styles } from './layout'
 
-const styles = theme => {
+const searchStyles = theme => {
   return {
     SearchField: {
       borderRadius: 4,
@@ -26,10 +28,15 @@ const styles = theme => {
     SearchResult: {
       color: theme.palette.common.white,
     },
+    SearchResultHighlighted: {
+      color: theme.palette.common.white,
+      backgroundColor: theme.palette.secondary.main,
+    },
     SuggestionsContainer: {
       position: 'absolute',
       zIndex: 1,
       backgroundColor: theme.palette.primary.main,
+      boxShadow: `1px 1px 9px 1px ` + theme.palette.secondary.main,
     },
   }
 }
@@ -75,6 +82,7 @@ class Search extends Component {
                 renderInputComponent={this.renderInputComponent}
                 renderSuggestionsContainer={this.renderSuggestionsContainer}
                 onSuggestionSelected={this.onSuggestionSelected}
+                highlightFirstSuggestion={true}
                 inputProps={{
                   value: this.state.query,
                   onChange: this.onChange,
@@ -98,9 +106,9 @@ class Search extends Component {
     const { classes } = this.props
 
     return (
-      <Container {...containerProps} className={classes.SuggestionsContainer}>
+      <Box {...containerProps} className={classes.SuggestionsContainer}>
         {children}
-      </Container>
+      </Box>
     )
   }
 
@@ -126,7 +134,10 @@ class Search extends Component {
     )
   }
 
-  renderSuggestion = (data, classes) => suggestion => {
+  renderSuggestion = (data, classes) => (
+    suggestion,
+    { query, isHighlighted }
+  ) => {
     const appNodes = data.allApps.edges.filter(
       e => e.node.appcoid === suggestion.appcoid
     )
@@ -136,7 +147,7 @@ class Search extends Component {
       appNodes[0].node.localFile.childImageSharp ? (
         <Img fixed={appNodes[0].node.localFile.childImageSharp.fixed} />
       ) : (
-        <div width="36" height="36" />
+        <AppsIcon style={styles.smallIcon} />
       )
 
     return (
@@ -144,10 +155,17 @@ class Search extends Component {
         <Typography
           component="div"
           align="left"
-          className={classes.SearchResult}
+          className={
+            isHighlighted
+              ? classes.SearchResultHighlighted
+              : classes.SearchResult
+          }
         >
           {icon} <b>{suggestion.name}</b>
-          {': ' + suggestion.category} {' : ' + suggestion.description}
+          <br />
+          <small>{suggestion.category}</small>
+          <br />
+          {suggestion.description}
         </Typography>
       </>
     )
@@ -193,4 +211,4 @@ Search.propTypes = {
   classes: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(Search)
+export default withStyles(searchStyles)(Search)

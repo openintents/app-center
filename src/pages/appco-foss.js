@@ -27,13 +27,7 @@ export const query = graphql`
       edges {
         node {
           ...AppInformation
-          localFile {
-            childImageSharp {
-              fixed(width: 36, height: 36) {
-                ...GatsbyImageSharpFixed
-              }
-            }
-          }
+          ...AppIcon
         }
       }
     }

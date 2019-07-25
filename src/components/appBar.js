@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -12,6 +12,7 @@ import BlockstackAvatar from './blockstackAvatar'
 import { navigate } from 'gatsby'
 import { logout } from '../app/services/blockstack'
 import Img from 'gatsby-image'
+import { LayoutContext, styles } from './layout'
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -84,6 +85,8 @@ export default function PrimaryAppBar({
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
 
+  const { isSignedIn } = useContext(LayoutContext)
+
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
@@ -117,7 +120,7 @@ export default function PrimaryAppBar({
     >
       <MenuItem onClick={() => navigate('/data/#comments')}>Comments</MenuItem>
       <MenuItem onClick={() => navigate('/data/#apps')}>Apps</MenuItem>
-      <MenuItem onClick={() => logout()}>Logout</MenuItem>
+      {isSignedIn && <MenuItem onClick={() => logout()}>Logout</MenuItem>}
     </Menu>
   )
 
@@ -165,33 +168,41 @@ export default function PrimaryAppBar({
             </div>
           )}
           <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <IconButton
-              edge="end"
-              aria-label="Account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <BlockstackAvatar />
-            </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="Show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
+          {isSignedIn && (
+            <>
+              <div className={classes.sectionDesktop}>
+                <IconButton
+                  edge="end"
+                  aria-label="Account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <BlockstackAvatar />
+                </IconButton>
+              </div>
+              <div className={classes.sectionMobile}>
+                <IconButton
+                  aria-label="Show more"
+                  aria-controls={mobileMenuId}
+                  aria-haspopup="true"
+                  onClick={handleMobileMenuOpen}
+                  color="inherit"
+                >
+                  <MoreIcon style={{ ...styles.smallIcon, color: `#fff` }} />
+                </IconButton>
+              </div>
+            </>
+          )}
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
+      {isSignedIn && (
+        <>
+          {renderMobileMenu}
+          {renderMenu}
+        </>
+      )}
     </div>
   )
 }

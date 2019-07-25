@@ -23,6 +23,7 @@ import {
   savePrivateUserComment,
 } from '../components/model'
 import DeleteIcon from '@material-ui/icons/Delete'
+import AppsIcon from '@material-ui/icons/Apps'
 import Rating from 'material-ui-rating'
 import { User } from 'radiks/lib'
 import UserCommentDialog from '../components/userCommentDialog'
@@ -165,7 +166,7 @@ class MyComments extends React.Component {
           apps[0].node.localFile.childImageSharp ? (
             <Img fixed={apps[0].node.localFile.childImageSharp.fixed} />
           ) : (
-            <div width="36" height="36" />
+            <AppsIcon style={styles.smallIcon} />
           )
         const appLabel =
           apps.length === 1 ? <>{apps[0].node.name}</> : <>{c.attrs.object}</>
@@ -278,14 +279,7 @@ class MyComments extends React.Component {
               edges {
                 node {
                   ...AppInformation
-                  localFile {
-                    id
-                    childImageSharp {
-                      fixed(width: 36, height: 36) {
-                        ...GatsbyImageSharpFixed
-                      }
-                    }
-                  }
+                  ...AppIcon
                 }
               }
             }

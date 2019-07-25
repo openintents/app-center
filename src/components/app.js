@@ -8,7 +8,7 @@ import {
   IconButton,
   Typography,
 } from '@material-ui/core'
-import AppIcon from '@material-ui/icons/Apps'
+import AppsIcon from '@material-ui/icons/Apps'
 import GetAppIcon from '@material-ui/icons/Launch'
 import Img from 'gatsby-image'
 import { styles } from '../components/layout'
@@ -89,7 +89,7 @@ const App = ({ data, hideRewards, showSourceLink }) => {
       )}
       {(!data.localFile || !data.localFile.childImageSharp) && (
         <ListItemAvatar>
-          <AppIcon style={styles.smallIcon} />
+          <AppsIcon style={styles.smallIcon} />
         </ListItemAvatar>
       )}
 
@@ -135,6 +135,16 @@ export const query = graphql`
     localFile {
       childImageSharp {
         fixed(width: 36, height: 36) {
+          ...GatsbyImageSharpFixed
+        }
+      }
+    }
+  }
+
+  fragment AppBigIcon on apps {
+    localFile {
+      childImageSharp {
+        fixed(width: 100, height: 100) {
           ...GatsbyImageSharpFixed
         }
       }

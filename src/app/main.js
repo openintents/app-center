@@ -16,6 +16,8 @@ import {
 import { User } from 'radiks/lib'
 import { SmallRating } from './mycomments'
 import Img from 'gatsby-image'
+import AppsIcon from '@material-ui/icons/Apps'
+import { styles } from '../components/layout'
 
 class Main extends React.Component {
   state = {
@@ -130,7 +132,7 @@ class Main extends React.Component {
           apps[0].node.localFile.childImageSharp ? (
             <Img fixed={apps[0].node.localFile.childImageSharp.fixed} />
           ) : (
-            <div width="36" height="36" />
+            <AppsIcon style={styles.smallIcon} />
           )
         const appLabel =
           apps.length === 1 ? <>{apps[0].node.name}</> : <>{c.attrs.object}</>
@@ -230,6 +232,7 @@ class Main extends React.Component {
               edges {
                 node {
                   ...AppInformation
+                  ...AppIcon
                 }
               }
             }

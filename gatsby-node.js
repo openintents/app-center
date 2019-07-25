@@ -199,8 +199,12 @@ exports.createPages = async ({ graphql, actions }) => {
       }
     }
   `)
+  const apps =
+    process.env.GATSBY_GITHUB_TOKEN === 'INVALID_TOKEN'
+      ? result.data.appco.apps.slice(0, 3)
+      : result.data.appco.apps
   return Promise.all(
-    result.data.appco.apps.map(async node => {
+    apps.map(async node => {
       await createPage({
         path: '/appco/' + node.appcoid,
         component: path.resolve('./src/templates/appcodetails.js'),

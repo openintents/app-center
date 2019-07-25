@@ -524,7 +524,9 @@ class AppDetails extends Component {
     const icon =
       data.apps.localFile && data.apps.localFile.childImageSharp ? (
         <Img fixed={data.apps.localFile.childImageSharp.fixed} />
-      ) : null
+      ) : (
+        <AppsIcon style={styles.smallIcon} />
+      )
     return (
       <Layout>
         <SEO
@@ -700,13 +702,7 @@ export const query = graphql`
   query($appcoid: Int) {
     apps(id__normalized: { eq: $appcoid }) {
       ...AppInformation
-      localFile {
-        childImageSharp {
-          fixed(width: 100, height: 100) {
-            ...GatsbyImageSharpFixed
-          }
-        }
-      }
+      ...AppBigIcon
     }
     dec2018: allAppminingresultsXlsxDecember2018(
       filter: { Final_Score: { ne: null } }

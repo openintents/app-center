@@ -10,6 +10,8 @@ import Img from 'gatsby-image'
 import UserCommentDialog from '../components/userCommentDialog'
 import SEO from '../components/seo'
 import { SmallAppDetails } from '../components/app'
+import AppsIcon from '@material-ui/icons/Apps'
+import { styles } from '../components/layout'
 
 class AppComment extends Component {
   state = {
@@ -27,18 +29,16 @@ class AppComment extends Component {
 
   componentDidMount() {
     checkIsSignedIn().then(isSignedIn => {
-      setTimeout(() => {
-        if (isSignedIn) {
-          this.setState({
-            loadingUser: false,
-            isSignedIn: true,
-            userData: getUser(),
-          })
-          this.loadComments()
-        } else {
-          this.setState({ isSignedIn: false, loadingUser: false })
-        }
-      }, 2000)
+      if (isSignedIn) {
+        this.setState({
+          loadingUser: false,
+          isSignedIn: true,
+          userData: getUser(),
+        })
+        this.loadComments()
+      } else {
+        this.setState({ isSignedIn: false, loadingUser: false })
+      }
     })
   }
 
@@ -119,7 +119,9 @@ class AppComment extends Component {
     const icon =
       data.apps.localFile && data.apps.localFile.childImageSharp ? (
         <Img fixed={data.apps.localFile.childImageSharp.fixed} />
-      ) : null
+      ) : (
+        <AppsIcon style={styles.smallIcon} />
+      )
     return (
       <Layout>
         <SEO
@@ -172,13 +174,7 @@ export const query = graphql`
   query($appcoid: Int) {
     apps(id__normalized: { eq: $appcoid }) {
       ...AppInformation
-      localFile {
-        childImageSharp {
-          fixed(width: 80, height: 80) {
-            ...GatsbyImageSharpFixed
-          }
-        }
-      }
+      ...AppBigIcon
     }
   }
 `

@@ -6,9 +6,13 @@ import {
   ListItemText,
   List,
   ListItemAvatar,
+  CircularProgress,
+  Container,
 } from '@material-ui/core'
 import { SmallRating } from '../app/mycomments'
 import Img from 'gatsby-image'
+import AppsIcon from '@material-ui/icons/Apps'
+import { styles } from './layout'
 
 class AllComments extends React.Component {
   state = {
@@ -78,12 +82,14 @@ class AllComments extends React.Component {
               fixed={apps[0].node.localFile.childImageSharp.fixed}
             />
           ) : (
-            <div width="36" height="36" />
+            <AppsIcon style={styles.smallIcon} />
           )
         const appLabel =
           apps.length === 1 ? <>{apps[0].node.name}</> : <>{c.object}</>
         const appLink =
-          apps.length === 1 ? `/appco/${apps[0].node.appcoid}/#comments` : c.object
+          apps.length === 1
+            ? `/appco/${apps[0].node.appcoid}/#comments`
+            : c.object
         const rating = (
           <>
             <br />
@@ -138,14 +144,7 @@ class AllComments extends React.Component {
               edges {
                 node {
                   ...AppInformation
-                  localFile {
-                    id
-                    childImageSharp {
-                      fixed(width: 36, height: 36) {
-                        ...GatsbyImageSharpFixed
-                      }
-                    }
-                  }
+                  ...AppIcon
                 }
               }
             }
@@ -153,7 +152,12 @@ class AllComments extends React.Component {
         `}
         render={data => (
           <>
-            {loading && <Typography>Loading...</Typography>}
+            {loading && (
+              <Container>
+                <CircularProgress size={36} />
+                <Typography>Loading comments...</Typography>
+              </Container>
+            )}
             {!loading && (
               <>
                 <Typography variant="h5">Comments</Typography>

@@ -628,11 +628,19 @@ pre tt:after {
   list-style-type: none;
 }
 
+.react-autosuggest__suggestion {
+  padding: 4px
+}
+
+.react-autosuggest__suggestion:hover {
+  background: #cf9a72;
+}
+
 .appIcon {
   width: 40px !important;
   height: 40px !important;
 }
 
-.appItem:hover{
-box-shadow: 1px 1px 9px 1px #cf9a72;
+.appItem:hover {
+  box-shadow: 1px 1px 9px 1px #cf9a72;
 }
