@@ -560,6 +560,18 @@ class AppDetails extends Component {
             })}
           </CardContent>
         </Card>
+        {isClaimedApp && (
+          <Card style={{ margin: 4 }}>
+            <CardContent>
+              <Typography>
+                Use this link to ask users for a review:{' '}
+                <a
+                  href={`https://app-center.openintents.org/appco/${data.apps.appcoid}/review`}
+                >{`https://app-center.openintents.org/appco/${data.apps.appcoid}/review`}</a>
+              </Typography>
+            </CardContent>
+          </Card>
+        )}
         <StyledRoot>
           <AppBar position="static">
             <Tabs

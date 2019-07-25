@@ -75,7 +75,7 @@ class AppComment extends Component {
   }
 
   handleCloseUpdate = () => {
-    window.location.replace(window.location.origin + '/comment-thanks')
+    window.location.replace(window.location.origin + '/review-thanks')
   }
 
   handleChangeText = e => {

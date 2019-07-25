@@ -243,7 +243,7 @@ exports.createPages = async ({ graphql, actions }) => {
       })
 
       await createPage({
-        path: '/appco/' + node.appcoid + '/comment',
+        path: '/appco/' + node.appcoid + '/review',
         component: path.resolve('./src/templates/appco-comment.js'),
         context: {
           // Data passed to context is available
