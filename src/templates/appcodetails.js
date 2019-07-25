@@ -672,6 +672,7 @@ class AppDetails extends Component {
             updating,
             visibility,
             rating,
+            isSignedIn,
             handleCloseUpdate: this.handleCloseUpdate,
             handleChangeVisibility: this.handleChangeVisibility,
             handleChangeText: this.handleChangeText,

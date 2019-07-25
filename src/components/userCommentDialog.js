@@ -12,6 +12,8 @@ import {
   Button,
   CircularProgress,
   Container,
+  Typography,
+  Box,
 } from '@material-ui/core'
 import Rating from 'material-ui-rating'
 import BlockstackProfile from './blockstackProfile'
@@ -95,6 +97,13 @@ const UserCommentDialog = ({
                   onChange={value => handleChangeRating(value)}
                   value={rating}
                 />
+                {rating === 0 && (
+                  <DialogContentText>
+                    <small>
+                      Your review will be more helpful with a rating.
+                    </small>
+                  </DialogContentText>
+                )}
                 <TextField
                   margin="normal"
                   id="userUpdate"
