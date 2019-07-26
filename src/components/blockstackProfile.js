@@ -7,6 +7,7 @@ import {
 import { Avatar } from '@material-ui/core'
 import AccountIcon from '@material-ui/icons/AccountBox'
 import { BlockstackButton } from 'react-blockstack-button'
+import { navigate } from 'gatsby'
 import { styles } from './layout'
 import { navigate } from 'gatsby'
 
@@ -15,20 +16,29 @@ class BlockstackProfile extends Component {
   state = {
     isSignedIn: false,
     isLoading: true,
+    redirectUrl: null,
   }
 
   componentDidMount() {
+    if (this.props.redirectToHere) {
+      this.setState({ redirectUrl: window.location.href })
+    }
     checkIsSignedIn().then(signedIn => {
       this.setState({ isSignedIn: signedIn, userData: getUser() })
     })
   }
 
   signIn() {
-    redirectToSignIn()
+    redirectToSignIn(this.state.redirectUrl)
   }
 
   render() {
     const { isSignedIn, userData } = this.state
+    let { variant } = this.props
+    if (!variant) {
+      variant = 'light'
+    }
+
     if (isSignedIn) {
       let avatars, avatar
       if (userData.profile && userData.profile.image) {
@@ -49,15 +59,17 @@ class BlockstackProfile extends Component {
       } else {
         return (
           <Avatar
-            style={{ cursor: 'pointer', marginBottom: 1.45 + 'rem' }}
             onClick={() => navigate('data')}
+            style={{ cursor: 'pointer' }}
           >
             <AccountIcon style={styles.smallIcon} />
           </Avatar>
         )
       }
     } else {
-      return <BlockstackButton variant="light" onClick={() => this.signIn()} />
+      return (
+        <BlockstackButton variant={variant} onClick={() => this.signIn()} />
+      )
     }
   }
 }

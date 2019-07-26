@@ -104,6 +104,7 @@ class AllComments extends React.Component {
                 <>
                   {appLabel}
                   {rating}
+                  {c.username || 'A user'}
                 </>
               }
             />

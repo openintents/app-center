@@ -21,22 +21,24 @@ class AppComment extends Component {
     privateComments: [],
     loadingComments: false,
     loadingPrivateComments: false,
+    loadingUser: true,
     loadingData: true,
-    redirecting: false,
   }
 
   componentDidMount() {
     checkIsSignedIn().then(isSignedIn => {
-      if (isSignedIn) {
-        this.setState({
-          isSignedIn: true,
-          userData: getUser(),
-        })
-        this.loadComments()
-      } else {
-        redirectToSignIn(window.location.href)
-        this.setState({ isSignedIn: false, redirecting: true })
-      }
+      setTimeout(() => {
+        if (isSignedIn) {
+          this.setState({
+            loadingUser: false,
+            isSignedIn: true,
+            userData: getUser(),
+          })
+          this.loadComments()
+        } else {
+          this.setState({ isSignedIn: false, loadingUser: false })
+        }
+      }, 2000)
     })
   }
 
@@ -86,14 +88,13 @@ class AppComment extends Component {
 
   postComment = async () => {
     this.setState({ updating: true })
-    const { userUpdate, visibility, userData, rating } = this.state
+    const { userUpdate, visibility, rating } = this.state
     const comment =
       visibility === 'public'
         ? new UserComment({
             comment: userUpdate,
             rating,
             object: this.props.data.apps.website,
-            createdBy: userData.name,
           })
         : new PrivateUserComment({
             comment: userUpdate,
@@ -107,7 +108,14 @@ class AppComment extends Component {
 
   render() {
     const { data } = this.props
-    const { visibility, rating, userUpdate, updating, isSignedIn } = this.state
+    const {
+      visibility,
+      rating,
+      userUpdate,
+      updating,
+      isSignedIn,
+      loadingUser,
+    } = this.state
     const icon =
       data.apps.localFile && data.apps.localFile.childImageSharp ? (
         <Img fixed={data.apps.localFile.childImageSharp.fixed} />
@@ -151,7 +159,8 @@ class AppComment extends Component {
           handleChangeRating: this.handleChangeRating,
           postComment: this.postComment,
           modal: true,
-          isSignedIn: isSignedIn,
+          isSignedIn,
+          loadingUser,
         })}
         <hr />
       </Layout>

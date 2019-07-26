@@ -5,7 +5,6 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   ListItemAvatar,
-  Avatar,
   IconButton,
   Typography,
 } from '@material-ui/core'
@@ -50,9 +49,17 @@ export const SmallAppDetails = ({
         {!hideRewards && (
           <>
             <br />
-            Rewards: <b>{earnings}</b>{' '}
+            Rewards: {earnings}{' '}
           </>
-        )}     
+        )}
+        {showSourceLink && openSourceUrl && (
+          <>
+            <br />
+            <a href={openSourceUrl} style={styles.link}>
+              Source code
+            </a>
+          </>
+        )}
         {showSourceLink && openSourceUrl && (
           <>
             <br />
@@ -84,7 +91,7 @@ const App = ({ data, hideRewards, showSourceLink }) => {
       )}
       {(!data.localFile || !data.localFile.childImageSharp) && (
         <ListItemAvatar>
-            <AppIcon style={styles.smallIcon} />
+          <AppIcon style={styles.smallIcon} />
         </ListItemAvatar>
       )}
 

@@ -8,7 +8,6 @@ import FossIcon from '@material-ui/icons/FolderOpen'
 import NossIcon from '@material-ui/icons/Folder'
 import AllComments from '../components/allComments'
 import { styles } from '../components/layout'
-import PersonalData from '../components/personalData'
 import AppCoMonth from '../components/appcoMonth'
 import Post from '../components/post'
 import AppUpdate from '../components/appUpdate'
@@ -65,6 +64,17 @@ class IndexPage extends Component {
     const { data } = this.props
     const { apiComments } = this.state
     const posts = [
+      {
+        type: 'appUpdate',
+        post: {
+          link: 'https://www.bloco.io/blog/2019/blockstack-android-tips',
+          title: 'Blockstack Android Tips',
+          date: new Date('2019-07-14'),
+          description:
+            'When developing the Envelop Android app using the Blockstack Android library, I ran into some important gotchas. I wanted to share them for whoever starts on the same path.',
+          appcoId: '1453',
+        },
+      },
       {
         type: 'appUpdate',
         post: {
@@ -154,7 +164,6 @@ class IndexPage extends Component {
       posts.splice(index, 0, { type: 'apiUpdate', post: c })
     }
     const postComponents = posts.map(p => {
-      console.log(p)
       if (p.type === 'appCoMonth') {
         return (
           <AppCoMonth
@@ -196,20 +205,15 @@ class IndexPage extends Component {
             },
           ]}
         />
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div>
+        <Grid container spacing={2} style={{ paddingTop: 40 }}>
+          <Grid item xs={12} sm={8}>
             <Card style={{ margin: 24 }}>
               <CardContent>
                 <Grid container alignItems="center">
-                  <Grid item xs={12} sm={2}>
+                  <Grid item xs={12} md={2}>
                     <Img fluid={data.togetherImage.childImageSharp.fluid} />
                   </Grid>
-                  <Grid item xs={12} sm={10} container>
+                  <Grid item xs={12} md={10} container>
                     <Grid item xs={12}>
                       <Typography variant="h6" align="center">
                         Help the community and add your review
@@ -217,7 +221,10 @@ class IndexPage extends Component {
                     </Grid>
                     <Grid item xs={6}>
                       <Typography align="center">
-                        <Button onClick={() => navigate('/appco-foss/')} color="primary">
+                        <Button
+                          onClick={() => navigate('/appco-foss/')}
+                          color="primary"
+                        >
                           <FossIcon style={styles.smallIcon} />
                           Try Open Source apps
                         </Button>
@@ -225,7 +232,10 @@ class IndexPage extends Component {
                     </Grid>
                     <Grid item xs={6}>
                       <Typography align="center">
-                        <Button onClick={() => navigate('/appco-noss/')} color="primary">
+                        <Button
+                          onClick={() => navigate('/appco-noss/')}
+                          color="primary"
+                        >
                           <NossIcon style={styles.smallIcon} />
                           Try Closed Source apps
                         </Button>
@@ -235,23 +245,20 @@ class IndexPage extends Component {
                 </Grid>
               </CardContent>
             </Card>
-            <Typography variant="h5" align="center">News and Updates</Typography>
-            {postComponents}
-            <Typography variant="body2">
-              <a href="https://docs.blockstack.org/develop/mining_intro.html">
-                Read more about the App Mining program
-              </a>
+            <Typography variant="h5" align="center">
+              News and Updates
             </Typography>
-          </div>
-          <div
-            style={{
-              paddingLeft: '3rem',
-            }}
-          >
-            <PersonalData />
+            {postComponents}
+          </Grid>
+          <Grid item xs={12} sm={4}>
             <AllComments />
-          </div>
-        </div>
+          </Grid>
+        </Grid>
+        <Typography variant="body2">
+          <a href="https://docs.blockstack.org/develop/mining_intro.html">
+            Read more about the App Mining program
+          </a>
+        </Typography>
       </Layout>
     )
   }
@@ -282,7 +289,7 @@ export const query = graphql`
     }
     togetherImage: file(relativePath: { eq: "together.jpg" }) {
       childImageSharp {
-        fluid(maxWidth: 128) {
+        fluid(maxWidth: 500) {
           ...GatsbyImageSharpFluid
         }
       }

@@ -2,11 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { StaticQuery, graphql } from 'gatsby'
 
-import Header from './header'
 import './layout.css'
 import { Typography, createMuiTheme, Container } from '@material-ui/core'
 import { getApiServer } from '../app/services/blockstack'
 import { ThemeProvider } from '@material-ui/styles'
+import PrimaryAppBar from './appBar'
 
 export const styles = {
   smallIcon: {
@@ -57,12 +57,10 @@ const Layout = ({ children, hideSearch }) => (
     `}
     render={data => (
       <ThemeProvider theme={theme}>
-        <Header
-          siteTitle={data.site.siteMetadata.description}
-          siteDescription={data.site.siteMetadata.title}
+        <PrimaryAppBar
           siteSearchIndex={data.siteSearchIndex}
-          hideSearch={hideSearch}
           fixedIcon={data.file.childImageSharp.fixed}
+          hideSearch={hideSearch}
         />
         <Container
           style={{

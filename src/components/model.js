@@ -39,6 +39,7 @@ class ModelExt extends Model {
 }
 export class UserComment extends ModelExt {
   static className = 'UserComment'
+  static validateUsername = true
   static schema = {
     object: {
       type: String,
@@ -52,25 +53,18 @@ export class UserComment extends ModelExt {
       type: String,
       decrypted: true,
     },
-    createdBy: {
-      type: String,
-      decrypted: true,
-    },
   }
 }
 
 export class OwnerComment extends ModelExt {
   static className = 'OwnerComment'
+  static validateUsername = true
   static schema = {
     object: {
       type: String,
       decrypted: true,
     },
     comment: {
-      type: String,
-      decrypted: true,
-    },
-    createdBy: {
       type: String,
       decrypted: true,
     },

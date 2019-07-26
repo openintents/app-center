@@ -98,9 +98,10 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-transformer-excel`,
+      resolve: `gatsby-transformer-excel-limited`,
       options: {
         raw: false,
+        sourceInstanceName: `data`,
       },
     },
     {

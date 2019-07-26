@@ -1,14 +1,9 @@
 import React from 'react'
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
   RadioGroup,
   FormControlLabel,
   Radio,
   TextField,
-  DialogActions,
   Button,
   CircularProgress,
   Paper,
@@ -64,7 +59,7 @@ const UserCommentBox = ({
           fullWidth
           multiline
           rows="3"
-          placeholder="What did you like or dislike?"
+          placeholder="What do you like or dislike?"
           helperText="Comments can be shown to either all users publicly or kept privately."
           variant="outlined"
           value={userUpdate}

@@ -2,7 +2,7 @@ import { UserSession, AppConfig } from 'blockstack'
 import { configure, getConfig, User, GroupMembership } from 'radiks'
 
 // helpful for debugging
-const logAuth = process.env.NODE_ENV === 'development' && true // set to true to turn on logging
+const logAuth = process.env.NODE_ENV === 'development' // set to true to turn on logging
 const clog = (...args) => logAuth && console.log(...args)
 // helpful for debugging
 
@@ -41,8 +41,8 @@ export const isSignedIn = () => {
 
 export const handleLogin = callback => {
   const { userSession } = getConfig()
-  console.log('handleLogin')
   clog('isLoggedIn check', userSession.isUserSignedIn())
+
   if (userSession.isUserSignedIn()) {
     clog('logged in')
     callback(getUser())
@@ -58,8 +58,8 @@ export const handleLogin = callback => {
   }
 }
 
-export const redirectToSignIn = (redirectUri) => {
-  const { userSession } = getConfig()  
+export const redirectToSignIn = redirectUri => {
+  const { userSession } = getConfig()
   userSession.redirectToSignIn(redirectUri)
 }
 
@@ -69,12 +69,15 @@ export const checkIsSignedIn = () => {
     return Promise.resolve(false)
   }
   const { userSession } = getConfig()
-  if (userSession.isSignInPending()) {
-    return userSession
-      .handlePendingSignIn()
-      .then(() => User.createWithCurrentUser().then(() => true))
-  } else if (userSession.isUserSignedIn()) {
+  if (userSession.isUserSignedIn()) {
     return Promise.resolve(true)
+  } else if (userSession.isSignInPending()) {
+    return userSession.handlePendingSignIn().then(() => {
+      return User.createWithCurrentUser().then(() => {
+        window.history.replaceState("", document.title, window.location.pathname)
+        return true
+      })
+    })
   } else {
     clog('isLoggedIn check - nothing')
     return Promise.resolve(false)

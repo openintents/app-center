@@ -1,11 +1,10 @@
 const express = require('express')
-const request = require('request-promise')
 const { decorateApp } = require('@awaitjs/express')
-const { COLLECTION } = require('radiks-server/app/lib/constants')
+const constants = require('radiks-server/lib/lib/constants')
 
 const makeApiController = db => {
   const Router = decorateApp(express.Router())
-  const radiksData = db.collection(COLLECTION)
+  const radiksData = db.collection(constants.default.COLLECTION)
 
   Router.getAsync('/usercomments', async (req, res) => {
     const comments = await radiksData

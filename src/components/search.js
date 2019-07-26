@@ -2,36 +2,42 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Index } from 'elasticlunr'
 import { withStyles } from '@material-ui/core/styles'
-import { Link, graphql, StaticQuery } from 'gatsby'
-import { List, ListItem, Typography, Grid, IconButton, InputBase, Paper } from '@material-ui/core'
-import { Apps } from '@material-ui/icons';
+import { graphql, StaticQuery, navigate } from 'gatsby'
+import {
+  Typography,
+  TextField,
+  Container,
+  InputAdornment,
+} from '@material-ui/core'
+import { Apps } from '@material-ui/icons'
 import Img from 'gatsby-image'
+import Autosuggest from 'react-autosuggest'
 
-const styles = theme => ({
-  SearchField: {
-    borderRadius: 4,
-    color: theme.palette.text.primary,
-    backgroundColor: theme.palette.common.white,
-  },
-  AppsIcon: {
-    color: 'gray',
-  },
-  SearchResult: {
-    color: theme.palette.common.white,
-  },
-  paper: {
-    padding: 1,
-    height: 50,
+const styles = theme => {
+  return {
+    SearchField: {
+      borderRadius: 4,
+      color: theme.palette.text.primary,
+      backgroundColor: theme.palette.common.white,
+    },
+    AppsIcon: {
+      color: 'gray',
+    },
+    SearchResult: {
+      color: theme.palette.common.white,
+    },
+    SuggestionsContainer: {
+      position: 'absolute',
+      zIndex: 1,
+      backgroundColor: theme.palette.primary.main,
+    },
   }
 })
 
 class Search extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      query: ``,
-      results: [],
-    }
+  state = {
+    query: ``,
+    results: [],
   }
 
   render() {
@@ -59,72 +65,118 @@ class Search extends Component {
         `}
         render={data => {
           return (
-            <Paper className={classes.paper}>
-              <IconButton className={classes.iconButton} aria-label="Menu">
-                <Apps className={classes.AppsIcon} />
-              </IconButton>
-              <InputBase
-                placeholder="Find apps by name, category,.."
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
+            <div className={classes.paper}>
+              <Autosuggest
+                suggestions={this.state.results}
+                onSuggestionsFetchRequested={this.search}
+                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                getSuggestionValue={this.getSuggestionValue}
+                renderSuggestion={this.renderSuggestion(data, classes)}
+                renderInputComponent={this.renderInputComponent}
+                renderSuggestionsContainer={this.renderSuggestionsContainer}
+                onSuggestionSelected={this.onSuggestionSelected}
+                inputProps={{
+                  value: this.state.query,
+                  onChange: this.onChange,
                 }}
-                variant="outlined"
-                value={this.state.query}
-                onChange={this.search}
-                inputProps={{ 'aria-label': 'Search' }}
               />
-              <List>
-                {this.state.results.map(page => {
-                  const appNodes = data.allApps.edges.filter(
-                    e => e.node.appcoid === page.appcoid
-                  )
-                  const icon =
-                    appNodes.length > 0 &&
-                    appNodes[0].node.localFile &&
-                    appNodes[0].node.localFile.childImageSharp ? (
-                      <Img
-                        fixed={appNodes[0].node.localFile.childImageSharp.fixed}
-                      />
-                    ) : (
-                      <div width="36" height="36" />
-                    )
-                  return (
-                    <ListItem
-                      key={page.id}
-                      button
-                      onClick={() => {
-                        navigate('/appco/' + page.appcoid)
-                      }}
-                    >
-                      <ListItemAvatar>{icon}</ListItemAvatar>
-                      <ListItemText>
-                        <Typography
-                          align="left"
-                          className={classes.SearchResult}
-                        >
-                          <b>{page.name}</b>
-                          {': ' + page.category} {' : ' + page.description}
-                        </Typography>
-                      </ListItemText>
-                    </ListItem>
-                  )
-                })}
-              </List>
-            </Paper>
+            </div>
           )
         }}
       />
     )
   }
+
+  onSuggestionSelected = (
+    event,
+    { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }
+  ) => {
+    navigate('/appco/' + suggestion.appcoid)
+  }
+
+  renderSuggestionsContainer = ({ containerProps, children }) => {
+    const { classes } = this.props
+
+    return (
+      <Container {...containerProps} className={classes.SuggestionsContainer}>
+        {children}
+      </Container>
+    )
+  }
+
+  renderInputComponent = inputProps => {
+    return (
+      <TextField
+        variant="outlined"
+        placeholder="Find apps by name, category,.."
+        margin="dense"
+        InputProps={{
+          className: this.props.classes.SearchField,
+          startAdornment: (
+            <InputAdornment position="start">
+              <Apps
+                className={this.props.classes.AppsIcon}
+                style={{ width: 24, height: 24 }}
+              />
+            </InputAdornment>
+          ),
+        }}
+        {...inputProps}
+      />
+    )
+  }
+
+  renderSuggestion = (data, classes) => suggestion => {
+    const appNodes = data.allApps.edges.filter(
+      e => e.node.appcoid === suggestion.appcoid
+    )
+    const icon =
+      appNodes.length > 0 &&
+      appNodes[0].node.localFile &&
+      appNodes[0].node.localFile.childImageSharp ? (
+        <Img fixed={appNodes[0].node.localFile.childImageSharp.fixed} />
+      ) : (
+        <div width="36" height="36" />
+      )
+
+    return (
+      <>
+        <Typography
+          component="div"
+          align="left"
+          className={classes.SearchResult}
+        >
+          {icon} <b>{suggestion.name}</b>
+          {': ' + suggestion.category} {' : ' + suggestion.description}
+        </Typography>
+      </>
+    )
+  }
+
+  getSuggestionValue = suggestion => {
+    return suggestion.name
+  }
+
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      results: [],
+    })
+  }
+
+  onChange = (event, { newValue, method }) => {
+    this.setState({
+      query: newValue,
+    })
+  }
+
   getOrCreateIndex = () =>
     this.index
       ? this.index
       : // Create an elastic lunr index and hydrate with graphql query results
         Index.load(this.props.searchIndex)
 
-  search = evt => {
-    const query = evt.target.value
+  search = ({ value }) => {
+    const query = value
     this.index = this.getOrCreateIndex()
     this.setState({
       query,

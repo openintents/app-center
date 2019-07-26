@@ -136,12 +136,12 @@ const Comments = (data, comments, isSignedIn) => {
             <Typography>
               {comment}
               <br />
+              {rating}
               <small>
-                {c.attrs.createdBy || 'A user'}
+                {c.attrs.username || 'A user'}
                 {' - '}
                 {new Date(c.attrs.createdAt).toLocaleDateString()}
               </small>
-              {rating}
             </Typography>
           </CardContent>
         </Card>
@@ -170,7 +170,7 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
         <React.Fragment key={c._id}>
           <Typography component="div">
             <Box>{comment}</Box>
-            <Box fontSize="small">{c.attrs.createdBy || 'A user'}</Box>
+            <Box fontSize="small">{c.attrs.username || 'A user'}</Box>
           </Typography>
           {key < comments[month].length - 1 && <Divider light />}
         </React.Fragment>
@@ -228,6 +228,10 @@ class AppDetails extends Component {
     } else if (window.location.hash === '#comments') {
       this.setState({ tabIndex: 2 })
     }
+    const urlParams = new URLSearchParams(window.location.search)
+    const newComment = urlParams.get('newComment')
+    this.setState({ showUpdateDialog: newComment === 'true' })
+
     checkIsSignedIn().then(isSignedIn => {
       if (isSignedIn) {
         const { data } = this.props
@@ -385,14 +389,13 @@ class AppDetails extends Component {
 
   postComment = async () => {
     this.setState({ updating: true })
-    const { userUpdate, visibility, userData, rating } = this.state
+    const { userUpdate, visibility, rating } = this.state
     const comment =
       visibility === 'public'
         ? new UserComment({
             comment: userUpdate,
             rating,
             object: this.props.data.apps.website,
-            createdBy: userData.name,
           })
         : new PrivateUserComment({
             comment: userUpdate,
@@ -406,11 +409,10 @@ class AppDetails extends Component {
 
   postUpdate = async () => {
     this.setState({ updating: true })
-    const { userUpdate, userData } = this.state
+    const { userUpdate } = this.state
     await new OwnerComment({
       comment: userUpdate,
       object: this.props.data.apps.website,
-      createdBy: userData.name,
     }).save()
 
     await this.loadComments()
@@ -485,8 +487,8 @@ class AppDetails extends Component {
             this.claimApp()
           }}
         >
-          Claim App
           <AppsIcon style={styles.smallIcon} />
+          Claim app
         </Button>
         <Button variant="outlined" disabled={!data.apps.website} onClick={() => this.launchApp()}>
           Try it <LaunchIcon style={styles.smallIcon} />
@@ -528,7 +530,7 @@ class AppDetails extends Component {
           description={data.apps.description}
           keywords={[data.apps.name, `application`, `blockstack`]}
         />
-        <Card style={{ margin: 4 }}>
+        <Card style={{ margin: 4, marginTop: 40 }}>
           <CardContent>
             <Grid container alignItems="center" spacing={2}>
               <Grid item xs={1} sm={1}>

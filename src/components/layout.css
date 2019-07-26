@@ -622,11 +622,17 @@ pre tt:after {
   }
 }
 
-.gatsby-image-wrapper {
-    width: 40px !important;
-    height: 40px !important;
+.react-autosuggest__suggestions-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.appIcon {
+  width: 40px !important;
+  height: 40px !important;
 }
 
 .appItem:hover{
-  box-shadow: 1px 1px 9px 1px blue;
+  box-shadow: 1px 1px 9px 1px #cf9a72;
 }

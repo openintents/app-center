@@ -3,7 +3,6 @@ import React from 'react'
 import Layout from '../components/layout'
 import SEO from '../components/seo'
 import {
-  Container,
   Typography,
   Card,
   CardContent,
@@ -23,7 +22,7 @@ const CommentThanks = () => (
       </CardContent>
       <CardActions>
         <Button color="primary" onClick={() => navigate('/')}>
-          Continue reviewing
+          Do more reviews
         </Button>
       </CardActions>
     </Card>
