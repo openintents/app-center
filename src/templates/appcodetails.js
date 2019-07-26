@@ -218,6 +218,7 @@ class AppDetails extends Component {
     tabIndex: 0,
     userData: null,
     loadingData: true,
+    avgRating: null,
   }
 
   componentDidMount() {
@@ -252,8 +253,32 @@ class AppDetails extends Component {
     })
   }
 
+  loadAverage(website) {
+    const server = process.env.GATSBY_RADIKS_SERVER
+      ? process.env.GATSBY_RADIKS_SERVER
+      : 'http://localhost:5000'
+    fetch(server + '/api/ratings', {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        return response.json()
+      })
+      .then(ratings => {
+        const appRatings = ratings.filter(r => r._id === website)
+        if (appRatings.length === 1) {
+          this.setState({ avgRating: appRatings[0] })
+        }
+      })
+  }
+
   loadComments() {
     const { data } = this.props
+    this.loadAverage(data.apps.website)
+
     this.setState({
       loadingComments: true,
       loadingUpdates: true,
@@ -438,6 +463,7 @@ class AppDetails extends Component {
       tabIndex,
       isSignedIn,
       updating,
+      avgRating,
     } = this.state
     const appActions = isClaimedApp ? (
       <>
@@ -558,6 +584,19 @@ class AppDetails extends Component {
               hideRewards: false,
               showSourceLink: true,
             })}
+            {avgRating && (
+              <>
+                <Typography variant="body2">
+                  <SmallRating
+                    fractions={10}
+                    component="span"
+                    readOnly
+                    value={avgRating.avgRating}
+                  />
+                  ({avgRating.count})
+                </Typography>
+              </>
+            )}
           </CardContent>
         </Card>
         {isClaimedApp && (
@@ -814,6 +853,23 @@ export const query = graphql`
     }
 
     jun2019: allAppminingresultsXlsxJune2019(
+      filter: { Final_Score: { ne: null } }
+      sort: { fields: [Final_Score], order: [DESC] }
+    ) {
+      totalCount
+      edges {
+        node {
+          App_ID: App_Id
+          Final_Score
+          PH_Theta
+          TMUI_Theta
+          NIL_Theta
+          Awario_Theta
+        }
+      }
+    }
+
+    jul2019: allAppminingresultsforauditXlsxJuly19(
       filter: { Final_Score: { ne: null } }
       sort: { fields: [Final_Score], order: [DESC] }
     ) {

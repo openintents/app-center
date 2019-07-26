@@ -34,7 +34,7 @@ import Rating from 'material-ui-rating'
 import { User } from 'radiks/lib'
 import UserCommentDialog from '../components/userCommentDialog'
 import OwnerCommentDialog from '../components/ownerCommentDialog'
-import { styles } from '../components/layout'
+import { styles, LayoutContext } from '../components/layout'
 import Img from 'gatsby-image'
 
 const smallStyles = {
@@ -51,6 +51,7 @@ const smallStyles = {
 export const SmallRating = withStyles(smallStyles)(Rating)
 
 class MyComments extends React.Component {
+  static contextType = LayoutContext
   state = {
     myApps: {},
     myComments: [],
@@ -84,35 +85,39 @@ class MyComments extends React.Component {
   }
 
   loadComments() {
-    UserComment.fetchOwnList().then(myComments => {
+    UserComment.fetchOwnList({ sort: '-createdAt' }).then(myComments => {
       this.setState({
         myComments,
         loadingComments: false,
         loading: this.state.loadingApps && this.state.loadingUpdates,
       })
     })
-    PrivateUserComment.fetchOwnList().then(myPrivateComments => {
-      this.setState({
-        myPrivateComments,
-        loadingComments: false,
-        loading: this.state.loadingApps && this.state.loadingUpdates,
-      })
-    })
+    PrivateUserComment.fetchOwnList({ sort: '-createdAt' }).then(
+      myPrivateComments => {
+        this.setState({
+          myPrivateComments,
+          loadingComments: false,
+          loading: this.state.loadingApps && this.state.loadingUpdates,
+        })
+      }
+    )
 
-    OwnerComment.fetchOwnList().then(myUpdates => {
+    OwnerComment.fetchOwnList({ sort: '-createdAt' }).then(myUpdates => {
       this.setState({
         myUpdates,
         loadingUpdates: false,
         loading: this.state.loadingApps && this.state.loadingComments,
       })
     })
-    DraftOwnerComment.fetchOwnList().then(myDraftUpdates => {
-      this.setState({
-        myDraftUpdates,
-        loadingUpdates: false,
-        loading: this.state.loadingApps && this.state.loadingUpdates,
-      })
-    })
+    DraftOwnerComment.fetchOwnList({ sort: '-createdAt' }).then(
+      myDraftUpdates => {
+        this.setState({
+          myDraftUpdates,
+          loadingUpdates: false,
+          loading: this.state.loadingApps && this.state.loadingUpdates,
+        })
+      }
+    )
   }
 
   handleClick(comment) {
@@ -130,6 +135,7 @@ class MyComments extends React.Component {
       userUpdate: comment.attrs.comment,
       currentComment: comment,
       currentVisibility: visibility,
+      rating: comment.attrs.rating,
       showUpdateDialog: !asComment,
       showCommentDialog: asComment,
     })
@@ -167,7 +173,11 @@ class MyComments extends React.Component {
         ].includes(c.modelName()) ? (
           <>
             <br />
-            <SmallRating component="span" readOnly value={c.attrs.rating} />
+            <SmallRating
+              component="span"
+              readOnly
+              value={c.attrs.rating}
+            />
           </>
         ) : null
 
@@ -289,6 +299,8 @@ class MyComments extends React.Component {
       updating,
     } = this.state
 
+    const { isSignedIn } = this.context
+
     return (
       <StaticQuery
         query={graphql`
@@ -332,6 +344,7 @@ class MyComments extends React.Component {
               updating,
               rating,
               visibility: currentVisibility,
+              isSignedIn,
               handleCloseUpdate: this.handleCloseUpdate,
               handleChangeVisibility: this.handleChangeVisibility,
               handleChangeText: this.handleChangeText,
@@ -343,6 +356,7 @@ class MyComments extends React.Component {
               showUpdateDialog: showUpdateDialog,
               updating,
               visibility: currentVisibility,
+              isSignedIn,
               handleCloseUpdate: this.handleCloseUpdate,
               handleChangeVisibility: this.handleChangeVisibility,
               handleChangeText: this.handleChangeText,
