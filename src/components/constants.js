@@ -6,7 +6,7 @@ export const months = [
   'apr2019',
   'may2019',
   'jun2019',
-  'jul2019'
+  'jul2019',
 ]
 
 export const monthsLabels = {
@@ -17,7 +17,7 @@ export const monthsLabels = {
   apr2019: 'Apr 2019',
   may2019: 'May 2019',
   jun2019: 'Jun 2019',
-  jul2019: 'Jul 2019'
+  jul2019: 'Jul 2019',
 }
 
 export const monthStrings = [
@@ -34,3 +34,11 @@ export const monthStrings = [
   'nov',
   'dec',
 ]
+
+export const RADIKS_SERVER_URL = process.env.GATSBY_RADIKS_SERVER
+  ? process.env.GATSBY_RADIKS_SERVER
+  : 'http://localhost:5000'
+
+export const APP_CENTER_URL = process.env.GATSBY_APP_CENTER_URL
+  ? process.env.GATSBY_APP_CENTER_URL
+  : 'https://app-center.openintents.org'

@@ -3,12 +3,17 @@ import PropTypes from 'prop-types'
 import { StaticQuery, graphql } from 'gatsby'
 
 import './layout.css'
-import { Typography, createMuiTheme, Container } from '@material-ui/core'
-import { getApiServer, checkIsSignedIn, getUser } from '../app/services/blockstack'
+import { createMuiTheme, Container } from '@material-ui/core'
+import { checkIsSignedIn, getUser } from '../app/services/blockstack'
 import { ThemeProvider } from '@material-ui/styles'
 import PrimaryAppBar from './appBar'
+import Footer from './footer'
 
 export const styles = {
+  tinyIcon: {
+    width: 12,
+    height: 12,
+  },
   smallIcon: {
     width: 36,
     height: 36,
@@ -95,17 +100,7 @@ const Layout = ({ children, hideSearch }) => {
             >
               {children}
               <footer>
-                <Typography variant="body2" style={{ fontSize: 'small' }}>
-                  © {new Date().getFullYear()}, Built with
-                  {` `}
-                  <a href="https://www.gatsbyjs.org">Gatsby</a> and{' '}
-                  <a href="https://blockstack.org">Blockstack</a>. You can{' '}
-                  <a href="https://gitlab.com/friedger/app-center">
-                    view the source here
-                  </a>
-                  <br />
-                  Radiks Server: {getApiServer()}
-                </Typography>
+                <Footer />
               </footer>
             </Container>
           </ThemeProvider>

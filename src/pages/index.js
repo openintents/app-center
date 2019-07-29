@@ -13,6 +13,7 @@ import Post from '../components/post'
 import AppUpdate from '../components/appUpdate'
 import Img from 'gatsby-image'
 import LoggedOut from '../components/LoggedOut'
+import { RADIKS_SERVER_URL, APP_CENTER_URL } from '../components/constants'
 
 export default ({ data }) => {
   const [state, setState] = useState({
@@ -23,12 +24,7 @@ export default ({ data }) => {
 
   useEffect(() => {
     function loadOwnerComments() {
-      console.log('loading owner comments')
-      const server = process.env.GATSBY_RADIKS_SERVER
-        ? process.env.GATSBY_RADIKS_SERVER
-        : 'http://localhost:5000'
-
-      fetch(server + '/api/ownercomments', {
+      fetch(RADIKS_SERVER_URL + '/api/ownercomments', {
         method: 'GET',
         mode: 'cors',
         headers: {
@@ -69,7 +65,7 @@ export default ({ data }) => {
       post: {
         link: 'https://www.bloco.io/blog/2019/blockstack-android-tips',
         title: 'Blockstack Android Tips',
-        date: new Date('2019-07-14'),
+        date: new Date('2019-07-24'),
         description:
           'When developing the Envelop Android app using the Blockstack Android library, I ran into some important gotchas. I wanted to share them for whoever starts on the same path.',
         appcoId: '1453',
@@ -90,7 +86,7 @@ export default ({ data }) => {
     {
       type: 'appCoMonth',
       post: {
-        title: 'App Mining (June 2019)',
+        title: 'Best Apps Awards (June 2019)',
         path: '2019-06',
         date: new Date('2019-07-06'),
       },
@@ -105,7 +101,7 @@ export default ({ data }) => {
     {
       type: 'appCoMonth',
       post: {
-        title: 'App Mining (May 2019)',
+        title: 'Best Apps Awards (May 2019)',
         path: '2019-05',
         date: new Date('2019-05-05'),
       },
@@ -113,7 +109,7 @@ export default ({ data }) => {
     {
       type: 'appCoMonth',
       post: {
-        title: 'App Mining (April 2019)',
+        title: 'Best Apps Awards (April 2019)',
         path: '2019-04',
         date: new Date('2019-04-03'),
       },
@@ -121,7 +117,7 @@ export default ({ data }) => {
     {
       type: 'appCoMonth',
       post: {
-        title: 'App Mining (March 2019)',
+        title: 'Best Apps Awards (March 2019)',
         path: '2019-03',
         date: new Date('2019-04-03'),
       },
@@ -129,7 +125,7 @@ export default ({ data }) => {
     {
       type: 'appCoMonth',
       post: {
-        title: 'App Mining (February 2019)',
+        title: 'Best Apps Awards (February 2019)',
         path: '2019-02',
         date: new Date('2019-04-03'),
       },
@@ -137,7 +133,7 @@ export default ({ data }) => {
     {
       type: 'appCoMonth',
       post: {
-        title: 'App Mining (January 2019)',
+        title: 'Best Apps Awards (January 2019)',
         path: '2019-01',
         date: new Date('2019-04-03'),
       },
@@ -145,7 +141,7 @@ export default ({ data }) => {
     {
       type: 'appCoMonth',
       post: {
-        title: 'App Mining (December 2018)',
+        title: 'Best Apps Awards (December 2018)',
         path: '2018-12',
         date: new Date('2019-04-03'),
         newOnly: true,
@@ -201,7 +197,7 @@ export default ({ data }) => {
         meta={[
           {
             name: `og:image`,
-            content: data.ogImage.childImageSharp.fluid.src,
+            content: `${APP_CENTER_URL}/${data.ogImage.childImageSharp.fluid.src}`,
           },
         ]}
       />
@@ -255,11 +251,6 @@ export default ({ data }) => {
           <AllComments />
         </Grid>
       </Grid>
-      <Typography variant="body2">
-        <a href="https://docs.blockstack.org/develop/mining_intro.html">
-          Read more about the App Mining program
-        </a>
-      </Typography>
     </Layout>
   )
 }

@@ -226,7 +226,7 @@ exports.createPages = async ({ graphql, actions }) => {
     }
   `)
   const apps =
-    process.env.GATSBY_GITHUB_TOKEN === 'INVALID_TOKEN'
+    process.env.GATSBY_GITHUB_TOKEN === 'INVALID'
       ? result.data.appco.apps.slice(0, 3)
       : result.data.appco.apps
   return Promise.all(

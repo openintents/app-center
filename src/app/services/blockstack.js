@@ -1,5 +1,6 @@
 import { UserSession, AppConfig } from 'blockstack'
 import { configure, getConfig, User, GroupMembership } from 'radiks'
+import { RADIKS_SERVER_URL } from '../../components/constants';
 
 // helpful for debugging
 const logAuth = process.env.NODE_ENV === 'development' // set to true to turn on logging
@@ -17,7 +18,7 @@ const appConfig = new AppConfig(
 const uSession = new UserSession({ appConfig })
 
 configure({
-  apiServer: process.env.GATSBY_RADIKS_SERVER || 'http://localhost:1260',
+  apiServer: RADIKS_SERVER_URL,
   userSession: uSession,
 })
 

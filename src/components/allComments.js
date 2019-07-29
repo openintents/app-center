@@ -13,6 +13,7 @@ import { SmallRating } from '../app/mycomments'
 import Img from 'gatsby-image'
 import AppsIcon from '@material-ui/icons/Apps'
 import { styles } from './layout'
+import { RADIKS_SERVER_URL } from './constants'
 
 class AllComments extends React.Component {
   state = {
@@ -29,10 +30,7 @@ class AllComments extends React.Component {
   }
 
   loadUserOwnerComments() {
-    const server = process.env.GATSBY_RADIKS_SERVER
-      ? process.env.GATSBY_RADIKS_SERVER
-      : 'http://localhost:5000'
-    fetch(server + '/api/usercomments', {
+    fetch(RADIKS_SERVER_URL + '/api/usercomments', {
       method: 'GET',
       mode: 'cors',
       headers: {

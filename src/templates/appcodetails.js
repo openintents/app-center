@@ -36,7 +36,13 @@ import {
   PrivateUserComment,
   DraftOwnerComment,
 } from '../components/model'
-import { monthStrings, months, monthsLabels } from '../components/constants'
+import {
+  monthStrings,
+  months,
+  monthsLabels,
+  RADIKS_SERVER_URL,
+  APP_CENTER_URL,
+} from '../components/constants'
 import Img from 'gatsby-image'
 import UserCommentDialog from '../components/userCommentDialog'
 import OwnerCommentDialog from '../components/ownerCommentDialog'
@@ -254,9 +260,7 @@ class AppDetails extends Component {
   }
 
   loadAverage(website) {
-    const server = process.env.GATSBY_RADIKS_SERVER
-      ? process.env.GATSBY_RADIKS_SERVER
-      : 'http://localhost:5000'
+    const server = RADIKS_SERVER_URL
     fetch(server + '/api/ratings', {
       method: 'GET',
       mode: 'cors',
@@ -553,12 +557,21 @@ class AppDetails extends Component {
       ) : (
         <AppsIcon style={styles.bigIcon} />
       )
+    const ogImage =
+      data.apps.localFile && data.apps.localFile.childImageSharp
+        ? {
+            name: `og:image`,
+            content: `${APP_CENTER_URL}/${data.ogImage.childImageSharp.fixed.src}`,
+          }
+        : null
+
     return (
       <Layout>
         <SEO
           title={data.apps.name}
           description={data.apps.description}
           keywords={[data.apps.name, `application`, `blockstack`]}
+          meta={[{ ogImage }]}
         />
         <Card style={{ margin: 4, marginTop: 40 }}>
           <CardContent>
@@ -605,8 +618,8 @@ class AppDetails extends Component {
               <Typography>
                 Use this link to ask users for a review:{' '}
                 <a
-                  href={`https://app-center.openintents.org/appco/${data.apps.appcoid}/review`}
-                >{`https://app-center.openintents.org/appco/${data.apps.appcoid}/review`}</a>
+                  href={`${APP_CENTER_URL}/appco/${data.apps.appcoid}/review`}
+                >{`${APP_CENTER_URL}/appco/${data.apps.appcoid}/review`}</a>
               </Typography>
             </CardContent>
           </Card>
