@@ -67,6 +67,28 @@ getLastCommit = openSourceUrl => {
     return Promise.resolve('Unsupported source repo')
   }
 }
+async function addDummyLocalFileNode(
+  node,
+  store,
+  cache,
+  createNode,
+  createNodeId,
+  _auth
+) {
+  const fileNode = await createRemoteFileNode({
+    url:
+      'https://assets.gitlab-static.net/uploads/-/system/project/avatar/12323770/icon.png',
+    parentNodeId: node.id,
+    store,
+    cache,
+    createNode,
+    createNodeId,
+    auth: _auth,
+  })
+  if (fileNode) {
+    node.localFile___NODE = fileNode.id
+  }
+}
 
 async function addLocalFileNode(
   node,
@@ -104,22 +126,11 @@ exports.onCreateNode = async ({
 }) => {
   const { createNodeField, createNode } = actions
   if (node.internal.type === `apps`) {
-    try {
-      await addLocalFileNode(
-        node,
-        'imgixImageUrl',
-        store,
-        cache,
-        createNode,
-        createNodeId,
-        _auth
-      )
-    } catch (e) {
-      console.log(`file node error ${node.name}`, e)
+    if (node.id__normalized !== 1555) { // wrong image format
       try {
         await addLocalFileNode(
           node,
-          'imageUrl',
+          'imgixImageUrl',
           store,
           cache,
           createNode,
@@ -127,8 +138,25 @@ exports.onCreateNode = async ({
           _auth
         )
       } catch (e) {
-        console.log(`file node error2 ${node.name}`, e)
+        console.log(`file node error ${node.name}`, e)
+        try {
+          await addLocalFileNode(
+            node,
+            'imageUrl',
+            store,
+            cache,
+            createNode,
+            createNodeId,
+            _auth
+          )
+        } catch (e) {
+          console.log(`file node error2 ${node.name}`, e)
+          await addDummyLocalFileNode(node, store, cache, createNode, createNodeId, _auth)
+        }
       }
+    } else {
+      console.log('Skipping ' + node.imageUrl + ' ' + node.imgixImageUrl)
+      await addDummyLocalFileNode(node, store, cache, createNode, createNodeId, _auth)
     }
 
     if (node.openSourceUrl && node.openSourceUrl !== '') {

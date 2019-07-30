@@ -97,9 +97,13 @@ class AllComments extends React.Component {
         const comment = c.comment.toString()
         comments.push(
           <ListItem
-            button
+            button={appLabel}
             key={c._id}
-            onClick={() => this.handleClick(appLink)}
+            onClick={() => {
+              if (appLink) {
+                this.handleClick(appLink)
+              }
+            }}
           >
             <ListItemAvatar>{icon}</ListItemAvatar>
             <ListItemText

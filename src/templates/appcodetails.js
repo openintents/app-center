@@ -561,7 +561,7 @@ class AppDetails extends Component {
       data.apps.localFile && data.apps.localFile.childImageSharp
         ? {
             name: `og:image`,
-            content: `${APP_CENTER_URL}/${data.ogImage.childImageSharp.fixed.src}`,
+            content: `${APP_CENTER_URL}/${data.apps.localFile.childImageSharp.fixed.src}`,
           }
         : null
 
@@ -866,23 +866,6 @@ export const query = graphql`
     }
 
     jun2019: allAppminingresultsXlsxJune2019(
-      filter: { Final_Score: { ne: null } }
-      sort: { fields: [Final_Score], order: [DESC] }
-    ) {
-      totalCount
-      edges {
-        node {
-          App_ID: App_Id
-          Final_Score
-          PH_Theta
-          TMUI_Theta
-          NIL_Theta
-          Awario_Theta
-        }
-      }
-    }
-
-    jul2019: allAppminingresultsforauditXlsxJuly19(
       filter: { Final_Score: { ne: null } }
       sort: { fields: [Final_Score], order: [DESC] }
     ) {
