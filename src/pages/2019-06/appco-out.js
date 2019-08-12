@@ -3,7 +3,9 @@ import OutAppList from '../../components/outAppList'
 
 export const query = graphql`
   query out201906 {
-    lastmonth: allAppminingresultsXlsxMay2019 {
+    lastmonth: allAppminingresultsXlsxMay2019(
+      filter: { Final_Score: { ne: null } }
+    ) {
       totalCount
       edges {
         node {

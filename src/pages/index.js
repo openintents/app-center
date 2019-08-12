@@ -61,6 +61,14 @@ export default ({ data }) => {
   const { apiComments } = state
   const posts = [
     {
+      type: 'appCoMonth',
+      post: {
+        title: 'Best Apps Awards (July 2019)',
+        path: '2019-07',
+        date: new Date('2019-08-12'),
+      },
+    },
+    {
       type: 'appUpdate',
       post: {
         link: 'https://www.bloco.io/blog/2019/blockstack-android-tips',
