@@ -63,6 +63,14 @@ export default ({ data }) => {
     {
       type: 'appCoMonth',
       post: {
+        title: 'Best Apps Awards (August 2019)',
+        path: '2019-08',
+        date: new Date('2019-08-23'),
+      },
+    },
+    {
+      type: 'appCoMonth',
+      post: {
         title: 'Best Apps Awards (July 2019)',
         path: '2019-07',
         date: new Date('2019-08-12'),
