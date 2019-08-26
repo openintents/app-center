@@ -76,6 +76,7 @@ module.exports = {
         theme_color: `#72a7cf`,
         display: `minimal-ui`,
         icon: `src/images/icon.png`, // This path is relative to the root of the site.
+        did_authors: [`friedger.id`],
       },
     },
     `gatsby-plugin-offline`,
@@ -99,6 +100,7 @@ module.exports = {
         },
       },
     },
+    'gatsby-transformer-json',
     {
       resolve: `gatsby-source-filesystem`,
       options: {

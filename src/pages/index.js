@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { graphql, navigate } from 'gatsby'
+import { graphql } from 'gatsby'
 
 import Layout from '../components/layout'
 import SEO from '../components/seo'
-import { Typography, Card, CardContent, Grid, Button } from '@material-ui/core'
-import FossIcon from '@material-ui/icons/FolderOpen'
-import NossIcon from '@material-ui/icons/Folder'
+import { Typography, Grid, Button } from '@material-ui/core'
 import AllComments from '../components/allComments'
-import { styles } from '../components/layout'
 import AppCoMonth from '../components/appcoMonth'
 import Post from '../components/post'
 import AppUpdate from '../components/appUpdate'
-import Img from 'gatsby-image'
-import LoggedOut from '../components/LoggedOut'
+import LoggedOut from '../components/loggedOut'
+import ReviewAppsSuggestions from '../components/reviewAppsSuggestions'
+import HelpCommunity from '../components/helpCommunity'
+
 import { RADIKS_SERVER_URL, APP_CENTER_URL } from '../components/constants'
 
 export default ({ data }) => {
@@ -219,44 +218,7 @@ export default ({ data }) => {
       />
       <Grid container spacing={2} style={{ paddingTop: 40 }}>
         <Grid item xs={12} sm={8}>
-          <Card style={{ margin: 4 }}>
-            <CardContent>
-              <Grid container alignItems="center">
-                <Grid item xs={12} md={2}>
-                  <Img fluid={data.togetherImage.childImageSharp.fluid} />
-                </Grid>
-                <Grid item xs={12} md={10} container>
-                  <Grid item xs={12}>
-                    <Typography variant="h6" align="center">
-                      Help the community and add your review
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography align="center">
-                      <Button
-                        onClick={() => navigate('/appco-foss/')}
-                        color="primary"
-                      >
-                        <FossIcon style={styles.smallIcon} />
-                        Try Open Source apps
-                      </Button>
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography align="center">
-                      <Button
-                        onClick={() => navigate('/appco-noss/')}
-                        color="primary"
-                      >
-                        <NossIcon style={styles.smallIcon} />
-                        Try Closed Source apps
-                      </Button>
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
+          <ReviewAppsSuggestions />
           <LoggedOut />
           <Typography variant="h5" align="center">
             News and Updates
@@ -264,6 +226,7 @@ export default ({ data }) => {
           {postComponents}
         </Grid>
         <Grid item xs={12} sm={4}>
+          <HelpCommunity />
           <AllComments />
         </Grid>
       </Grid>
@@ -290,13 +253,6 @@ export const query = graphql`
     ogImage: file(relativePath: { eq: "hero-img.png" }) {
       childImageSharp {
         fluid(maxWidth: 300) {
-          ...GatsbyImageSharpFluid
-        }
-      }
-    }
-    togetherImage: file(relativePath: { eq: "together.jpg" }) {
-      childImageSharp {
-        fluid(maxWidth: 500) {
           ...GatsbyImageSharpFluid
         }
       }

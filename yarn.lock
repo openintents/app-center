@@ -752,7 +752,7 @@
     pirates "^4.0.0"
     source-map-support "^0.5.9"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.5":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.5":
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.5.tgz#74fba56d35efbeca444091c7850ccd494fd2f132"
   integrity sha512-28QvEGyQyNkB0/m2B4FU7IEZGK2NUrcMtT6BZEFALTguLk+AUT6ofsHtPk5QyjAdUkpMJ+/Em+quwz4HOt30AQ==
@@ -5925,6 +5925,14 @@ gatsby-transformer-excel@^2.1.11:
   dependencies:
     "@babel/runtime" "^7.0.0"
     xlsx "^0.14.0"
+
+gatsby-transformer-json@^2.2.6:
+  version "2.2.6"
+  resolved "https://registry.yarnpkg.com/gatsby-transformer-json/-/gatsby-transformer-json-2.2.6.tgz#988020f64c3aeccad43badb29ef43826603c57ee"
+  integrity sha512-UolZDeMoC+YGuQjPZbEm/FMIj9GKTzpQRi9YLL3+KrsCM+lAB375jILJ5ae2+NYcZZ2ZMNJXqx9zc7HNv/P0Gw==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    bluebird "^3.5.5"
 
 gatsby-transformer-remark@^2.6.6:
   version "2.6.6"

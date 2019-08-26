@@ -38,6 +38,7 @@
     "gatsby-source-google-sheet": "^1.1.0",
     "gatsby-source-google-sheets": "^1.1.1",
     "gatsby-transformer-excel": "^2.1.11",
+    "gatsby-transformer-json": "^2.2.6",
     "gatsby-transformer-remark": "^2.6.6",
     "gatsby-transformer-sharp": "^2.2.0",
     "material-ui-rating": "^4.1.1",

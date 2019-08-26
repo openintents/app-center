@@ -1,0 +1,482 @@
+{
+    "174": {
+        "id": 174,
+        "website": "https://stealthy.im",
+        "authDomain": "www.stealthy.im",
+        "verified": true
+    },
+    "216": {
+        "id": 216,
+        "website": "https://www.graphitedocs.com/",
+        "authDomain": "app.graphitedocs.com",
+        "verified": true
+    },
+    "239": {
+        "id": 239,
+        "website": "https://entaxy.io/",
+        "authDomain": "entaxy.io",
+        "verified": false
+    },
+    "245": {
+        "id": 245,
+        "website": "https://diffuse.sh/",
+        "authDomain": "diffuse.sh",
+        "verified": true
+    },
+    "520": {
+        "id": 520,
+        "website": "https://note.riot.ai",
+        "authDomain": "note.riot.ai",
+        "verified": true
+    },
+    "676": {
+        "id": 676,
+        "website": "https://oi-timesheet.com",
+        "authDomain": "oi-timesheet.com",
+        "verified": true
+    },
+    "755": {
+        "id": 755,
+        "website": "https://block-photos.com/",
+        "authDomain": "app.block-photos.com",
+        "verified": true
+    },
+    "814": {
+        "id": 814,
+        "website": "https://xorbrowser.com/",
+        "authDomain": "xorbrowser.com",
+        "verified": true
+    },
+    "823": {
+        "id": 823,
+        "website": "https://pden.xyz",
+        "authDomain": "app.pden.xyz",
+        "verified": true
+    },
+    "825": {
+        "id": 825,
+        "website": "https://recall.photos",
+        "authDomain": "app.recall.photos",
+        "verified": true
+    },
+    "831": {
+        "id": 831,
+        "website": "https://blockvault.site",
+        "authDomain": "app.blockvault.site",
+        "verified": true
+    },
+    "865": {
+        "id": 865,
+        "website": "https://dpage.io/",
+        "authDomain": "dpage.io",
+        "verified": true
+    },
+    "869": {
+        "id": 869,
+        "website": "https://aodh.xyz",
+        "authDomain": "aodh.xyz",
+        "verified": true
+    },
+    "871": {
+        "id": 871,
+        "website": "https://clickbox.link/",
+        "authDomain": "clickbox.link",
+        "verified": false
+    },
+    "924": {
+        "id": 924,
+        "website": "https://chat.openintents.org",
+        "authDomain": "chat.openintents.org",
+        "verified": true
+    },
+    "945": {
+        "id": 945,
+        "website": "https://xordrive.io/",
+        "authDomain": "xordrive.io",
+        "verified": true
+    },
+    "1018": {
+        "id": 1018,
+        "website": "https://blockslack.io/",
+        "authDomain": "blockslack.io",
+        "verified": true
+    },
+    "1062": {
+        "id": 1062,
+        "website": "https://cal.openintents.org",
+        "authDomain": "cal.openintents.org",
+        "verified": true
+    },
+    "1074": {
+        "id": 1074,
+        "website": "https://twoblocks.leopradel.com",
+        "authDomain": "twoblocks.leopradel.com",
+        "verified": true
+    },
+    "1077": {
+        "id": 1077,
+        "website": "https://airtext.xyz",
+        "authDomain": "airtext.xyz",
+        "verified": true
+    },
+    "1081": {
+        "id": 1081,
+        "website": "https://www.agorashops.net",
+        "authDomain": "www.agorashops.net",
+        "verified": true
+    },
+    "1085": {
+        "id": 1085,
+        "website": "https://timestack.app",
+        "authDomain": "timestack.app",
+        "verified": false
+    },
+    "1087": {
+        "id": 1087,
+        "website": "https://radicle.art/",
+        "authDomain": "radicle.art",
+        "verified": true
+    },
+    "1092": {
+        "id": 1092,
+        "website": "https://www.sigle.io/",
+        "authDomain": "app.sigle.io",
+        "verified": true
+    },
+    "1117": {
+        "id": 1117,
+        "website": "https://bitpatron.co",
+        "authDomain": "bitpatron.co",
+        "verified": true
+    },
+    "1123": {
+        "id": 1123,
+        "website": "https://decentus.com/",
+        "authDomain": "decentus.com",
+        "verified": true
+    },
+    "1183": {
+        "id": 1183,
+        "website": "https://landr.me",
+        "authDomain": "landr.me",
+        "verified": true
+    },
+    "1221": {
+        "id": 1221,
+        "website": "https://www.scannieapp.com",
+        "authDomain": "www.scannieapp.com",
+        "verified": true
+    },
+    "1250": {
+        "id": 1250,
+        "website": "https://pgeon.com",
+        "authDomain": "pgeon.com",
+        "verified": true
+    },
+    "1251": {
+        "id": 1251,
+        "website": "https://crosscheck.paradigma.global/",
+        "authDomain": "dappcrosscheck.paradigma.global",
+        "verified": true
+    },
+    "1292": {
+        "id": 1292,
+        "website": "https://www.locallightning.net",
+        "authDomain": "www.locallightning.net",
+        "verified": true
+    },
+    "1318": {
+        "id": 1318,
+        "website": "https://www.dmail.online",
+        "authDomain": "app.dmail.online",
+        "verified": true
+    },
+    "1362": {
+        "id": 1362,
+        "website": "https://www.mylens.io/",
+        "authDomain": "app.mylens.io",
+        "verified": true
+    },
+    "1397": {
+        "id": 1397,
+        "website": "https://paid.co",
+        "authDomain": "paid.co",
+        "verified": true
+    },
+    "1401": {
+        "id": 1401,
+        "website": "https://locationdiary.com",
+        "authDomain": "locationdiary.com",
+        "verified": false
+    },
+    "1426": {
+        "id": 1426,
+        "website": "https://milacrm.com",
+        "authDomain": "milacrm.com",
+        "verified": true
+    },
+    "1438": {
+        "id": 1438,
+        "website": "https://bentensound.com",
+        "authDomain": "bentensound.com",
+        "verified": true
+    },
+    "1439": {
+        "id": 1439,
+        "website": "https://lannister.capital",
+        "authDomain": "lannister.capital",
+        "verified": true
+    },
+    "1444": {
+        "id": 1444,
+        "website": "https://app-center.openintents.org",
+        "authDomain": "app-center.openintents.org",
+        "verified": true
+    },
+    "1445": {
+        "id": 1445,
+        "website": "https://www.referenda.io",
+        "authDomain": "www.app.referenda.io",
+        "verified": true
+    },
+    "1459": {
+        "id": 1459,
+        "website": "https://gekri.com",
+        "authDomain": "gekri.com",
+        "verified": true
+    },
+    "1460": {
+        "id": 1460,
+        "website": "https://www.mindtalk.app/",
+        "authDomain": "www.mindtalk.app",
+        "verified": true
+    },
+    "1467": {
+        "id": 1467,
+        "website": "https://emilytlam.com",
+        "authDomain": "www.emilytlam.com",
+        "verified": true
+    },
+    "1470": {
+        "id": 1470,
+        "website": "https://taskstack.app/",
+        "authDomain": "taskstack.app",
+        "verified": false
+    },
+    "1480": {
+        "id": 1480,
+        "website": "https://bitcoin4photos.net",
+        "authDomain": "bitcoin4photos.net",
+        "verified": true
+    },
+    "1506": {
+        "id": 1506,
+        "website": "https://avicenna.casa",
+        "authDomain": "avicenna.casa",
+        "verified": false
+    },
+    "1516": {
+        "id": 1516,
+        "website": "https://updoot.org",
+        "authDomain": "updoot.org",
+        "verified": true
+    },
+    "1517": {
+        "id": 1517,
+        "website": "https://block.lawli.io",
+        "authDomain": "block.lawli.io",
+        "verified": true
+    },
+    "1518": {
+        "id": 1518,
+        "website": "https://www.planbetter.org",
+        "authDomain": ".planbetter.org",
+        "verified": false
+    },
+    "1552": {
+        "id": 1552,
+        "website": "https://dbid.io",
+        "authDomain": "dbid.io",
+        "verified": true
+    },
+    "1555": {
+        "id": 1555,
+        "website": "https://www.satoshivstheworld.com/",
+        "authDomain": ".satoshivstheworld.com",
+        "verified": false
+    },
+    "1569": {
+        "id": 1569,
+        "website": "https://dailybookmark.app/",
+        "authDomain": "dailybookmark.app",
+        "verified": false
+    },
+    "1571": {
+        "id": 1571,
+        "website": "https://blocksurvey.org",
+        "authDomain": "blocksurvey.org",
+        "verified": true
+    },
+    "1594": {
+        "id": 1594,
+        "website": "https://heywebby.app/",
+        "authDomain": "heywebby.app",
+        "verified": true
+    },
+    "1595": {
+        "id": 1595,
+        "website": "https://trovenow.com/",
+        "authDomain": "app.trovenow.com",
+        "verified": true
+    },
+    "1597": {
+        "id": 1597,
+        "website": "https://safenotes.co",
+        "authDomain": "safenotes.co",
+        "verified": true
+    },
+    "1608": {
+        "id": 1608,
+        "website": "https://blocktrivia.co",
+        "authDomain": "blocktrivia.co",
+        "verified": true
+    },
+    "1615": {
+        "id": 1615,
+        "website": "https://thepaise.com",
+        "authDomain": "thepaise.com",
+        "verified": true
+    },
+    "1616": {
+        "id": 1616,
+        "website": "https://prismreader.app",
+        "authDomain": "prismreader.app",
+        "verified": true
+    },
+    "1617": {
+        "id": 1617,
+        "website": "https://escapeqr.com",
+        "authDomain": "escapeqr.com",
+        "verified": false
+    },
+    "1630": {
+        "id": 1630,
+        "website": "https://ezresize.tech/",
+        "authDomain": "app.ezresize.tech",
+        "verified": true
+    },
+    "1650": {
+        "id": 1650,
+        "website": "https://www.voicestory.com/",
+        "authDomain": ".voicestory.com",
+        "verified": false
+    },
+    "1655": {
+        "id": 1655,
+        "website": "https://www.feed-app.net",
+        "authDomain": "www.feed-app.net",
+        "verified": true
+    },
+    "1672": {
+        "id": 1672,
+        "website": "https://simpleco.in",
+        "authDomain": "simpleco.in",
+        "verified": false
+    },
+    "1703": {
+        "id": 1703,
+        "website": "https://blockright.moochain.com/",
+        "authDomain": "blockright.moochain.com",
+        "verified": true
+    },
+    "1707": {
+        "id": 1707,
+        "website": "https://satlite.space/",
+        "authDomain": "satlite.space",
+        "verified": false
+    },
+    "1708": {
+        "id": 1708,
+        "website": "https://dphone.app",
+        "authDomain": "dphone.app",
+        "verified": true
+    },
+    "1726": {
+        "id": 1726,
+        "website": "https://blockauth.js.org/",
+        "authDomain": "blockauth.js.org",
+        "verified": false
+    },
+    "1729": {
+        "id": 1729,
+        "website": "https://nomie.app",
+        "authDomain": "nomie.app",
+        "verified": false
+    },
+    "1748": {
+        "id": 1748,
+        "website": "https://mailr.email",
+        "authDomain": "app.mailr.email",
+        "verified": true
+    },
+    "1752": {
+        "id": 1752,
+        "website": "https://healthy-living.technology-valley.com/",
+        "authDomain": "healthy-living.technology-valley.com",
+        "verified": false
+    },
+    "1754": {
+        "id": 1754,
+        "website": "https://app.gitix.org",
+        "authDomain": "app.gitix.org",
+        "verified": true
+    },
+    "1755": {
+        "id": 1755,
+        "website": "https://roccthevote.com/",
+        "authDomain": "roccthevote.com",
+        "verified": false
+    },
+    "1760": {
+        "id": 1760,
+        "website": "https://searx.world",
+        "authDomain": "searx.world",
+        "verified": false
+    },
+    "1763": {
+        "id": 1763,
+        "website": "https://sarchy.co/TrustingTrust/pc/index.html",
+        "authDomain": "sarchy.co/TrustingTrust/pc/index.html",
+        "verified": false
+    },
+    "1765": {
+        "id": 1765,
+        "website": "https://satshi.tv",
+        "authDomain": "satshi.tv",
+        "verified": true
+    },
+    "1780": {
+        "id": 1780,
+        "website": "https://sportup.online/",
+        "authDomain": "dapp.sportup.online",
+        "verified": true
+    },
+    "1784": {
+        "id": 1784,
+        "website": "https://huaren.news",
+        "authDomain": "huaren.news",
+        "verified": true
+    },
+    "1791": {
+        "id": 1791,
+        "website": "https://dnotes.org",
+        "authDomain": "dnotes.org",
+        "verified": false
+    },
+    "1804": {
+        "id": 1804,
+        "website": "https://boto.photos",
+        "authDomain": "boto.photos",
+        "verified": true
+    }
+}

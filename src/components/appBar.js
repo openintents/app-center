@@ -153,15 +153,24 @@ export default function PrimaryAppBar({
             <Img fixed={fixedIcon} alt="icon" />
           </IconButton>
 
-          <Typography
-            onClick={() => navigate('/')}
-            className={classes.title}
-            variant="h5"
-            noWrap
-          >
-            App reviews done right!
-          </Typography>
-
+          <div>
+            <Typography
+              onClick={() => navigate('/')}
+              className={classes.title}
+              variant="h5"
+              noWrap
+            >
+              All about Blockstack Apps
+            </Typography>
+            <Typography
+              onClick={() => navigate('/')}
+              className={classes.title}
+              variant="body2"
+              noWrap
+            >
+              Apps that respect your digital life
+            </Typography>
+          </div>
           {!hideSearch && (
             <div className={classes.search}>
               <Search

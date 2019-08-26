@@ -87,7 +87,7 @@ export default ({ link, title, date, description, appcoId, apiComment }) => {
                     size="small"
                     color="primary"
                     onClick={() => {
-                      window.location.href = link
+                      window.open(link, '_blank', 'noopener')
                     }}
                   >
                     {icon}

@@ -8,6 +8,7 @@ import {
   saveMyData,
   getUser,
   checkIsSignedIn,
+  getAuthorsFromManifest,
 } from '../app/services/blockstack'
 import {
   Button,
@@ -125,7 +126,23 @@ const Comments = (data, comments, isSignedIn) => {
     )
   }
   if (comments.length === 0) {
-    return <Typography>No comments yet</Typography>
+    return (
+      <Card
+        style={{
+          margin: 4,
+        }}
+      >
+        <CardContent>
+          <Container align="center">
+            <Typography>
+              No comments yet.
+              <br />
+              Be the first! Try the app and leave a review!
+            </Typography>
+          </Container>
+        </CardContent>
+      </Card>
+    )
   } else {
     return comments.map((c, key) => {
       const comment = c.attrs.comment.toString()
@@ -165,7 +182,23 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
     )
   }
   if (Object.keys(comments).length === 0) {
-    return <Typography>No updates yet.</Typography>
+    return (
+      <Card
+        style={{
+          margin: 4,
+        }}
+      >
+        <CardContent>
+        <Container align="center">
+            <Typography>
+              No updates yet.
+              <br />
+              Contact the developer!
+            </Typography>
+          </Container>          
+        </CardContent>
+      </Card>
+    )
   } else {
     const allMonths = []
     const renderComment = month => (c, key) => {
@@ -209,7 +242,7 @@ function LinkTab(props) {
   )
 }
 
-const hashes = ['#', '#updates', '#comments']
+const hashes = ['#', '#comments', '#scores']
 
 class AppDetails extends Component {
   state = {
@@ -225,12 +258,15 @@ class AppDetails extends Component {
     userData: null,
     loadingData: true,
     avgRating: null,
+    canClaim: false,
   }
 
   componentDidMount() {
     if (window.location.hash === '#updates') {
-      this.setState({ tabIndex: 1 })
+      this.setState({ tabIndex: 0 })
     } else if (window.location.hash === '#comments') {
+      this.setState({ tabIndex: 1 })
+    } else if (window.location.hash === '#scores') {
       this.setState({ tabIndex: 2 })
     }
     const urlParams = new URLSearchParams(window.location.search)
@@ -324,7 +360,7 @@ class AppDetails extends Component {
   }
 
   launchApp() {
-    window.location = this.props.data.apps.website
+    window.open(this.props.data.apps.website, '_blank', 'noopener')
   }
 
   claimApp() {
@@ -468,6 +504,7 @@ class AppDetails extends Component {
       isSignedIn,
       updating,
       avgRating,
+      canClaim,
     } = this.state
     const appActions = isClaimedApp ? (
       <>
@@ -517,17 +554,22 @@ class AppDetails extends Component {
         >
           <NoteIcon style={styles.smallIcon} />
           Post comment
-        </Button>{' '}
-        <Button
-          color="secondary"
-          disabled={isClaimingApp}
-          onClick={() => {
-            this.claimApp()
-          }}
-        >
-          <AppsIcon style={styles.smallIcon} />
-          Claim app
         </Button>
+        {canClaim && (
+          <>
+            {' '}
+            <Button
+              color="secondary"
+              disabled={isClaimingApp}
+              onClick={() => {
+                this.claimApp()
+              }}
+            >
+              <AppsIcon style={styles.smallIcon} />
+              Claim app
+            </Button>
+          </>
+        )}
       </>
     )
 
@@ -631,71 +673,91 @@ class AppDetails extends Component {
               value={tabIndex}
               onChange={this.handleChangeTabIndex}
             >
-              <LinkTab label="Scores" />
               <LinkTab label="Updates" />
               <LinkTab label="Comments" />
+              <LinkTab label="Score" />
             </Tabs>
           </AppBar>
-          {tabIndex === 0 && (
-            <Card
-              style={{
-                marginLeft: 4,
-                marginTop: 16,
-                marginRight: 4,
-                marginBottom: 4,
-              }}
-            >
-              <CardContent>
-                <Typography component="div">
-                  <Grid container spacing={0}>
-                    <StyledCell item md={4} xs={4}>
-                      <b>Month</b>
-                    </StyledCell>
-                    <StyledCell item md={2} xs={4}>
-                      <b>Rank</b>
-                    </StyledCell>
-                    <StyledCell item md={1} xs={4}>
-                      <b>Final Score</b>
-                    </StyledCell>
-                    <StyledCell item md={1} xs={2}>
-                      <Tooltip title="Democracy Earth reviews the interest for investors">
-                        <small>DE</small>
-                      </Tooltip>
-                    </StyledCell>
-                    <StyledCell item md={1} xs={2}>
-                      <Tooltip title="Product Hunt reviews the idea">
-                        <small>PH</small>
-                      </Tooltip>
-                    </StyledCell>
-                    <StyledCell item md={1} xs={2}>
-                      <Tooltip title="New Internet Labs reviews the protection of users' digital rights">
-                        <small>NIL</small>
-                      </Tooltip>
-                    </StyledCell>
-                    <StyledCell item md={1} xs={2}>
-                      <Tooltip title="TryMyUI reviews the usability and desirability">
-                        <small className="tooltiptext">TMUI</small>
-                      </Tooltip>
-                    </StyledCell>
-                    <StyledCell item md={1} xs={2}>
-                      <Tooltip title="Awario reviews the value of the brand">
-                        <small>AW</small>
-                      </Tooltip>
-                    </StyledCell>
-                    <StyledCell item xs={12}>
-                      <hr />
-                    </StyledCell>
-                    {monthlyScoresInGrid}
-                  </Grid>
-                </Typography>
-              </CardContent>
-            </Card>
+          {tabIndex === 2 && (
+            <>
+              <Card
+                style={{
+                  marginLeft: 4,
+                  marginTop: 16,
+                  marginRight: 4,
+                  marginBottom: 4,
+                }}
+              >
+                <CardContent>
+                  <Typography component="div">
+                    Every month all Blockstack apps are reviewed by independent
+                    app reviewers: <br />
+                    Democracy Earth (DE), ProductHunt (PH), New Internet Labs
+                    (NIL), TryMyUI (TMUI) and Awario (AW).
+                  </Typography>
+                </CardContent>
+              </Card>
+
+              <Card
+                style={{
+                  marginLeft: 4,
+                  marginTop: 16,
+                  marginRight: 4,
+                  marginBottom: 4,
+                }}
+              >
+                <CardContent>
+                  <Typography component="div">
+                    <Grid container spacing={0}>
+                      <StyledCell item md={4} xs={4}>
+                        <b>Month</b>
+                      </StyledCell>
+                      <StyledCell item md={2} xs={4}>
+                        <b>Rank</b>
+                      </StyledCell>
+                      <StyledCell item md={1} xs={4}>
+                        <b>Final Score</b>
+                      </StyledCell>
+                      <StyledCell item md={1} xs={2}>
+                        <Tooltip title="Democracy Earth reviews the interest for investors">
+                          <small>DE</small>
+                        </Tooltip>
+                      </StyledCell>
+                      <StyledCell item md={1} xs={2}>
+                        <Tooltip title="Product Hunt reviews the idea">
+                          <small>PH</small>
+                        </Tooltip>
+                      </StyledCell>
+                      <StyledCell item md={1} xs={2}>
+                        <Tooltip title="New Internet Labs reviews the protection of users' digital rights">
+                          <small>NIL</small>
+                        </Tooltip>
+                      </StyledCell>
+                      <StyledCell item md={1} xs={2}>
+                        <Tooltip title="TryMyUI reviews the usability and desirability">
+                          <small className="tooltiptext">TMUI</small>
+                        </Tooltip>
+                      </StyledCell>
+                      <StyledCell item md={1} xs={2}>
+                        <Tooltip title="Awario reviews the value of the brand">
+                          <small>AW</small>
+                        </Tooltip>
+                      </StyledCell>
+                      <StyledCell item xs={12}>
+                        <hr />
+                      </StyledCell>
+                      {monthlyScoresInGrid}
+                    </Grid>
+                  </Typography>
+                </CardContent>
+              </Card>
+            </>
           )}
 
-          {tabIndex === 1 && (
+          {tabIndex === 0 && (
             <>{MonthlyUpdates(data, monthlyUpdates, isSignedIn)}</>
           )}
-          {tabIndex === 2 && <>{Comments(data, comments, isSignedIn)}</>}
+          {tabIndex === 1 && <>{Comments(data, comments, isSignedIn)}</>}
         </StyledRoot>
         <Snackbar
           anchorOrigin={{
@@ -915,7 +977,6 @@ export const query = graphql`
         }
       }
     }
-
   }
 `
 

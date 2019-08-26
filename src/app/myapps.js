@@ -11,7 +11,7 @@ class MyApps extends React.Component {
 
   componentDidMount() {
     loadMyData().then(content => {
-      this.setState({ myApps: content.myApps, loading: false })
+      this.setState({ myApps: content.myApps || {}, loading: false })
     })
   }
 

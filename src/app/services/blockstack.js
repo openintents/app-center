@@ -1,6 +1,6 @@
 import { UserSession, AppConfig } from 'blockstack'
 import { configure, getConfig, User, GroupMembership } from 'radiks'
-import { RADIKS_SERVER_URL } from '../../components/constants';
+import { RADIKS_SERVER_URL } from '../../components/constants'
 
 // helpful for debugging
 const logAuth = process.env.NODE_ENV === 'development' // set to true to turn on logging
@@ -75,7 +75,11 @@ export const checkIsSignedIn = () => {
   } else if (userSession.isSignInPending()) {
     return userSession.handlePendingSignIn().then(() => {
       return User.createWithCurrentUser().then(() => {
-        window.history.replaceState("", document.title, window.location.pathname)
+        window.history.replaceState(
+          '',
+          document.title,
+          window.location.pathname
+        )
         return true
       })
     })
@@ -140,4 +144,21 @@ export const postUserUpdate = async (visibility, userComment) => {
   }
 
   return null
+}
+
+export const getAuthorsFromManifest = async appDomain => {
+  let manifestURI = appDomain + '/manifest.webmanifest'
+  let response
+  try {
+    response = await fetch(manifestURI)
+  } catch (e) {
+    manifestURI = appDomain + '/manifest.json'
+    response = await fetch(manifestURI)
+  }
+  if (response) {
+    const responseJSON = JSON.parse(response.text())
+    return responseJSON["did_authors"]
+  } else {
+    return null
+  }
 }

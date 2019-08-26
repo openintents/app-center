@@ -13,7 +13,7 @@ export default () => (
           <AboutIcon style={styles.tinyIcon} /> About
           <br />
           <a
-            href="https://openintents.org"
+            href="http://openintents.org"
             target="_blank"
             rel="noopener noreferrer"
           >

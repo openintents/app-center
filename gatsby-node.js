@@ -20,7 +20,7 @@ getLastCommit = openSourceUrl => {
         .then(response => response.json(), () => 'No json')
         .then(
           response => {
-            if (response && response.length > 0) {
+            if (response && response.length > 0 && response[0].commit && response[0].commit.author) {
               return response[0].commit.author.date
             } else {
               return 'No commits found - ' + response.message
@@ -87,6 +87,8 @@ async function addDummyLocalFileNode(
   })
   if (fileNode) {
     node.localFile___NODE = fileNode.id
+  } else {
+    console.log(`no dummy node for app ${node.id}`)
   }
 }
 
