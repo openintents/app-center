@@ -147,6 +147,7 @@ export default function PrimaryAppBar({
       <AppBar position="static">
         <Toolbar>
           <IconButton
+            onClick={() => navigate('/')}
             edge="start"
             className={classes.menuButton}
             aria-label="Icon"

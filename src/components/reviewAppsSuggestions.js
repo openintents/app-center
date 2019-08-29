@@ -8,7 +8,6 @@ import {
   Container,
   CircularProgress,
   List,
-  InputLabel,
   FormControl,
   Select,
 } from '@material-ui/core'
@@ -67,21 +66,25 @@ const ReviewAppsSuggestions = () => {
 
     if (sort === 'popular') {
       appList = data.allApps.edges
-        .filter(e => [216, 954, 94].includes(e.node.appcoid))
+        .filter(e => [216, 945, 174].includes(e.node.appcoid))
         .map(e => e.node)
     } else if (sort === 'usable') {
       const topUsable = data.allAppminingresultsforauditXlsxAugust19.edges
         .sort((a, b) => b.node.TMUI_Theta - a.node.TMUI_Theta)
         .slice(0, 3)
         .map(e => e.node.App_ID)
-      appList = data.allApps.edges.filter(e =>
-        topUsable.includes(e.node.appcoid)
-      )
+      console.log(topUsable)
+      appList = data.allApps.edges
+        .filter(e => topUsable.includes(String(e.node.appcoid)))
+        .map(e => e.node)
     } else if (sort === 'best') {
       const best = data.allAppminingresultsforauditXlsxAugust19.edges
+        .sort((a, b) => b.node.Final_Score - a.node.Final_Score)
         .slice(0, 3)
         .map(e => e.node.App_ID)
-      appList = data.allApps.edges.filter(e => best.includes(e.node.appcoid))
+      appList = data.allApps.edges
+        .filter(e => best.includes(String(e.node.appcoid)))
+        .map(e => e.node)
     } else if (sort === 'foss') {
       appList = data.allApps.edges
         .filter(e => !noss.includes(e.node.openSourceUrl))
@@ -90,10 +93,18 @@ const ReviewAppsSuggestions = () => {
       appList = data.allApps.edges
         .filter(e => noss.includes(e.node.openSourceUrl))
         .map(e => e.node)
-    } else {
+    } else if (sort === 'top') {
       appList = data.allApps.edges.map(e => e.node)
+    } else if (sort === 'random') {
+      const items = data.allApps.edges
+      appList = [
+        items[Math.floor(Math.random() * items.length)],
+        items[Math.floor(Math.random() * items.length)],
+        items[Math.floor(Math.random() * items.length)],
+      ].map(e => e.node)
+    } else {
+      throw new Error('Invalid sort value ' + sort)
     }
-    console.log(appList)
 
     return (
       <Card style={{ margin: 4 }}>
@@ -119,6 +130,7 @@ const ReviewAppsSuggestions = () => {
                       <option value={'top'}>top</option>
                       <option value={'foss'}>open sourced</option>
                       <option value={'noss'}>close sourced</option>
+                      <option value={'random'}>randomly chosen</option>
                     </Select>{' '}
                     apps
                   </Typography>

@@ -108,7 +108,7 @@ const App = ({ data, hideRewards, showSourceLink }) => {
       {!data.hideDetailsLink && data.website && data.website.length > 0 && (
         <ListItemSecondaryAction>
           <IconButton edge="end" aria-label="Launch">
-            <a href={data.website}>
+            <a href={data.website} target="_blank" rel="noopener noreferrer">
               <GetAppIcon style={styles.smallIcon} />
             </a>
           </IconButton>
