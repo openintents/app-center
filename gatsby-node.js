@@ -20,7 +20,12 @@ getLastCommit = openSourceUrl => {
         .then(response => response.json(), () => 'No json')
         .then(
           response => {
-            if (response && response.length > 0 && response[0].commit && response[0].commit.author) {
+            if (
+              response &&
+              response.length > 0 &&
+              response[0].commit &&
+              response[0].commit.author
+            ) {
               return response[0].commit.author.date
             } else {
               return 'No commits found - ' + response.message
@@ -75,20 +80,24 @@ async function addDummyLocalFileNode(
   createNodeId,
   _auth
 ) {
-  const fileNode = await createRemoteFileNode({
-    url:
-      'https://assets.gitlab-static.net/uploads/-/system/project/avatar/12323770/icon.png',
-    parentNodeId: node.id,
-    store,
-    cache,
-    createNode,
-    createNodeId,
-    auth: _auth,
-  })
-  if (fileNode) {
-    node.localFile___NODE = fileNode.id
-  } else {
-    console.log(`no dummy node for app ${node.id}`)
+  try {
+    const fileNode = await createRemoteFileNode({
+      url:
+        'https://assets.gitlab-static.net/uploads/-/system/project/avatar/12323770/icon.png',
+      parentNodeId: node.id,
+      store,
+      cache,
+      createNode,
+      createNodeId,
+      auth: _auth,
+    })
+    if (fileNode) {
+      node.localFile___NODE = fileNode.id
+    } else {
+      console.log(`no dummy node for app ${node.id}`)
+    }
+  } catch (e) {
+    console.log(e)
   }
 }
 
@@ -128,7 +137,8 @@ exports.onCreateNode = async ({
 }) => {
   const { createNodeField, createNode } = actions
   if (node.internal.type === `apps`) {
-    if (node.id__normalized !== 1555) { // wrong image format
+    if (node.id__normalized !== 1555) {
+      // wrong image format
       try {
         await addLocalFileNode(
           node,
@@ -153,12 +163,26 @@ exports.onCreateNode = async ({
           )
         } catch (e) {
           console.log(`file node error2 ${node.name}`, e)
-          await addDummyLocalFileNode(node, store, cache, createNode, createNodeId, _auth)
+          await addDummyLocalFileNode(
+            node,
+            store,
+            cache,
+            createNode,
+            createNodeId,
+            _auth
+          )
         }
       }
     } else {
       console.log('Skipping ' + node.imageUrl + ' ' + node.imgixImageUrl)
-      await addDummyLocalFileNode(node, store, cache, createNode, createNodeId, _auth)
+      await addDummyLocalFileNode(
+        node,
+        store,
+        cache,
+        createNode,
+        createNodeId,
+        _auth
+      )
     }
 
     if (node.openSourceUrl && node.openSourceUrl !== '') {

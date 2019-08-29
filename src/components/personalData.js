@@ -74,7 +74,7 @@ class PersonalData extends Component {
               <Container align="center">
                 <Button
                   color="primary"
-                  onClick={() => navigate('/data/#comments')}
+                  onClick={() => navigate('/data/#reviews')}
                 >
                   <CommentIcon style={styles.smallIcon} />
                   Comments

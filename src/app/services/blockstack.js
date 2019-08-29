@@ -92,7 +92,7 @@ export const checkIsSignedIn = () => {
 export const logout = callback => {
   const { userSession } = getConfig()
   GroupMembership.clearStorage()
-  userSession.signUserOut('/data/')
+  userSession.signUserOut('/')
   callback()
 }
 

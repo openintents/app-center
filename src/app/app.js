@@ -14,7 +14,7 @@ const App = () => {
       <NavBar />
       <Router>
         <PrivateRoute path="/data/apps" component={MyApps} />
-        <PrivateRoute path="/data/comments" component={MyComments} />
+        <PrivateRoute path="/data/reviews" component={MyComments} />
         <PublicRoute path="/data">
           <PrivateRoute path="/" component={Main} />
           <Login path="/login" />

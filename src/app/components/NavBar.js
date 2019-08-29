@@ -39,7 +39,7 @@ const NavBar = ({ classes }) => {
         <Typography>
           <Link to="/data/">Overview</Link>
           {` `}
-          <Link to="/data/comments">Comments</Link>
+          <Link to="/data/reviews">Reviews</Link>
           {` `}
           <Link to="/data/apps">Apps</Link>
           {` `}

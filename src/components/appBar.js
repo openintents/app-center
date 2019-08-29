@@ -10,9 +10,10 @@ import MoreIcon from '@material-ui/icons/MoreVert'
 import Search from './search'
 import BlockstackAvatar from './blockstackAvatar'
 import { navigate } from 'gatsby'
-import { logout } from '../app/services/blockstack'
+import { logout, redirectToSignIn } from '../app/services/blockstack'
 import Img from 'gatsby-image'
 import { LayoutContext, styles } from './layout'
+import { BlockstackButton } from 'react-blockstack-button'
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -85,7 +86,7 @@ export default function PrimaryAppBar({
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
 
-  const { isSignedIn } = useContext(LayoutContext)
+  const { isSignedIn, checking } = useContext(LayoutContext)
 
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -118,7 +119,7 @@ export default function PrimaryAppBar({
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={() => navigate('/data/#comments')}>Comments</MenuItem>
+      <MenuItem onClick={() => navigate('/data/#reviews')}>Reviews</MenuItem>
       <MenuItem onClick={() => navigate('/data/#apps')}>Apps</MenuItem>
       {isSignedIn && <MenuItem onClick={() => logout()}>Logout</MenuItem>}
     </Menu>
@@ -135,7 +136,7 @@ export default function PrimaryAppBar({
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={() => navigate('/data/#comments')}>Comments</MenuItem>
+      <MenuItem onClick={() => navigate('/data/#reviews')}>Reviews</MenuItem>
       <MenuItem onClick={() => navigate('/data/#apps')}>Apps</MenuItem>
       <MenuItem onClick={() => logout()}>Logout</MenuItem>
     </Menu>
@@ -208,6 +209,9 @@ export default function PrimaryAppBar({
                 </IconButton>
               </div>
             </>
+          )}
+          {!isSignedIn && !checking && (
+            <BlockstackButton onClick={() => redirectToSignIn()} />
           )}
         </Toolbar>
       </AppBar>

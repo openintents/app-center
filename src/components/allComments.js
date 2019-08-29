@@ -8,6 +8,9 @@ import {
   ListItemAvatar,
   CircularProgress,
   Container,
+  CardHeader,
+  CardContent,
+  Card,
 } from '@material-ui/core'
 import { SmallRating } from '../app/mycomments'
 import Img from 'gatsby-image'
@@ -86,7 +89,7 @@ class AllComments extends React.Component {
           apps.length === 1 ? <>{apps[0].node.name}</> : <>{c.object}</>
         const appLink =
           apps.length === 1
-            ? `/appco/${apps[0].node.appcoid}/#comments`
+            ? `/appco/${apps[0].node.appcoid}/#reviews`
             : c.object
         const rating = (
           <>
@@ -161,10 +164,12 @@ class AllComments extends React.Component {
               </Container>
             )}
             {!loading && (
-              <>
-                <Typography variant="h5">Recent Reviews</Typography>
-                {this.renderComments(apiComments, data)}
-              </>
+              <Card style={{ margin: 4 }}>
+              <CardHeader title="Recent Reviews" />
+                <CardContent>
+                  {this.renderComments(apiComments, data)}
+                </CardContent>
+              </Card>
             )}
           </>
         )}

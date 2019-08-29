@@ -25,8 +25,8 @@ class Main extends React.Component {
   componentDidMount() {
     if (window.location.hash === '#apps') {
       navigate('/data/apps')
-    } else if (window.location.hash === '#comments') {
-      navigate('/data/comments')
+    } else if (window.location.hash === '#reviews') {
+      navigate('/data/reviews')
     }
   }
 
@@ -72,7 +72,7 @@ class Main extends React.Component {
           </Container>
         </CardContent>
         <CardActions>
-          <Button color="primary" onClick={() => navigate('/data/comments')}>
+          <Button color="primary" onClick={() => navigate('/data/reviews')}>
             <CommentIcon style={styles.smallIcon} /> Manage comments
           </Button>{' '}
           <Button color="primary" onClick={() => navigate('/data/apps')}>

@@ -2,19 +2,20 @@ import React, { Component } from 'react'
 import { graphql, navigate } from 'gatsby'
 import Layout from '../components/layout'
 import Grid from '@material-ui/core/Grid'
+import ReadIcon from '@material-ui/icons/Subject'
 import styled from 'styled-components'
 import {
   loadMyData,
   saveMyData,
   getUser,
   checkIsSignedIn,
-  getAuthorsFromManifest,
 } from '../app/services/blockstack'
 import {
   Button,
   Snackbar,
   IconButton,
   Card,
+  CardActions,
   CardContent,
   AppBar,
   Tabs,
@@ -51,6 +52,7 @@ import SEO from '../components/seo'
 import { SmallAppDetails } from '../components/app'
 import { styles } from '../components/layout'
 import { SmallRating } from '../app/mycomments'
+import ClaimAppDialog from '../components/claimAppDialog'
 
 const StyledRoot = styled.div`
   flexgrow: 1;
@@ -135,9 +137,9 @@ const Comments = (data, comments, isSignedIn) => {
         <CardContent>
           <Container align="center">
             <Typography>
-              No comments yet.
+              No reviews yet.
               <br />
-              Be the first! Try the app and leave a review!
+              Be the first! Try the app and add a review!
             </Typography>
           </Container>
         </CardContent>
@@ -189,13 +191,13 @@ const MonthlyUpdates = (data, comments, isSignedIn) => {
         }}
       >
         <CardContent>
-        <Container align="center">
+          <Container align="center">
             <Typography>
               No updates yet.
               <br />
               Contact the developer!
             </Typography>
-          </Container>          
+          </Container>
         </CardContent>
       </Card>
     )
@@ -242,7 +244,7 @@ function LinkTab(props) {
   )
 }
 
-const hashes = ['#', '#comments', '#scores']
+const hashes = ['#', '#reviews', '#scores']
 
 class AppDetails extends Component {
   state = {
@@ -259,19 +261,20 @@ class AppDetails extends Component {
     loadingData: true,
     avgRating: null,
     canClaim: false,
+    showClaimAppDialog: false,
   }
 
   componentDidMount() {
     if (window.location.hash === '#updates') {
       this.setState({ tabIndex: 0 })
-    } else if (window.location.hash === '#comments') {
+    } else if (window.location.hash === '#reviews') {
       this.setState({ tabIndex: 1 })
     } else if (window.location.hash === '#scores') {
       this.setState({ tabIndex: 2 })
     }
     const urlParams = new URLSearchParams(window.location.search)
-    const newComment = urlParams.get('newComment')
-    this.setState({ showUpdateDialog: newComment === 'true' })
+    const newReview = urlParams.get('newReview')
+    this.setState({ showUpdateDialog: newReview === 'true' })
 
     checkIsSignedIn().then(isSignedIn => {
       if (isSignedIn) {
@@ -361,6 +364,10 @@ class AppDetails extends Component {
 
   launchApp() {
     window.open(this.props.data.apps.website, '_blank', 'noopener')
+  }
+
+  showClaimAppDialog(showClaimAppDialog) {
+    this.setState({ showClaimAppDialog })
   }
 
   claimApp() {
@@ -505,6 +512,7 @@ class AppDetails extends Component {
       updating,
       avgRating,
       canClaim,
+      showClaimAppDialog,
     } = this.state
     const appActions = isClaimedApp ? (
       <>
@@ -553,23 +561,18 @@ class AppDetails extends Component {
           }}
         >
           <NoteIcon style={styles.smallIcon} />
-          Post comment
+          Add Your Review
+        </Button>{' '}
+        <Button
+          color="secondary"
+          disabled={isClaimingApp}
+          onClick={() => {
+            this.showClaimAppDialog(true)
+          }}
+        >
+          <AppsIcon style={styles.smallIcon} />
+          Claim app
         </Button>
-        {canClaim && (
-          <>
-            {' '}
-            <Button
-              color="secondary"
-              disabled={isClaimingApp}
-              onClick={() => {
-                this.claimApp()
-              }}
-            >
-              <AppsIcon style={styles.smallIcon} />
-              Claim app
-            </Button>
-          </>
-        )}
       </>
     )
 
@@ -674,7 +677,7 @@ class AppDetails extends Component {
               onChange={this.handleChangeTabIndex}
             >
               <LinkTab label="Updates" />
-              <LinkTab label="Comments" />
+              <LinkTab label="Reviews" />
               <LinkTab label="Score" />
             </Tabs>
           </AppBar>
@@ -696,6 +699,18 @@ class AppDetails extends Component {
                     (NIL), TryMyUI (TMUI) and Awario (AW).
                   </Typography>
                 </CardContent>
+                <CardActions>
+                  <Button
+                    size="small"
+                    color="primary"
+                    onClick={() => {
+                      window.open('https://app.co/mining', '_blank', 'noopener')
+                    }}
+                  >
+                    <ReadIcon />
+                    Read more
+                  </Button>
+                </CardActions>
               </Card>
 
               <Card
@@ -819,6 +834,13 @@ class AppDetails extends Component {
             postComment: this.postUpdate,
           })}
 
+        <ClaimAppDialog
+          show={showClaimAppDialog}
+          claimApp={() => this.claimApp()}
+          canClaim={canClaim}
+          appName={data.apps.name}
+          handleCloseDialog={() => this.setState({ showClaimAppDialog: false })}
+        />
         <hr />
       </Layout>
     )

@@ -39,6 +39,9 @@ class LoggedOut extends Component {
                 <b>Blockstack</b> is a decentralized computing network for apps
                 that #cantbeevil.
               </Typography>
+              <Typography>
+                <b>OI App Center</b> helps users to find the best Blockstack apps.
+              </Typography>
             </Container>
           </CardContent>
           <CardActions>

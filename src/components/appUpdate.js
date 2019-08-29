@@ -99,11 +99,11 @@ export default ({ link, title, date, description, appcoId, apiComment }) => {
                     size="small"
                     color="primary"
                     onClick={() => {
-                      navigate(`/appco/${appcoid}/?newComment=true#comments`)
+                      navigate(`/appco/${appcoid}/?newReview=true#reviews`)
                     }}
                   >
                     <StarIcon />
-                    Rate now
+                    Review now
                   </Button>
                 )}
               </CardActions>
