@@ -34,7 +34,7 @@
         "website": "https://oi-timesheet.com",
         "authDomain": "oi-timesheet.com",
         "verified": true,
-        authors": [
+        "authors": [
             {
                 "username": "friedger.id"
             }, {
@@ -113,7 +113,7 @@
         "website": "https://cal.openintents.org",
         "authDomain": "cal.openintents.org",
         "verified": true,
-        authors": [
+        "authors": [
             {
                 "username": "friedger.id"
             }, {
@@ -246,7 +246,7 @@
         "website": "https://app-center.openintents.org",
         "authDomain": "app-center.openintents.org",
         "verified": true,
-        authors": [
+        "authors": [
             {
                 "username": "friedger.id"
             }, {
@@ -451,7 +451,7 @@
         "website": "https://app.gitix.org",
         "authDomain": "app.gitix.org",
         "verified": true,
-        authors": [
+        "authors": [
             {
                 "username": "friedger.id"
             }, {
