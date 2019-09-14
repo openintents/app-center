@@ -33,7 +33,14 @@
         "id": 676,
         "website": "https://oi-timesheet.com",
         "authDomain": "oi-timesheet.com",
-        "verified": true
+        "verified": true,
+        authors": [
+            {
+                "username": "friedger.id"
+            }, {
+                "username": "openintents.id"
+            }
+        ]
     },
     "755": {
         "id": 755,
@@ -105,7 +112,14 @@
         "id": 1062,
         "website": "https://cal.openintents.org",
         "authDomain": "cal.openintents.org",
-        "verified": true
+        "verified": true,
+        authors": [
+            {
+                "username": "friedger.id"
+            }, {
+                "username": "openintents.id"
+            }
+        ]
     },
     "1074": {
         "id": 1074,
@@ -231,7 +245,14 @@
         "id": 1444,
         "website": "https://app-center.openintents.org",
         "authDomain": "app-center.openintents.org",
-        "verified": true
+        "verified": true,
+        authors": [
+            {
+                "username": "friedger.id"
+            }, {
+                "username": "openintents.id"
+            }
+        ]
     },
     "1445": {
         "id": 1445,
@@ -429,7 +450,14 @@
         "id": 1754,
         "website": "https://app.gitix.org",
         "authDomain": "app.gitix.org",
-        "verified": true
+        "verified": true,
+        authors": [
+            {
+                "username": "friedger.id"
+            }, {
+                "username": "openintents.id"
+            }
+        ]
     },
     "1755": {
         "id": 1755,
