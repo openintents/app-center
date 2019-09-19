@@ -9,6 +9,8 @@ import {
   CardHeader,
   CardContent,
 } from '@material-ui/core'
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config as faConfig} from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faTwitter,
@@ -23,6 +25,8 @@ import Img from 'gatsby-image'
 import SEO from '../components/seo'
 import App from '../components/app'
 import AppIcon from '../components/appIcon'
+
+faConfig.autoAddCss = false;
 
 const social = [
   'twitter',
@@ -92,18 +96,18 @@ class Publisher extends Component {
   accountAsText(account) {
     switch (account.service.toLowerCase()) {
       case 'twitter':
-        return <FontAwesomeIcon icon={faTwitter} color="black" size="1x" />
+        return <FontAwesomeIcon icon={faTwitter} color="black" size="1x" fixedWidth/>
       case 'linkedin':
-        return <FontAwesomeIcon icon={faLinkedin} color="black" size="1x" />
+        return <FontAwesomeIcon icon={faLinkedin} color="black" size="1x" fixedWidth/>
       case 'github':
-        return <FontAwesomeIcon icon={faGithub} color="black" size="1x" />
+        return <FontAwesomeIcon icon={faGithub} color="black" size="1x" fixedWidth/>
       case 'hackernews':
-        return <FontAwesomeIcon icon={faHackerNews} color="black" size="1x" />
+        return <FontAwesomeIcon icon={faHackerNews} color="black" size="1x" fixedWidth/>
       case 'instagram':
-        return <FontAwesomeIcon icon={faInstagram} color="black" size="1x" />
+        return <FontAwesomeIcon icon={faInstagram} color="black" size="1x" fixedWidth />
       case 'facebook':
         return (
-          <FontAwesomeIcon icon={faFacebookSquare} color="black" size="1x" />
+          <FontAwesomeIcon icon={faFacebookSquare} color="black" size="1x" fixedWidth/>
         )
       default:
         return <>{account.service}</>
