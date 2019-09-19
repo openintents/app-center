@@ -84,7 +84,7 @@ class Publisher extends Component {
         return `https://instagram.com/${account.identifier}`
       case 'facebook':
         return `https://facebook.com/${account.identifier}`
-        default :
+      default:
         return `https://duckduckgo.com/?q=${account.identifier}`
     }
   }
@@ -126,44 +126,60 @@ class Publisher extends Component {
     }
   }
 
-  render() {
-    const { data } = this.props
-    console.log(data)
-    const accounts = social.map(socialService => {
-      return data.appPublishersJson.profile.account
-        .filter(a => a.service.toLowerCase() === socialService)
-        .map(a => {
+  renderSocialAccounts(data) {
+    if (data.appPublishersJson.profile.account) {
+      return social.map(socialService => {
+        return data.appPublishersJson.profile.account
+          .filter(a => a.service.toLowerCase() === socialService)
+          .map(a => {
+            return (
+              <a
+                key={a.service}
+                href={this.accountAsLink(a)}
+                rel="noopener noreferrer"
+                target="_blank"
+                style={{ margin: 4 }}
+              >
+                {this.accountAsText(a)}
+              </a>
+            )
+          })
+      })
+    } else {
+      return null
+    }
+  }
+
+  renderContactApps(data) {
+    if (data.appPublishersJson.profile.apps) {
+      return contactApps.map(app => {
+        const isUsingApp = data.appPublishersJson.profile.apps[app.key]
+        if (isUsingApp) {
           return (
             <a
-              key={a.service}
-              href={this.accountAsLink(a)}
+              key={app.key}
+              href={this.contactAsLink(app, data.appPublishersJson.username)}
               rel="noopener noreferrer"
               target="_blank"
               style={{ margin: 4 }}
             >
-              {this.accountAsText(a)}
+              {this.contactAsText(app)}
             </a>
           )
-        })
-    })
-    const contacts = contactApps.map(app => {
-      const isUsingApp = data.appPublishersJson.profile.apps[app.key]
-      if (isUsingApp) {
-        return (
-          <a
-            key={app.key}
-            href={this.contactAsLink(app, data.appPublishersJson.username)}
-            rel="noopener noreferrer"
-            target="_blank"
-            style={{ margin: 4 }}
-          >
-            {this.contactAsText(app)}
-          </a>
-        )
-      } else {
-        return null
-      }
-    })
+        } else {
+          return null
+        }
+      })
+    } else {
+      return null
+    }
+  }
+
+  render() {
+    const { data } = this.props
+    const accounts = this.renderSocialAccounts(data)
+    const contacts = this.renderContactApps(data)
+
     return (
       <Layout>
         <SEO
