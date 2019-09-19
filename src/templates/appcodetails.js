@@ -49,7 +49,7 @@ import Img from 'gatsby-image'
 import UserCommentDialog from '../components/userCommentDialog'
 import OwnerCommentDialog from '../components/ownerCommentDialog'
 import SEO from '../components/seo'
-import { SmallAppDetails } from '../components/app'
+import { SmallAppDetails, renderAuthors } from '../components/app'
 import { styles } from '../components/layout'
 import { SmallRating } from '../app/mycomments'
 import ClaimAppDialog from '../components/claimAppDialog'
@@ -627,6 +627,9 @@ class AppDetails extends Component {
               <Grid item xs={11} sm={7}>
                 <Typography variant="h3" align="center">
                   {data.apps.name}
+                </Typography>
+                <Typography variant="body1" align="center">
+                  {renderAuthors(data.apps)}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={4}>

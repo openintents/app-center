@@ -38,9 +38,10 @@ const MyApp = ({ data, hideRewards, removeApp }) => {
       )}
 
       <ListItemText
-        primary={<b>{data.name}</b>}
+        primary={<><b>{data.name}</b></>}
         secondary={SmallAppDetails({
           description: data.description,
+          authors: data.fields && data.fields.authors,
           lifetimeEarnings: data.lifetimeEarnings,
           lastCommit: data.fields && data.fields.lastCommit,
           openSourceUrl: data.openSourceUrl,

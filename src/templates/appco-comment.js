@@ -9,7 +9,7 @@ import { UserComment, PrivateUserComment } from '../components/model'
 import Img from 'gatsby-image'
 import UserCommentDialog from '../components/userCommentDialog'
 import SEO from '../components/seo'
-import { SmallAppDetails } from '../components/app'
+import { SmallAppDetails, renderAuthors } from '../components/app'
 import AppsIcon from '@material-ui/icons/Apps'
 import { styles } from '../components/layout'
 
@@ -122,6 +122,7 @@ class AppComment extends Component {
       ) : (
         <AppsIcon style={styles.smallIcon} />
       )
+    const authors = renderAuthors(data.apps)
     return (
       <Layout>
         <SEO
@@ -135,6 +136,7 @@ class AppComment extends Component {
             <Typography variant="h3" align="center">
               {data.apps.name}
             </Typography>
+            {authors}
           </Grid>
         </Grid>
 

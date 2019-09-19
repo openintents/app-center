@@ -160,7 +160,7 @@ class AllComments extends React.Component {
             {loading && (
               <Container>
                 <CircularProgress size={36} />
-                <Typography>Loading comments...</Typography>
+                <Typography>Loading reviews...</Typography>
               </Container>
             )}
             {!loading && (

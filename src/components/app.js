@@ -7,6 +7,7 @@ import {
   ListItemAvatar,
   IconButton,
   Typography,
+  Container,
 } from '@material-ui/core'
 import AppsIcon from '@material-ui/icons/Apps'
 import GetAppIcon from '@material-ui/icons/Launch'
@@ -69,7 +70,52 @@ export const SmallAppDetails = ({
   )
 }
 
+export function renderAuthors(data) {
+  if (data.fields && data.fields.authors) {
+    try {
+      const authors = JSON.parse(data.fields.authors)
+
+      if (authors.length === 0) {
+        return null
+      } else {
+        return authors.map(a => (
+          <>
+            <a key={a} href={`/u/${a}`}>
+              {a}
+            </a>{' '}
+          </>
+        ))
+      }
+    } catch (e) {
+      console.log('error', e)
+      return null
+    }
+  } else {
+    return null
+  }
+}
+
+export function renderAuthorsAsText(data) {
+  if (data.fields && data.fields.authors) {
+    try {
+      const authors = JSON.parse(data.fields.authors)
+
+      if (authors.length === 0) {
+        return null
+      } else {
+        return authors.map(a => <>{a} </>)
+      }
+    } catch (e) {
+      console.log('error', e)
+      return null
+    }
+  } else {
+    return null
+  }
+}
+
 const App = ({ data, hideRewards, showSourceLink }) => {
+  const authors = renderAuthorsAsText(data)
   return (
     <ListItem
       className={'appItem'}
@@ -84,7 +130,9 @@ const App = ({ data, hideRewards, showSourceLink }) => {
     >
       {data.localFile && data.localFile.childImageSharp && (
         <ListItemAvatar>
+          <Container style={{margin: "0px 4px"}}>
           <Img fixed={data.localFile.childImageSharp.fixed} />
+          </Container>
         </ListItemAvatar>
       )}
       {(!data.localFile || !data.localFile.childImageSharp) && (
@@ -94,7 +142,11 @@ const App = ({ data, hideRewards, showSourceLink }) => {
       )}
 
       <ListItemText
-        primary={<b>{data.name}</b>}
+        primary={
+          <>
+            <b>{data.name}</b> {authors}
+          </>
+        }
         secondary={SmallAppDetails({
           description: data.description,
           lifetimeEarnings: data.lifetimeEarnings,
@@ -127,6 +179,7 @@ export const query = graphql`
     openSourceUrl
     fields {
       lastCommit
+      authors
     }
     description
   }

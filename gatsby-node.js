@@ -2,6 +2,7 @@ const path = require('path')
 const fetch = require('node-fetch')
 const { createRemoteFileNode } = require(`gatsby-source-filesystem`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
+const appMetas = require('./src/data/app-meta-data')
 
 getLastCommit = openSourceUrl => {
   if (openSourceUrl.startsWith('https://github.com/')) {
@@ -204,6 +205,27 @@ exports.onCreateNode = async ({
         throw e
       }
     }
+
+    var appMeta
+    const appMetaList = appMetas.filter(m => m.id == node.id__normalized)
+    if (appMetaList.length > 0) {
+      appMeta = appMetaList[0]
+    }
+    if (appMeta) {
+      await createNodeField({
+        node,
+        name: 'manifestUrl',
+        value: appMeta.manifestUrl,
+        type: 'String',
+      })
+
+      await createNodeField({
+        node,
+        name: 'authors',
+        value: appMeta.authors,
+        type: 'String',
+      })
+    }
   } else if (node.internal.type === `MarkdownRemark`) {
     const value = createFilePath({ node, getNode })
     await createNodeField({
@@ -211,10 +233,40 @@ exports.onCreateNode = async ({
       node,
       value,
     })
+  } else if (node.internal.type === `AppPublishersJson`) {
+    if (
+      node.profile &&
+      node.profile.image &&
+      node.profile.image.length > 0 &&
+      node.profile.image[0].contentUrl.trim()
+    ) {
+      avatarUrl = node.profile.image[0].contentUrl
+      const fileNode = await createRemoteFileNode({
+        url: avatarUrl,
+        parentNodeId: node.id,
+        store,
+        cache,
+        createNode,
+        createNodeId,
+        auth: _auth,
+      })
+      if (fileNode) {
+        node.localFile___NODE = fileNode.id
+      }
+    } else {
+      await addDummyLocalFileNode(
+        node,
+        store,
+        cache,
+        createNode,
+        createNodeId,
+        _auth
+      )
+    }
   }
 }
 
-createPosts = (graphql, actions) => {
+createPosts = async (graphql, actions) => {
   const { createPage } = actions
 
   const blogPost = path.resolve(`./src/templates/blog-post.js`)
@@ -265,8 +317,25 @@ createPosts = (graphql, actions) => {
   })
 }
 
+async function createAppPublishers(graphql, actions) {
+  const { createPage } = actions
+  const publishers = require('./src/data/app-publishers.json')
+  Promise.all(
+    publishers.map(p => {
+      return createPage({
+        path: `/u/${p.username}/`,
+        component: require.resolve('./src/templates/publisher.js'),
+        context: {
+          apps: p.apps,
+          username: p.username,
+        },
+      })
+    })
+  )
+}
 exports.createPages = async ({ graphql, actions }) => {
-  createPosts(graphql, actions)
+  await createPosts(graphql, actions)
+  await createAppPublishers(graphql, actions)
 
   const { createPage } = actions
   const result = await graphql(`

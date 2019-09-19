@@ -320,13 +320,13 @@ class MyComments extends React.Component {
             {loading && (
               <Container style={{ margin: 40 }}>
                 <CircularProgress size={36} />
-                <Typography component="span"> Loading comments...</Typography>
+                <Typography component="span"> Loading reviews...</Typography>
               </Container>
             )}
             {!loading && (
               <Card style={{ margin: 4 }}>
                 <CardHeader
-                  title={<Typography variant="h5">Comments</Typography>}
+                  title={<Typography variant="h5">Reviews</Typography>}
                   avatar={<CommentIcon style={styles.smallIcon} />}
                 />
                 <CardContent>

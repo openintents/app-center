@@ -2,19 +2,19 @@
     "174": {
         "id": 174,
         "website": "https://stealthy.im",
-        "authDomain": "www.stealthy.im",
+        "authDomain": "https://www.stealthy.im/manifest.json",
         "verified": true
     },
     "216": {
         "id": 216,
         "website": "https://www.graphitedocs.com/",
-        "authDomain": "app.graphitedocs.com",
+        "authDomain": "https://app.graphitedocs.com/manifest.json",
         "verified": true
     },
     "239": {
         "id": 239,
         "website": "https://entaxy.io/",
-        "authDomain": "entaxy.io",
+        "authDomain": "https://entaxy.io/manifest.json",
         "verified": false
     },
     "245": {
