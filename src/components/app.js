@@ -54,7 +54,12 @@ export const SmallAppDetails = ({
         {showSourceLink && openSourceUrl && (
           <>
             <br />
-            <a href={openSourceUrl} style={styles.link}>
+            <a
+              href={openSourceUrl}
+              style={styles.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Source code
             </a>
           </>
@@ -70,52 +75,38 @@ export const SmallAppDetails = ({
   )
 }
 
-export function renderAuthors(data) {
-  if (data.fields && data.fields.authors) {
-    try {
-      const authors = JSON.parse(data.fields.authors)
-
-      if (authors.length === 0) {
-        return null
-      } else {
-        return authors.map(a => (
-          <>
-            <a key={a} href={`/u/${a}`}>
-              {a}
-            </a>{' '}
-          </>
-        ))
-      }
-    } catch (e) {
-      console.log('error', e)
-      return null
-    }
+export function renderAuthors(allAuthors) {
+  if (allAuthors) {
+    return allAuthors.edges.map(e => {
+      return (
+        <React.Fragment key={e.node.username}>
+          <a href={`/u/${e.node.username}`}>{e.node.profile.name}</a>{' '}
+        </React.Fragment>
+      )
+    })
   } else {
     return null
   }
 }
 
-export function renderAuthorsAsText(data) {
-  if (data.fields && data.fields.authors) {
-    try {
-      const authors = JSON.parse(data.fields.authors)
-
-      if (authors.length === 0) {
-        return null
-      } else {
-        return authors.map(a => <>{a} </>)
-      }
-    } catch (e) {
-      console.log('error', e)
-      return null
-    }
+export function renderAuthorsInList(allAuthors, appcoid) {
+  if (allAuthors) {
+    return allAuthors.edges
+      .filter(e => e.node.apps.indexOf(appcoid) >= 0)
+      .map(e => {
+        return (
+          <React.Fragment key={e.node.username}>
+            {e.node.profile.name}{' '}
+          </React.Fragment>
+        )
+      })
   } else {
     return null
   }
 }
 
-const App = ({ data, hideRewards, showSourceLink }) => {
-  const authors = renderAuthorsAsText(data)
+const App = ({ data, hideRewards, showSourceLink, allAuthors }) => {
+  const authors = renderAuthorsInList(allAuthors, data.appcoid)
   return (
     <ListItem
       className={'appItem'}
@@ -130,8 +121,8 @@ const App = ({ data, hideRewards, showSourceLink }) => {
     >
       {data.localFile && data.localFile.childImageSharp && (
         <ListItemAvatar>
-          <Container style={{margin: "0px 4px"}}>
-          <Img fixed={data.localFile.childImageSharp.fixed} />
+          <Container style={{ margin: '0px 4px' }}>
+            <Img fixed={data.localFile.childImageSharp.fixed} />
           </Container>
         </ListItemAvatar>
       )}
@@ -144,7 +135,10 @@ const App = ({ data, hideRewards, showSourceLink }) => {
       <ListItemText
         primary={
           <>
-            <b>{data.name}</b> {authors}
+            <b>{data.name}</b>{' '}
+            <Typography component="span" variant="body2">
+              <em>{authors}</em>
+            </Typography>
           </>
         }
         secondary={SmallAppDetails({

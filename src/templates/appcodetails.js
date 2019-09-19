@@ -629,7 +629,7 @@ class AppDetails extends Component {
                   {data.apps.name}
                 </Typography>
                 <Typography variant="body1" align="center">
-                  {renderAuthors(data.apps)}
+                  {renderAuthors(data.allAuthors)}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -855,6 +855,16 @@ export const query = graphql`
     apps(id__normalized: { eq: $appcoid }) {
       ...AppInformation
       ...AppBigIcon
+    }
+    allAuthors:allAppPublishersJson(filter:{apps:{eq: $appcoid } }) {
+      edges {
+        node {
+          username
+          profile {
+            name
+          }
+        }
+      }
     }
     dec2018: allAppminingresultsXlsxDecember2018(
       filter: { Final_Score: { ne: null } }

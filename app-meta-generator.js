@@ -4,15 +4,34 @@ const blockstack = require('blockstack')
 
 var appPublishers = [
   { username: 'jehunter5811.id', apps: [216, 1748, 1538, 934] },
+  { username: 'antonio.id', apps: [1087] },
+  { username: 'kkomaz.id', apps: [955] },
+  { username: 'markmhendrickson.id', apps: [1041] },
+  { username: 'mabdou.id', apps: [1318] },
+  { username: 'dmail.id', apps: [1318] },
+  { username: 'kartikspringrole.id.blockstack', apps: [176] },
+  { username: 'tautvilas.id.blockstack', apps: [865] },
+  { username: 'w3bwizart.id.blockstack', apps: [1832] },
+  { username: 'marcojrfurtado.id.blockstack', apps: [1529] },
 ]
 
 async function fetchProfile(p) {
-  return blockstack.lookupProfile(p.username).then(profile => {
-    return {
-      ...p,
-      profile,
-    }
-  })
+  return blockstack
+    .lookupProfile(p.username)
+    .then(profile => {
+      return {
+        ...p,
+        profile,
+      }
+    })
+    .catch(e => {
+      return {
+        ...p,
+        profile: {
+          name: p.username,
+        },
+      }
+    })
 }
 
 async function fetchManifest(manifestUrl) {

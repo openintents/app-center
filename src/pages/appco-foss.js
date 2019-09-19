@@ -31,6 +31,18 @@ export const query = graphql`
         }
       }
     }
+    allAuthors: allAppPublishersJson {
+      edges {
+        node {
+          username
+          profile {
+            name
+          }
+          apps
+        }
+      }
+    }
+
   }
 `
 

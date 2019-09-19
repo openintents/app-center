@@ -178,7 +178,11 @@ export default function PrimaryAppBar({
               <Search
                 searchIndex={siteSearchIndex.index}
                 suggestionSelectedCallback={suggestion => {
-                  navigate('/appco/' + suggestion.appcoid)
+                  if (suggestion.category === "App Publisher") {
+                    navigate('/u/' + suggestion.username)
+                  } else {
+                    navigate('/appco/' + suggestion.appcoid)
+                  }
                 }}
               />
             </div>

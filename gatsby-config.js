@@ -129,11 +129,23 @@ module.exports = {
             description: node => node.description,
             appcoid: node => node.id__normalized,
           },
-          blogPost: {
+          markdownRemark: {
             name: node => node.frontmatter.title,
             category: () => 'Blog',
             description: node => node.excerpt,
             appcoid: () => -1,
+          },
+          appPublishersJson: {
+            name: node => node.profile.name || node.username,
+            category: () => 'App Publisher',
+            description: node => node.profile.description,
+            appcoid: () => {
+              if (node.apps && node.apps.length > 0) {
+                return node.apps[0]
+              } else {
+                return -1
+              }
+            },
           },
         },
       },

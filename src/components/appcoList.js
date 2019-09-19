@@ -26,7 +26,7 @@ const AppCoList = ({ title, showSourceLink }) => ({ data }) => {
       </List>
       <List>
         {data.allApps.edges.map(function(d, idx) {
-          return <App key={idx} data={d.node} showSourceLink={showSourceLink} />
+          return <App key={idx} data={d.node} showSourceLink={showSourceLink} allAuthors={data.allAuthors}/>
         })}
       </List>
     </Layout>

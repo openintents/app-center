@@ -22,7 +22,7 @@ import AddIcon from '@material-ui/icons/AddCircle'
 import MyApp from '../../components/myApp'
 import { styles } from '../../components/layout'
 import Search from '../../components/search'
-import { loadMyData, saveMyData, getAuthorsFromManifest } from '../services/blockstack'
+import { loadMyData, saveMyData } from '../services/blockstack'
 
 const AddDialog = ({ show, searchIndex, claimApp, working }) => {
   return (

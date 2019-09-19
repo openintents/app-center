@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
 import { graphql } from 'gatsby'
 import Layout from '../components/layout'
-import Grid from '@material-ui/core/Grid'
 import { getUser, checkIsSignedIn } from '../app/services/blockstack'
-import { Container, Typography, List, Card } from '@material-ui/core'
+import {
+  Container,
+  List,
+  Card,
+  CardHeader,
+  CardContent,
+} from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faTwitter,
@@ -79,23 +84,27 @@ class Publisher extends Component {
         return `https://instagram.com/${account.identifier}`
       case 'facebook':
         return `https://facebook.com/${account.identifier}`
+        default :
+        return `https://duckduckgo.com/?q=${account.identifier}`
     }
   }
 
   accountAsText(account) {
     switch (account.service.toLowerCase()) {
       case 'twitter':
-        return <FontAwesomeIcon icon={faTwitter} color="black" />
+        return <FontAwesomeIcon icon={faTwitter} color="black" size="1x" />
       case 'linkedin':
-        return <FontAwesomeIcon icon={faLinkedin} color="black" />
+        return <FontAwesomeIcon icon={faLinkedin} color="black" size="1x" />
       case 'github':
-        return <FontAwesomeIcon icon={faGithub} color="black" />
+        return <FontAwesomeIcon icon={faGithub} color="black" size="1x" />
       case 'hackernews':
-        return <FontAwesomeIcon icon={faHackerNews} color="black" />
+        return <FontAwesomeIcon icon={faHackerNews} color="black" size="1x" />
       case 'instagram':
-        return <FontAwesomeIcon icon={faInstagram} color="black" />
+        return <FontAwesomeIcon icon={faInstagram} color="black" size="1x" />
       case 'facebook':
-        return <FontAwesomeIcon icon={faFacebookSquare} color="black" />
+        return (
+          <FontAwesomeIcon icon={faFacebookSquare} color="black" size="1x" />
+        )
       default:
         return <>{account.service}</>
     }
@@ -165,27 +174,19 @@ class Publisher extends Component {
 
         <Container>
           <Card style={{ margin: 4 }}>
-            <Grid container>
-              <Grid item xs={12} sm={4}>
-                <Container style={{ margin: 4 }}>
-                  <Img
-                    style={{ borderRadius: '50%' }}
-                    fixed={
-                      data.appPublishersJson.localFile.childImageSharp.fixed
-                    }
-                  />
-                </Container>
-              </Grid>
-              <Grid item xs={12} sm={8}>
-                <Typography variant="h3">
-                  {data.appPublishersJson.profile.name}
-                </Typography>
-                <Typography variant="h6">
-                  {data.appPublishersJson.username}
-                </Typography>
-                {contacts} {accounts}
-              </Grid>
-            </Grid>
+            <CardHeader
+              avatar={
+                <Img
+                  style={{ borderRadius: '50%' }}
+                  fixed={data.appPublishersJson.localFile.childImageSharp.fixed}
+                />
+              }
+              title={data.appPublishersJson.profile.name}
+              subheader={data.appPublishersJson.username}
+            />
+            <CardContent>
+              {contacts} {accounts}
+            </CardContent>
           </Card>
           <List>
             {data.allApps.edges.map(e => {

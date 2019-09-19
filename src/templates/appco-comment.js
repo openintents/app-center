@@ -122,7 +122,7 @@ class AppComment extends Component {
       ) : (
         <AppsIcon style={styles.smallIcon} />
       )
-    const authors = renderAuthors(data.apps)
+    const authors = renderAuthors(data.allAuthors)
     return (
       <Layout>
         <SEO
@@ -178,6 +178,17 @@ export const query = graphql`
       ...AppInformation
       ...AppBigIcon
     }
+    allAuthors:allAppPublishersJson(filter:{apps:{eq: $appcoid } }) {
+      edges {
+        node {
+          username
+          profile {
+            name
+          }
+        }
+      }
+    }
+
   }
 `
 
