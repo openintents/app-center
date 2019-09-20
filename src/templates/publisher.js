@@ -9,8 +9,8 @@ import {
   CardHeader,
   CardContent,
 } from '@material-ui/core'
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import { config as faConfig} from "@fortawesome/fontawesome-svg-core";
+import '@fortawesome/fontawesome-svg-core/styles.css'
+import { config as faConfig } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faTwitter,
@@ -27,7 +27,7 @@ import App from '../components/app'
 import AppIcon from '../components/appIcon'
 import { APP_CENTER_URL } from '../components/constants'
 
-faConfig.autoAddCss = false;
+faConfig.autoAddCss = false
 
 const social = [
   'twitter',
@@ -107,18 +107,53 @@ class Publisher extends Component {
   accountAsText(account) {
     switch (account.service.toLowerCase()) {
       case 'twitter':
-        return <FontAwesomeIcon icon={faTwitter} color="black" size="1x" fixedWidth/>
+        return (
+          <FontAwesomeIcon
+            icon={faTwitter}
+            color="black"
+            size="1x"
+            fixedWidth
+          />
+        )
       case 'linkedin':
-        return <FontAwesomeIcon icon={faLinkedin} color="black" size="1x" fixedWidth/>
+        return (
+          <FontAwesomeIcon
+            icon={faLinkedin}
+            color="black"
+            size="1x"
+            fixedWidth
+          />
+        )
       case 'github':
-        return <FontAwesomeIcon icon={faGithub} color="black" size="1x" fixedWidth/>
+        return (
+          <FontAwesomeIcon icon={faGithub} color="black" size="1x" fixedWidth />
+        )
       case 'hackernews':
-        return <FontAwesomeIcon icon={faHackerNews} color="black" size="1x" fixedWidth/>
+        return (
+          <FontAwesomeIcon
+            icon={faHackerNews}
+            color="black"
+            size="1x"
+            fixedWidth
+          />
+        )
       case 'instagram':
-        return <FontAwesomeIcon icon={faInstagram} color="black" size="1x" fixedWidth />
+        return (
+          <FontAwesomeIcon
+            icon={faInstagram}
+            color="black"
+            size="1x"
+            fixedWidth
+          />
+        )
       case 'facebook':
         return (
-          <FontAwesomeIcon icon={faFacebookSquare} color="black" size="1x" fixedWidth/>
+          <FontAwesomeIcon
+            icon={faFacebookSquare}
+            color="black"
+            size="1x"
+            fixedWidth
+          />
         )
       default:
         return <>{account.service}</>
@@ -195,11 +230,14 @@ class Publisher extends Component {
     const contacts = this.renderContactApps(data)
 
     const ogImage =
-      data.appPublishersJson.localFile && data.appPublishersJson.localFile.childImageSharp
-        ? {
-            name: `og:image`,
-            content: `${APP_CENTER_URL}/${data.appPublishersJson.localFile.childImageSharp.fixed.src}`,
-          }
+      data.appPublishersJson.localFile &&
+      data.appPublishersJson.localFile.childImageSharp
+        ? [
+            {
+              property: 'og:image',
+              content: `${APP_CENTER_URL}/${data.appPublishersJson.localFile.childImageSharp.fixed.src}`,
+            },
+          ]
         : null
 
     return (
@@ -208,7 +246,7 @@ class Publisher extends Component {
           title={`${data.appPublishersJson.username} | Blockstack Developer`}
           description={`${data.appPublishersJson.profile.name}'s Profile`}
           keywords={['developer', 'application', 'blockstack']}
-          meta={[{ ogImage }]}
+          meta={meta}
         />
 
         <Container>
@@ -272,7 +310,9 @@ export const query = graphql`
         }
       }
     }
-    contactApps: allApps(filter: { id__normalized: { in: [924, 1318, 174, 955, 1754] } }) {
+    contactApps: allApps(
+      filter: { id__normalized: { in: [924, 1318, 174, 955, 1754] } }
+    ) {
       edges {
         node {
           appcoid: id__normalized

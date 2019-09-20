@@ -280,9 +280,11 @@ class AppDetails extends Component {
       if (isSignedIn) {
         const { data } = this.props
         const user = getUser()
-        const userAuthors = data.allAuthors.edges.filter(e => e.node.username === user.username)
+        const userAuthors = data.allAuthors.edges.filter(
+          e => e.node.username === user.username
+        )
         if (userAuthors && userAuthors.length > 0) {
-          this.setState({canClaim:true})
+          this.setState({ canClaim: true })
         }
         loadMyData().then(content => {
           const isClaimedApp =
@@ -608,12 +610,14 @@ class AppDetails extends Component {
       ) : (
         <AppsIcon style={styles.bigIcon} />
       )
-    const ogImage =
+    const meta =
       data.apps.localFile && data.apps.localFile.childImageSharp
-        ? {
-            name: `og:image`,
-            content: `${APP_CENTER_URL}/${data.apps.localFile.childImageSharp.fixed.src}`,
-          }
+        ? [
+            {
+              name: 'og:image',
+              content: `${APP_CENTER_URL}/${data.apps.localFile.childImageSharp.fixed.src}`,
+            },
+          ]
         : null
 
     return (
@@ -622,7 +626,7 @@ class AppDetails extends Component {
           title={data.apps.name}
           description={data.apps.description}
           keywords={[data.apps.name, `application`, `blockstack`]}
-          meta={[{ ogImage }]}
+          meta={meta}
         />
         <Card style={{ margin: 4, marginTop: 40 }}>
           <CardContent>
@@ -862,7 +866,7 @@ export const query = graphql`
       ...AppInformation
       ...AppBigIcon
     }
-    allAuthors:allAppPublishersJson(filter:{apps:{eq: $appcoid } }) {
+    allAuthors: allAppPublishersJson(filter: { apps: { eq: $appcoid } }) {
       edges {
         node {
           username

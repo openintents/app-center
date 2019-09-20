@@ -19,15 +19,15 @@ function SEO({ description, lang, meta, keywords, title }) {
           content: metaDescription,
         },
         {
-          name: `og:title`,
+          property: 'og:title',
           content: title,
         },
         {
-          name: `og:description`,
+          property: `og:description`,
           content: metaDescription,
         },
         {
-          name: `og:type`,
+          property: `og:type`,
           content: `website`,
         },
         {

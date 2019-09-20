@@ -17,7 +17,7 @@ class BlogPostTemplate extends React.Component {
           description={post.excerpt}
           meta={[
             {
-              name: `og:image`,
+              property: 'og:image',
               content: image,
             },
           ]}

@@ -128,7 +128,7 @@ const Terms = ({ data }) => (
       keywords={[`app center`, `application`, `blockstack`]}
       meta={[
         {
-          name: `og:image`,
+          property: 'og:image',
           content: `${APP_CENTER_URL}/${data.ogImage.childImageSharp.fluid.src}`,
         },
       ]}
