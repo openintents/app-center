@@ -25,6 +25,7 @@ import Img from 'gatsby-image'
 import SEO from '../components/seo'
 import App from '../components/app'
 import AppIcon from '../components/appIcon'
+import { APP_CENTER_URL } from '../components/constants'
 
 faConfig.autoAddCss = false;
 
