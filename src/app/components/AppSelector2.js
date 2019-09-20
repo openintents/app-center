@@ -24,7 +24,7 @@ import { styles } from '../../components/layout'
 import Search from '../../components/search'
 import { loadMyData, saveMyData } from '../services/blockstack'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faQuestion, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 
 const AddDialog = ({
   show,

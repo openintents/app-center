@@ -17,6 +17,7 @@ export const query = graphql`
             "https://github.com/blackholeorganization"
             "https://github.com/danparamov/mila-crm"
             "https://github.com/KevinNTH"
+            "https://gitlab.com/trovenow"
           ]
         }
         miningReady: { eq: true }

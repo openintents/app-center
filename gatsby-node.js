@@ -44,6 +44,10 @@ getLastCommit = openSourceUrl => {
       projectId = 5538365
     } else if (openSourceUrl.startsWith('https://gitlab.com/friedger/app')) {
       projectId = 12323770
+    } else if (openSourceUrl.startsWith('https://gitlab.com/riot.ai/landho')) {
+      projectId = 13579531
+    } else if (openSourceUrl.startsWith('https://gitlab.com/CodeDarkin/aroundtheblock')) {
+      projectId = 13870632
     } else {
       projectId = 0
     }
@@ -68,6 +72,25 @@ getLastCommit = openSourceUrl => {
         )
     } else {
       return Promise.resolve('Unsupported gitlab repo')
+    }
+  } else if (openSourceUrl.startsWith('https://bitbucket.org/')) {
+    const parts = openSourceUrl.substr(22).split('/')
+    if (parts.length == 2) {
+      const username = parts[0]
+      const repoSlug = parts[1]
+      fetch(
+        `https://api.bitbucket.org/2.0/repositories/${username}/${repoSlug}/commits`
+      )
+        .then((r = r.json()))
+        .then(response => {
+          if (response && response.length > 0) {
+            return response[0].date
+          } else {
+            return 'No commits found - ' + response.message
+          }
+        })
+    } else {
+      return Promise.resolve('Invalid bitbucket repo')
     }
   } else {
     return Promise.resolve('Unsupported source repo')

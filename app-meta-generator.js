@@ -15,7 +15,9 @@ var appPublishers = [
   { username: 'marcojrfurtado.id.blockstack', apps: [1529] },
   { username: 'wilsonbright.id.blockstack', apps: [1571] },
   //{ username: 'viraj', apps:[1569, 1707, 1839, 1846, 1870, 1893]},
-  {username: 'benedicteraae.id.blockstack', apps:[1858]},
+  { username: 'benedicteraae.id.blockstack', apps: [1858] },
+  { username: 'kevinnth.id.blockstack', apps: [1459] },
+  { username: 'codedarkin.id.blockstack', apps: [1869] },
 ]
 
 async function fetchProfile(p) {
@@ -143,12 +145,13 @@ async function getAppMeta(app) {
     authors = await Promise.all(
       manifestData.manifest.did_authors.map(async a => {
         var address
-        if (a.startsWith('did:stack:')) {          
-          address = await nofetch(`https://core.blockstack.org/v1/dids/${a}`).then(r => r.json())
-          .then(response =>  {
-            const publicKey = response.public_key
-            return blockstack.publicKeyToAddress(publicKey)
-          })
+        if (a.startsWith('did:stack:')) {
+          address = await nofetch(`https://core.blockstack.org/v1/dids/${a}`)
+            .then(r => r.json())
+            .then(response => {
+              const publicKey = response.public_key
+              return blockstack.publicKeyToAddress(publicKey)
+            })
         } else if (a.startsWith('did:btc-addr:')) {
           address = a.substr(13)
         } else {
@@ -187,34 +190,51 @@ async function getAppMeta(app) {
 }
 
 console.log('start')
-// const response = await fetch("https://api.app.co/api/app-mining-apps")
-// const apps = repsonse.json()
-const appcoData = require('./appco.json')
 
-Promise.all(
-  appcoData.apps.map(async app => {
-    return getAppMeta(app)
+// use live data
+const appcoDataPromise = fetch('https://api.app.co/api/app-mining-apps')
+  .then(r => r.json())
+  .then(response => {
+    fs.writeFile(
+      'appco.json',
+      JSON.stringify(response),
+      err => {
+        console.log(err)
+      }
+    )
+    return response
   })
-).then(metaData => {
-  console.log(metaData)
-  mergeAppPublishers().then(publishers => {
-    fs.writeFile(
-      'src/data/app-publishers.json',
-      JSON.stringify(publishers),
-      err => {
-        console.log(err)
-      }
-    )
 
-    metaData = updateMetaData(metaData, publishers)
+// use cached data
+//const appcoData = require('./appco.json')
+//const appcoDataPromise = Promise.resolve(appcoData)
 
-    fs.writeFile(
-      'src/data/app-meta-data.json',
-      JSON.stringify(metaData),
-      err => {
-        console.log(err)
-      }
-    )
+appcoDataPromise.then(appcoData => {
+  Promise.all(
+    appcoData.apps.map(async app => {
+      return getAppMeta(app)
+    })
+  ).then(metaData => {
+    console.log(metaData)
+    mergeAppPublishers().then(publishers => {
+      fs.writeFile(
+        'src/data/app-publishers.json',
+        JSON.stringify(publishers),
+        err => {
+          console.log(err)
+        }
+      )
+
+      metaData = updateMetaData(metaData, publishers)
+
+      fs.writeFile(
+        'src/data/app-meta-data.json',
+        JSON.stringify(metaData),
+        err => {
+          console.log(err)
+        }
+      )
+    })
   })
 })
 
