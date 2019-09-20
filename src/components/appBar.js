@@ -184,6 +184,7 @@ export default function PrimaryAppBar({
                     navigate('/appco/' + suggestion.appcoid)
                   }
                 }}
+                suggestionValueChangedCallback={() => {}}
               />
             </div>
           )}

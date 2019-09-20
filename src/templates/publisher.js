@@ -53,6 +53,16 @@ const contactApps = [
     appcoid: 174,
     url: 'https://www.stealthy.im',
   },
+  {
+    key: 'https___debutapp_social',
+    appcoid: 955,
+    url: 'https://debutapp.social/%USERNAME%',
+  },
+  {
+    key: 'https___app_gitix_org',
+    appcoid: 1754,
+    url: 'https://app.gitix.org/#/u/%USERNAME%',
+  },
 ]
 
 class Publisher extends Component {
@@ -123,7 +133,6 @@ class Publisher extends Component {
       edge => edge.node.appcoid === app.appcoid
     )
     if (contactApp && contactApp.length > 0) {
-      console.log(contactApp)
       return <AppIcon app={contactApp[0]} />
     } else {
       return <AppIcon />
@@ -184,12 +193,21 @@ class Publisher extends Component {
     const accounts = this.renderSocialAccounts(data)
     const contacts = this.renderContactApps(data)
 
+    const ogImage =
+      data.appPublishersJson.localFile && data.appPublishersJson.localFile.childImageSharp
+        ? {
+            name: `og:image`,
+            content: `${APP_CENTER_URL}/${data.appPublishersJson.localFile.childImageSharp.fixed.src}`,
+          }
+        : null
+
     return (
       <Layout>
         <SEO
           title={`${data.appPublishersJson.username} | Blockstack Developer`}
           description={`${data.appPublishersJson.profile.name}'s Profile`}
           keywords={['developer', 'application', 'blockstack']}
+          meta={[{ ogImage }]}
         />
 
         <Container>
@@ -241,6 +259,8 @@ export const query = graphql`
           https___chat_openintents_org
           https___app_dmail_online
           https___www_stealthy_im
+          https___debutapp_social
+          https___app_gitix_org
         }
       }
       localFile {
@@ -251,7 +271,7 @@ export const query = graphql`
         }
       }
     }
-    contactApps: allApps(filter: { id__normalized: { in: [924, 1318, 174] } }) {
+    contactApps: allApps(filter: { id__normalized: { in: [924, 1318, 174, 955, 1754] } }) {
       edges {
         node {
           appcoid: id__normalized

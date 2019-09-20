@@ -1,5 +1,10 @@
 import React from 'react'
-import { saveMyData, loadMyData } from './services/blockstack'
+import {
+  saveMyData,
+  loadMyData,
+  checkIsSignedIn,
+  getUser,
+} from './services/blockstack'
 import AppSelector2 from './components/AppSelector2'
 import { Typography, Container, CircularProgress } from '@material-ui/core'
 
@@ -7,9 +12,16 @@ class MyApps extends React.Component {
   state = {
     myApps: {},
     loading: true,
+    username: null,
   }
 
   componentDidMount() {
+    checkIsSignedIn().then(isSignedIn => {
+      if (isSignedIn) {
+        const user = getUser()
+        this.setState({ username: user.username })
+      }
+    })
     loadMyData().then(content => {
       this.setState({ myApps: content.myApps || {}, loading: false })
     })
@@ -20,7 +32,7 @@ class MyApps extends React.Component {
   }
 
   render() {
-    const { myApps, loading } = this.state
+    const { myApps, loading, username } = this.state
 
     return (
       <>
@@ -33,6 +45,7 @@ class MyApps extends React.Component {
         {!loading && (
           <AppSelector2
             myApps={myApps}
+            username={username}
             onSubmitApps={values => this.saveMyApps(values)}
           />
         )}

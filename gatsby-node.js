@@ -73,7 +73,28 @@ getLastCommit = openSourceUrl => {
     return Promise.resolve('Unsupported source repo')
   }
 }
+
 async function addDummyLocalFileNode(
+  node,
+  store,
+  cache,
+  createNode,
+  createNodeId,
+  _auth
+) {
+  await addLocalFileNodeByUrl(
+    'https://assets.gitlab-static.net/uploads/-/system/project/avatar/12323770/icon.png',
+    node,
+    store,
+    cache,
+    createNode,
+    createNodeId,
+    _auth
+  )
+}
+
+async function addLocalFileNodeByUrl(
+  url,
   node,
   store,
   cache,
@@ -83,8 +104,7 @@ async function addDummyLocalFileNode(
 ) {
   try {
     const fileNode = await createRemoteFileNode({
-      url:
-        'https://assets.gitlab-static.net/uploads/-/system/project/avatar/12323770/icon.png',
+      url: url,
       parentNodeId: node.id,
       store,
       cache,
@@ -95,7 +115,7 @@ async function addDummyLocalFileNode(
     if (fileNode) {
       node.localFile___NODE = fileNode.id
     } else {
-      console.log(`no dummy node for app ${node.id}`)
+      console.log(`no local file for app ${node.id} and url ${url}`)
     }
   } catch (e) {
     console.log(e)
@@ -112,18 +132,15 @@ async function addLocalFileNode(
   _auth
 ) {
   if (node[imagePropertyName] && node[imagePropertyName].trim()) {
-    const fileNode = await createRemoteFileNode({
-      url: node[imagePropertyName].trim(),
-      parentNodeId: node.id,
+    await addLocalFileNodeByUrl(
+      node[imagePropertyName].trim(),
+      node,
       store,
       cache,
       createNode,
       createNodeId,
-      auth: _auth,
-    })
-    if (fileNode) {
-      node.localFile___NODE = fileNode.id
-    }
+      _auth
+    )
   }
 }
 
@@ -138,7 +155,17 @@ exports.onCreateNode = async ({
 }) => {
   const { createNodeField, createNode } = actions
   if (node.internal.type === `apps`) {
-    if (node.id__normalized !== 1555) {
+    if (node.id__normalized === 924) {
+      await addLocalFileNodeByUrl(
+        'https://chat.openintents.org/vector-icons/android-chrome-512x512.png',
+        node,
+        store,
+        cache,
+        createNode,
+        createNodeId,
+        _auth
+      )
+    } else if (node.id__normalized !== 1555) {
       // wrong image format
       try {
         await addLocalFileNode(
@@ -207,7 +234,7 @@ exports.onCreateNode = async ({
     }
 
     var appMeta
-    const appMetaList = appMetas.filter(m => m.id == node.id__normalized)
+    const appMetaList = appMetas.filter(m => m.id === node.id__normalized)
     if (appMetaList.length > 0) {
       appMeta = appMetaList[0]
     }
@@ -222,7 +249,7 @@ exports.onCreateNode = async ({
       await createNodeField({
         node,
         name: 'authors',
-        value: appMeta.authors,
+        value: JSON.stringify(appMeta.authors),
         type: 'String',
       })
     }

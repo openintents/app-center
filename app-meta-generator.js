@@ -14,6 +14,8 @@ var appPublishers = [
   { username: 'w3bwizart.id.blockstack', apps: [1832] },
   { username: 'marcojrfurtado.id.blockstack', apps: [1529] },
   { username: 'wilsonbright.id.blockstack', apps: [1571] },
+  //{ username: 'viraj', apps:[1569, 1707, 1839, 1846, 1870, 1893]},
+  {username: 'benedicteraae.id.blockstack', apps:[1858]},
 ]
 
 async function fetchProfile(p) {
@@ -78,16 +80,16 @@ async function findManifestData(domain) {
   return manifestData
 }
 
-async function getAppMeta(node) {
-  if (!node.website.startsWith('https://')) {
+async function getAppMeta(app) {
+  if (!app.website.startsWith('https://')) {
     return {
-      id: node.id,
-      authors: '[]',
+      id: app.id,
+      authors: [],
       manifestUrl: '',
     }
   }
 
-  var domain = node.website.trim()
+  var domain = app.website.trim()
 
   if (domain == 'https://sarchy.co/TrustingTrust/pc/index.html') {
     domain = 'https://sarchy.co/'
@@ -133,7 +135,7 @@ async function getAppMeta(node) {
 
   var authors = []
   if (!manifestData.manifestUrl) {
-    console.log('*** no manifest found for ' + node.website)
+    console.log('*** no manifest found for ' + app.website)
   } else if (
     manifestData.manifest &&
     Array.isArray(manifestData.manifest.did_authors)
@@ -141,13 +143,17 @@ async function getAppMeta(node) {
     authors = await Promise.all(
       manifestData.manifest.did_authors.map(async a => {
         var address
-        if (a.startsWith('did:stack:')) {
-          address = a.substr(13, 34)
+        if (a.startsWith('did:stack:')) {          
+          address = await nofetch(`https://core.blockstack.org/v1/dids/${a}`).then(r => r.json())
+          .then(response =>  {
+            const publicKey = response.public_key
+            return blockstack.publicKeyToAddress(publicKey)
+          })
         } else if (a.startsWith('did:btc-addr:')) {
           address = a.substr(13)
         } else {
           if (a.indexOf('.') > 0) {
-            addPublisher(a, node.id)
+            addPublisher(a, app.id)
           }
           return Promise.resolve(a)
         }
@@ -159,7 +165,7 @@ async function getAppMeta(node) {
           .then(async response => {
             if (Array.isArray(response.names)) {
               response.names.forEach(async n => {
-                addPublisher(n, node.id)
+                addPublisher(n, app.id)
               })
             }
             if (response.names && response.names.length > 0) {
@@ -174,8 +180,8 @@ async function getAppMeta(node) {
   }
 
   return {
-    id: node.id,
-    authors: JSON.stringify(authors),
+    id: app.id,
+    authors: authors,
     manifestUrl: manifestData.manifestUrl || '',
   }
 }
@@ -199,6 +205,9 @@ Promise.all(
         console.log(err)
       }
     )
+
+    metaData = updateMetaData(metaData, publishers)
+
     fs.writeFile(
       'src/data/app-meta-data.json',
       JSON.stringify(metaData),
@@ -229,4 +238,13 @@ async function mergeAppPublishers() {
       return fetchProfile(publisher)
     })
   )
+}
+
+function updateMetaData(metaData, publishers) {
+  metaData.forEach(m => {
+    m.authors = m.authors.concat(
+      publishers.filter(p => p.apps.indexOf(m.id) >= 0).map(p => p.username)
+    )
+  })
+  return metaData
 }

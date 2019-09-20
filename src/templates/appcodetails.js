@@ -279,6 +279,11 @@ class AppDetails extends Component {
     checkIsSignedIn().then(isSignedIn => {
       if (isSignedIn) {
         const { data } = this.props
+        const user = getUser()
+        const userAuthors = data.allAuthors.edges.filter(e => e.node.username === user.username)
+        if (userAuthors && userAuthors.length > 0) {
+          this.setState({canClaim:true})
+        }
         loadMyData().then(content => {
           const isClaimedApp =
             content.myApps &&
@@ -566,6 +571,7 @@ class AppDetails extends Component {
         <Button
           color="secondary"
           disabled={isClaimingApp}
+          hidden={!canClaim}
           onClick={() => {
             this.showClaimAppDialog(true)
           }}

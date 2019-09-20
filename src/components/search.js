@@ -181,6 +181,7 @@ class Search extends Component {
     this.setState({
       query: newValue,
     })
+    this.props.suggestionValueChangedCallback()
   }
 
   getOrCreateIndex = () =>
@@ -206,6 +207,7 @@ class Search extends Component {
 Search.propTypes = {
   classes: PropTypes.object.isRequired,
   suggestionSelectedCallback: PropTypes.func.isRequired,
+  suggestionValueChangedCallback: PropTypes.func.isRequired,
 }
 
 export default withStyles(searchStyles)(Search)
