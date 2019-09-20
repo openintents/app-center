@@ -81,7 +81,7 @@ getLastCommit = openSourceUrl => {
       fetch(
         `https://api.bitbucket.org/2.0/repositories/${username}/${repoSlug}/commits`
       )
-        .then((r = r.json()))
+        .then(r => r.json())
         .then(response => {
           if (response && response.length > 0) {
             return response[0].date
