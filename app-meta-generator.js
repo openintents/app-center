@@ -18,6 +18,8 @@ var appPublishers = [
   { username: 'benedicteraae.id.blockstack', apps: [1858] },
   { username: 'kevinnth.id.blockstack', apps: [1459] },
   { username: 'codedarkin.id.blockstack', apps: [1869] },
+  { username: 'alexsopinka.id.blockstack', apps: [1464] },
+  { username: 'stealthy.id', apps: [174, 1445] },
 ]
 
 async function fetchProfile(p) {
@@ -195,13 +197,9 @@ console.log('start')
 const appcoDataPromise = fetch('https://api.app.co/api/app-mining-apps')
   .then(r => r.json())
   .then(response => {
-    fs.writeFile(
-      'appco.json',
-      JSON.stringify(response),
-      err => {
-        console.log(err)
-      }
-    )
+    fs.writeFile('appco.json', JSON.stringify(response), err => {
+      console.log(err)
+    })
     return response
   })
 
