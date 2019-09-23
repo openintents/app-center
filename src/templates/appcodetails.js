@@ -626,7 +626,7 @@ class AppDetails extends Component {
           title={data.apps.name}
           description={data.apps.description}
           keywords={[data.apps.name, `application`, `blockstack`]}
-          meta={meta}
+          meta
         />
         <Card style={{ margin: 4, marginTop: 40 }}>
           <CardContent>
