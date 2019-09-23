@@ -2,7 +2,7 @@ import React from 'react'
 import { graphql } from 'gatsby'
 import App from '../../components/app'
 import Layout from '../../components/layout'
-import { List } from '@material-ui/core';
+import { List } from '@material-ui/core'
 
 const AppCo = ({ data }) => {
   const retiredApps = data.lastmonth.edges
@@ -13,7 +13,14 @@ const AppCo = ({ data }) => {
       return appcodata.length === 0
     })
     .map((d, idx) => {
-      return <App key={idx} data={d.node} hideRewards hideDetailsLink />
+      return (
+        <App
+          key={idx}
+          data={{ hideDetailsLink: true, ...d.node }}
+          hideRewards
+          allAuthors={data.allAuthors}
+        />
+      )
     })
 
   return (
@@ -55,14 +62,10 @@ export const query = graphql`
         }
       }
     }
-    allAuthors:allAppPublishersJson {
+    allAuthors: allAppPublishersJson {
       edges {
         node {
-          username 
-          profile {
-            name
-          }
-          apps
+          ...AppPublisher
         }
       }
     }

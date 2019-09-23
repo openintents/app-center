@@ -25,44 +25,44 @@ const noss = [
   'https://github.com/blackholeorganization',
   'https://github.com/danparamov/mila-crm',
   'https://github.com/KevinNTH',
-  'https://gitlab.com/trovenow'
+  'https://gitlab.com/trovenow',
 ]
 
 const ReviewAppsSuggestions = () => {
   const { isSignedIn, checking } = useContext(LayoutContext)
   const [sort, setSort] = useState('popular')
-  if (!isSignedIn) {
-    return null
-  } else {
-    const data = useStaticQuery(graphql`
-      query appSuggestions {
-        allApps(sort: { fields: [lifetimeEarnings], order: [DESC] }) {
-          edges {
-            node {
-              ...AppInformation
-              ...AppIcon
-            }
-          }
-        }
-        allAppminingresultsforauditXlsxAugust19(
-          filter: { Final_Score: { ne: null } }
-          sort: { fields: [Final_Score], order: [DESC] }
-        ) {
-          totalCount
-          edges {
-            node {
-              App_ID: App_Id
-              Final_Score
-              PH_Theta
-              TMUI_Theta
-              NIL_Theta
-              Awario_Theta
-            }
+  const data = useStaticQuery(graphql`
+    query appSuggestions {
+      allApps(sort: { fields: [lifetimeEarnings], order: [DESC] }) {
+        edges {
+          node {
+            ...AppInformation
+            ...AppIcon
           }
         }
       }
-    `)
+      allAppminingresultsforauditXlsxAugust19(
+        filter: { Final_Score: { ne: null } }
+        sort: { fields: [Final_Score], order: [DESC] }
+      ) {
+        totalCount
+        edges {
+          node {
+            App_ID: App_Id
+            Final_Score
+            PH_Theta
+            TMUI_Theta
+            NIL_Theta
+            Awario_Theta
+          }
+        }
+      }
+    }
+  `)
 
+  if (!isSignedIn) {
+    return null
+  } else {
     let appList
 
     if (sort === 'popular') {
@@ -74,7 +74,6 @@ const ReviewAppsSuggestions = () => {
         .sort((a, b) => b.node.TMUI_Theta - a.node.TMUI_Theta)
         .slice(0, 3)
         .map(e => e.node.App_ID)
-      console.log(topUsable)
       appList = data.allApps.edges
         .filter(e => topUsable.includes(String(e.node.appcoid)))
         .map(e => e.node)
@@ -115,7 +114,7 @@ const ReviewAppsSuggestions = () => {
               <>
                 <Typography variant="h5">Review some of these apps</Typography>
                 <FormControl>
-                  <Typography variant="body1">
+                  <Typography component="span" variant="body1">
                     The{' '}
                     <Select
                       native

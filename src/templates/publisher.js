@@ -229,7 +229,7 @@ class Publisher extends Component {
     const accounts = this.renderSocialAccounts(data)
     const contacts = this.renderContactApps(data)
 
-    const ogImage =
+    const meta =
       data.appPublishersJson.localFile &&
       data.appPublishersJson.localFile.childImageSharp
         ? [

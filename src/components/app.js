@@ -77,10 +77,18 @@ export const SmallAppDetails = ({
 
 export function renderAuthors(allAuthors) {
   if (allAuthors) {
-    return allAuthors.edges.map(e => {
+    const countAuthors = allAuthors.edges.length - 1
+    var separator = null
+    return allAuthors.edges.map((e, index) => {
+      if (index < countAuthors) {
+        separator = ', '
+      } else {
+        separator = null
+      }
       return (
         <React.Fragment key={e.node.username}>
-          <a href={`/u/${e.node.username}`}>{e.node.profile.name}</a>{' '}
+          <a href={`/u/${e.node.username}`}>{e.node.profile.name}</a>
+          {separator}
         </React.Fragment>
       )
     })
@@ -91,12 +99,20 @@ export function renderAuthors(allAuthors) {
 
 export function renderAuthorsInList(allAuthors, appcoid) {
   if (allAuthors) {
+    var separator = null
+
     return allAuthors.edges
       .filter(e => e.node.apps.indexOf(appcoid) >= 0)
-      .map(e => {
+      .map((e, index, array) => {
+        if (index < array.length - 1) {
+          separator = ', '
+        } else {
+          separator = null
+        }
         return (
           <React.Fragment key={e.node.username}>
-            {e.node.profile.name}{' '}
+            {e.node.profile.name}
+            {separator}
           </React.Fragment>
         )
       })
@@ -106,15 +122,17 @@ export function renderAuthorsInList(allAuthors, appcoid) {
 }
 
 const App = ({ data, hideRewards, showSourceLink, allAuthors }) => {
-  const authors = renderAuthorsInList(allAuthors, data.appcoid)
+  const authors = renderAuthorsInList(allAuthors, parseInt(data.appcoid, 10))
+  const hideDetailsLink =
+    'hideDetailsLink' in data ? data.hideDetailsLink : false
   return (
     <ListItem
       className={'appItem'}
       dense
       alignItems="flex-start"
-      button={!data.hideDetailsLink}
+      button={!hideDetailsLink}
       onClick={() => {
-        if (!data.hideDetailsLink) {
+        if (!hideDetailsLink) {
           navigate(`/appco/${data.appcoid}#reviews`)
         }
       }}
@@ -128,7 +146,9 @@ const App = ({ data, hideRewards, showSourceLink, allAuthors }) => {
       )}
       {(!data.localFile || !data.localFile.childImageSharp) && (
         <ListItemAvatar>
-          <AppsIcon style={styles.smallIcon} />
+          <Container style={{ margin: '0px 4px' }}>
+            <AppsIcon style={styles.smallIcon} />
+          </Container>
         </ListItemAvatar>
       )}
 
@@ -196,6 +216,14 @@ export const query = graphql`
         }
       }
     }
+  }
+
+  fragment AppPublisher on AppPublishersJson {
+    username
+    profile {
+      name
+    }
+    apps
   }
 `
 

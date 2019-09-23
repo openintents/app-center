@@ -28,7 +28,9 @@ const OutAppList = ({ month }) => ({ data }) => {
             }
           : { hideDetailsLink: true, ...d.node }
 
-      return <App key={idx} data={app} hideRewards />
+      return (
+        <App key={idx} data={app} hideRewards allAuthors={data.allAuthors} />
+      )
     })
 
   return (

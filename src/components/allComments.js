@@ -65,8 +65,14 @@ class AllComments extends React.Component {
       })
   }
 
-  handleClick(appLink) {
-    navigate(appLink)
+  handleClick(appLink, isAppInAppCenter) {
+    if (isAppInAppCenter) {
+      navigate(appLink)
+    } else {
+      if (window) {
+        window.open(appLink, '_blank', 'noopener')
+      }
+    }
   }
 
   renderComments(apiComments, data) {
@@ -74,8 +80,9 @@ class AllComments extends React.Component {
     if (apiComments) {
       apiComments.forEach(c => {
         const apps = data.allApps.edges.filter(e => e.node.website === c.object)
+        const isAppInAppCenter = apps.length === 1
         const icon =
-          apps.length > 0 &&
+          isAppInAppCenter > 0 &&
           apps[0].node.localFile &&
           apps[0].node.localFile.childImageSharp ? (
             <Img
@@ -85,12 +92,15 @@ class AllComments extends React.Component {
           ) : (
             <AppsIcon style={styles.smallIcon} />
           )
-        const appLabel =
-          apps.length === 1 ? <>{apps[0].node.name}</> : <>{c.object}</>
-        const appLink =
-          apps.length === 1
-            ? `/appco/${apps[0].node.appcoid}/#reviews`
-            : c.object
+
+        const appLabel = isAppInAppCenter ? (
+          <>{apps[0].node.name}</>
+        ) : (
+          <>{c.object}</>
+        )
+        const appLink = isAppInAppCenter
+          ? `/appco/${apps[0].node.appcoid}/#reviews`
+          : c.object
         const rating = (
           <>
             <br />
@@ -100,12 +110,10 @@ class AllComments extends React.Component {
         const comment = c.comment.toString()
         comments.push(
           <ListItem
-            button={appLabel}
-            key={c._id}
+            button
+            key={c._id.object + c._id.username}
             onClick={() => {
-              if (appLink) {
-                this.handleClick(appLink)
-              }
+              this.handleClick(appLink, isAppInAppCenter)
             }}
           >
             <ListItemAvatar>{icon}</ListItemAvatar>
@@ -165,7 +173,7 @@ class AllComments extends React.Component {
             )}
             {!loading && (
               <Card style={{ margin: 4 }}>
-              <CardHeader title="Recent Reviews" />
+                <CardHeader title="Recent Reviews" />
                 <CardContent>
                   {this.renderComments(apiComments, data)}
                 </CardContent>

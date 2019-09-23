@@ -93,7 +93,9 @@ export const logout = callback => {
   const { userSession } = getConfig()
   GroupMembership.clearStorage()
   userSession.signUserOut('/')
-  callback()
+  if (callback) {
+    callback()
+  }
 }
 
 export const encryptContent = message => {
@@ -157,7 +159,7 @@ export const getAuthorsFromManifest = async appDomain => {
   }
   if (response) {
     const responseJSON = JSON.parse(response.text())
-    return responseJSON["did_authors"]
+    return responseJSON['did_authors']
   } else {
     return null
   }

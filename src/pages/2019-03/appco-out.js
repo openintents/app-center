@@ -30,6 +30,14 @@ export const query = graphql`
         }
       }
     }
+    allAuthors: allAppPublishersJson {
+      edges {
+        node {
+          ...AppPublisher
+        }
+      }
+    }
+
   }
 `
 

@@ -3,25 +3,38 @@ import App from './app'
 import Layout from './layout'
 import { Typography, List } from '@material-ui/core'
 
-const NewAppList = ({ month }) => ({ data }) => {
+const NewAppList = ({ month, matchByName }) => ({ data }) => {
   let appcoid
   const newApps = data.thismonth.edges.map(function(d) {
-    appcoid = parseInt(d.node.appcoid)
-    const appcodata = data.allApps.edges.filter(e => e.node.appcoid === appcoid)
-
+    var appcodata
+    if (!matchByName) {
+      appcoid = parseInt(d.node.appcoid)
+      appcodata = data.allApps.edges.filter(e => e.node.appcoid === appcoid)
+    } else {
+      appcodata = data.allApps.edges.filter(e => e.node.name === d.node.name)
+    }
     const app =
       appcodata.length > 0
         ? {
             lifetimeEarnings: 0,
             website: appcodata.length > 0 ? appcodata[0].node.website : null,
-            ...appcodata[0].node,
             ...d.node,
+            ...appcodata[0].node,
           }
         : {
             lifetimeEarnings: 0,
             ...d.node,
           }
-    return <App key={app.appcoid} data={app} hideRewards />
+          console.log(app)
+
+    return (
+      <App
+        key={app.appcoid}
+        data={app}
+        hideRewards
+        allAuthors={data.allAuthors}
+      />
+    )
   })
 
   return (

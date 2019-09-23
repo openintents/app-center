@@ -21,7 +21,14 @@ export const query = graphql`
         }
       }
     }
+    allAuthors: allAppPublishersJson {
+      edges {
+        node {
+          ...AppPublisher
+        }
+      }
+    }
   }
 `
 
-export default NewAppList({ month: 'December 2018' })
+export default NewAppList({ month: 'December 2018', matchByName:true })

@@ -46,7 +46,9 @@ getLastCommit = openSourceUrl => {
       projectId = 12323770
     } else if (openSourceUrl.startsWith('https://gitlab.com/riot.ai/landho')) {
       projectId = 13579531
-    } else if (openSourceUrl.startsWith('https://gitlab.com/CodeDarkin/aroundtheblock')) {
+    } else if (
+      openSourceUrl.startsWith('https://gitlab.com/CodeDarkin/aroundtheblock')
+    ) {
       projectId = 13870632
     } else {
       projectId = 0
@@ -188,7 +190,10 @@ exports.onCreateNode = async ({
         createNodeId,
         _auth
       )
-    } else if (node.id__normalized !== 1555) {
+    } else if (
+      node.id__normalized !== 1555 &&
+      process.env.GATSBY_GITHUB_TOKEN !== 'INVALID'
+    ) {
       // wrong image format
       try {
         await addLocalFileNode(
@@ -400,7 +405,9 @@ exports.createPages = async ({ graphql, actions }) => {
   `)
   const apps =
     process.env.GATSBY_GITHUB_TOKEN === 'INVALID'
-      ? result.data.appco.apps.slice(0, 3)
+      ? result.data.appco.apps.filter(node => {
+          return [924, 216].indexOf(node.appcoid) >= 0
+        })
       : result.data.appco.apps
   return Promise.all(
     apps.map(async node => {
