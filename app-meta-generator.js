@@ -14,12 +14,16 @@ var appPublishers = [
   { username: 'w3bwizart.id.blockstack', apps: [1832] },
   { username: 'marcojrfurtado.id.blockstack', apps: [1529] },
   { username: 'wilsonbright.id.blockstack', apps: [1571] },
-  //{ username: 'viraj', apps:[1569, 1707, 1839, 1846, 1870, 1893]},
+  {
+    username: 'viraj100.id.blockstack',
+    apps: [1569, 1707, 1839, 1846, 1870, 1893],
+  },
   { username: 'benedicteraae.id.blockstack', apps: [1858] },
   { username: 'kevinnth.id.blockstack', apps: [1459] },
   { username: 'codedarkin.id.blockstack', apps: [1869] },
   { username: 'alexsopinka.id.blockstack', apps: [1464] },
   { username: 'stealthy.id', apps: [174, 1445] },
+  { username: 'juliet_oberding.id.blockstack', apps: [1720] },
 ]
 
 async function fetchProfile(p) {

@@ -41,7 +41,7 @@ const ReviewAppsSuggestions = () => {
           }
         }
       }
-      allAppminingresultsforauditXlsxAugust19(
+      allAppmining201909AuditXlsxAuditResults(
         filter: { Final_Score: { ne: null } }
         sort: { fields: [Final_Score], order: [DESC] }
       ) {
@@ -70,7 +70,7 @@ const ReviewAppsSuggestions = () => {
         .filter(e => [216, 945, 174].includes(e.node.appcoid))
         .map(e => e.node)
     } else if (sort === 'usable') {
-      const topUsable = data.allAppminingresultsforauditXlsxAugust19.edges
+      const topUsable = data.allAppmining201909AuditXlsxAuditResults.edges
         .sort((a, b) => b.node.TMUI_Theta - a.node.TMUI_Theta)
         .slice(0, 3)
         .map(e => e.node.App_ID)
@@ -78,7 +78,7 @@ const ReviewAppsSuggestions = () => {
         .filter(e => topUsable.includes(String(e.node.appcoid)))
         .map(e => e.node)
     } else if (sort === 'best') {
-      const best = data.allAppminingresultsforauditXlsxAugust19.edges
+      const best = data.allAppmining201909AuditXlsxAuditResults.edges
         .sort((a, b) => b.node.Final_Score - a.node.Final_Score)
         .slice(0, 3)
         .map(e => e.node.App_ID)
