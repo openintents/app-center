@@ -67,7 +67,7 @@ const ReviewAppsSuggestions = () => {
 
     if (sort === 'popular') {
       appList = data.allApps.edges
-        .filter(e => [216, 945, 174].includes(e.node.appcoid))
+        .filter(e => [945, 825, 1318].includes(e.node.appcoid))
         .map(e => e.node)
     } else if (sort === 'usable') {
       const topUsable = data.allAppmining201909AuditXlsxAuditResults.edges
