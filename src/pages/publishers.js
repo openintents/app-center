@@ -57,6 +57,16 @@ const Publisher = ({ data, allApps }) => {
 const Publishers = ({ data }) => {
   return (
     <Layout>
+      <SEO
+        title="App Publishers | OI App Center"
+        keywords={[`app center`, `applications`, `blockstack`, `developer`]}
+        meta={[
+          {
+            property: 'og:image',
+            content: `${APP_CENTER_URL}/${data.ogImage.childImageSharp.fluid.src}`,
+          },
+        ]}
+      />
       <Typography variant="h3">App Publishers</Typography>
       <List dense>
         <ListItem>
@@ -134,6 +144,13 @@ export const query = graphql`
               }
             }
           }
+        }
+      }
+    }
+    ogImage: file(relativePath: { eq: "hero-img.png" }) {
+      childImageSharp {
+        fluid(maxWidth: 300) {
+          ...GatsbyImageSharpFluid
         }
       }
     }

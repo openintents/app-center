@@ -129,23 +129,19 @@ async function addLocalFileNodeByUrl(
   createNodeId,
   _auth
 ) {
-  try {
-    const fileNode = await createRemoteFileNode({
-      url: url,
-      parentNodeId: node.id,
-      store,
-      cache,
-      createNode,
-      createNodeId,
-      auth: _auth,
-    })
-    if (fileNode) {
-      node.localFile___NODE = fileNode.id
-    } else {
-      console.log(`no local file for app ${node.id} and url ${url}`)
-    }
-  } catch (e) {
-    console.log(e)
+  const fileNode = await createRemoteFileNode({
+    url: url,
+    parentNodeId: node.id,
+    store,
+    cache,
+    createNode,
+    createNodeId,
+    auth: _auth,
+  })
+  if (fileNode) {
+    node.localFile___NODE = fileNode.id
+  } else {
+    console.log(`no local file for app ${node.id} and url ${url}`)
   }
 }
 
@@ -193,7 +189,7 @@ exports.onCreateNode = async ({
         _auth
       )
     } else if (
-      node.id__normalized !== 1555 &&
+      [1555, 1712].indexOf(node.id__normalized) < 0 &&
       process.env.GATSBY_GITHUB_TOKEN !== 'INVALID'
     ) {
       // wrong image format
@@ -418,7 +414,19 @@ exports.createPages = async ({ graphql, actions }) => {
     apps.map(async node => {
       const authDomains = appMetas
         .filter(metaData => {
-          return metaData.id === node.appcoid
+          if (metaData.id === node.appcoid) {
+            try {
+              new URL(metaData.manifestUrl)
+              return true
+            } catch (e) {
+              console.log(
+                'Invalid URL for ' + node.appcoid + ': ' + metaData.manifestUrl
+              )
+              return false
+            }
+          } else {
+            return false
+          }
         })
         .map(metaData => new URL(metaData.manifestUrl).origin)
 

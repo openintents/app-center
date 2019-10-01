@@ -618,7 +618,7 @@ class AppDetails extends Component {
               content: `${APP_CENTER_URL}/${data.apps.localFile.childImageSharp.fixed.src}`,
             },
           ]
-        : null
+        : []
 
     return (
       <Layout>
