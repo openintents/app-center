@@ -1,6 +1,8 @@
 const nofetch = require('nofetch')
 const fs = require('fs')
 const blockstack = require('blockstack')
+const unlistedApps = require('./unlisted-apps')
+const appMeta = require('./src/data/app-meta')
 
 var appPublishers = [
   { username: 'jehunter5811.id', apps: [216, 1748, 1538, 934] },
@@ -117,33 +119,51 @@ async function getAppMeta(app) {
     domain = 'https://dappcrosscheck.paradigma.global/'
   }
 
-  if (!domain.endsWith('/')) {
-    domain = domain + '/'
-  }
+  var manifestData
 
-  var manifestData = await findManifestData(domain)
-  if (!manifestData.manifestUrl) {
-    if (domain.indexOf('www.') >= 0) {
-      const domain2 = domain.replace('www.', 'app.')
-      manifestData = await findManifestData(domain2)
+  const authDomains = appMeta.authDomains.filter(d => d.website == domain)
+  if (authDomains.length > 0) {
+    const manifestUrl = authDomains[0].manifestUrl
+    if (manifestUrl) {
+      manifestData = await fetchManifest(manifestUrl)
+    } else {
+      manifestData = { error: authDomains[0].error }
     }
-  }
-  if (!manifestData.manifestUrl) {
-    if ((domain.match(/\./g) || []).length == 1) {
-      const domain2 = domain.replace('://', '://app.')
-      manifestData = await findManifestData(domain2)
+  } else {
+    if (!domain.endsWith('/')) {
+      domain = domain + '/'
     }
-  }
-  if (!manifestData.manifestUrl) {
-    if (domain.indexOf('://about.') >= 0) {
-      const domain2 = domain.replace('://about.', '://')
-      manifestData = await findManifestData(domain2)
+
+    manifestData = await findManifestData(domain)
+    if (!manifestData.manifestUrl) {
+      if (domain.indexOf('www.') >= 0) {
+        const domain2 = domain.replace('www.', 'app.')
+        manifestData = await findManifestData(domain2)
+      }
+    }
+    if (!manifestData.manifestUrl) {
+      if ((domain.match(/\./g) || []).length == 1) {
+        const domain2 = domain.replace('://', '://app.')
+        manifestData = await findManifestData(domain2)
+      }
+    }
+    if (!manifestData.manifestUrl) {
+      if (domain.indexOf('://about.') >= 0) {
+        const domain2 = domain.replace('://about.', '://')
+        manifestData = await findManifestData(domain2)
+      }
     }
   }
 
   var authors = []
   if (!manifestData.manifestUrl) {
-    console.log('*** no manifest found for ' + app.website)
+    if (manifestData.error) {
+      console.log(
+        'no manifest found for ' + app.website + ' (' + manifestData.error + ')'
+      )
+    } else {
+      console.log('*** no manifest found for ' + app.website)
+    }
   } else if (
     manifestData.manifest &&
     Array.isArray(manifestData.manifest.did_authors)
@@ -212,8 +232,10 @@ const appcoDataPromise = fetch('https://api.app.co/api/app-mining-apps')
 //const appcoDataPromise = Promise.resolve(appcoData)
 
 appcoDataPromise.then(appcoData => {
+  const allApps = appcoData.apps.concat(unlistedApps.apps)
+
   Promise.all(
-    appcoData.apps.map(async app => {
+    allApps.map(async app => {
       return getAppMeta(app)
     })
   ).then(metaData => {

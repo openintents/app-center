@@ -3,6 +3,8 @@ const fetch = require('node-fetch')
 const { createRemoteFileNode } = require(`gatsby-source-filesystem`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
 const appMetas = require('./src/data/app-meta-data')
+const unlistedApps = require('./unlisted-apps')
+const listedApps = require('./appco')
 
 getLastCommit = openSourceUrl => {
   if (openSourceUrl.startsWith('https://github.com/')) {
@@ -179,7 +181,7 @@ exports.onCreateNode = async ({
   createNodeId,
 }) => {
   const { createNodeField, createNode } = actions
-  if (node.internal.type === `apps`) {
+  if (node.internal.type === 'apps' || node.internal.type === 'unlistedApps') {
     if (node.id__normalized === 924) {
       await addLocalFileNodeByUrl(
         'https://chat.openintents.org/vector-icons/android-chrome-512x512.png',
@@ -395,22 +397,31 @@ exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
   const result = await graphql(`
     {
-      appco {
-        apps {
-          appcoid: id__normalized
-          name
+      allApps {
+        edges {
+          node {
+            appcoid: id__normalized
+            name
+          }
         }
       }
     }
   `)
-  const apps =
-    process.env.GATSBY_GITHUB_TOKEN === 'INVALID'
-      ? result.data.appco.apps.filter(node => {
-          return [924, 216].indexOf(node.appcoid) >= 0
-        })
-      : result.data.appco.apps
+  const apps = result.data.allApps.edges
+    .map(e => e.node)
+    .filter(node => {
+      return process.env.GATSBY_GITHUB_TOKEN === 'INVALID'
+        ? [924, 216].indexOf(node.appcoid) >= 0
+        : true
+    })
   return Promise.all(
     apps.map(async node => {
+      const authDomains = appMetas
+        .filter(metaData => {
+          return metaData.id === node.appcoid
+        })
+        .map(metaData => new URL(metaData.manifestUrl).origin)
+
       await createPage({
         path: '/appco/' + node.appcoid,
         component: path.resolve('./src/templates/appcodetails.js'),
@@ -419,6 +430,7 @@ exports.createPages = async ({ graphql, actions }) => {
           // in page queries as GraphQL variables.
           appcoid: node.appcoid,
           appname: node.name,
+          authDomain: authDomains.length > 0 ? authDomains[0] : '',
         },
       })
 
@@ -432,6 +444,43 @@ exports.createPages = async ({ graphql, actions }) => {
           appname: node.name,
         },
       })
+    })
+  )
+}
+
+const createAppsNodes = async (
+  appData,
+  createNodeId,
+  createContentDigest,
+  createNode
+) => {
+  const nodeContent = JSON.stringify(appData)
+  appData.id__normalized = appData.id
+  const nodeMeta = {
+    id: createNodeId(`apps-${appData.id}`),
+    parent: null,
+    children: [],
+    internal: {
+      type: `apps`,
+      mediaType: `text/json`,
+      content: nodeContent,
+      contentDigest: createContentDigest(appData),
+    },
+  }
+  const node = Object.assign({}, appData, nodeMeta)
+  return createNode(node)
+}
+
+exports.sourceNodes = async ({
+  actions,
+  createNodeId,
+  createContentDigest,
+}) => {
+  const { createNode } = actions
+  const allApps = unlistedApps.apps.concat(listedApps.apps)
+  await Promise.all(
+    allApps.map(app => {
+      createAppsNodes(app, createNodeId, createContentDigest, createNode)
     })
   )
 }

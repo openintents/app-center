@@ -80,26 +80,6 @@ module.exports = {
       },
     },
     `gatsby-plugin-offline`,
-    {
-      resolve: 'gatsby-source-custom-api',
-      options: {
-        url: 'https://api.app.co/api/app-mining-apps',
-        rootKey: 'appco',
-        schemas: {
-          appco: `
-                        apps: [apps]
-                    `,
-          apps: `
-                        id: Int
-                        name: String
-                        openSourceUrl: String
-                        description: String
-                        category: String
-                        imageUrl: String
-                    `,
-        },
-      },
-    },
     'gatsby-transformer-json',
     {
       resolve: `gatsby-source-filesystem`,
@@ -115,6 +95,7 @@ module.exports = {
         sourceInstanceName: `data`,
       },
     },
+    //'gatsby-transformer-csv',
     {
       resolve: `@gatsby-contrib/gatsby-plugin-elasticlunr-search`,
       options: {

@@ -22,12 +22,17 @@ export const commitFormat = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
   month: 'long',
 })
+export const countFormat = new Intl.NumberFormat('en-US', {
+  style: 'decimal',
+  useGrouping: true,
+})
 
 export const SmallAppDetails = ({
   description,
   lifetimeEarnings,
   lastCommit,
   openSourceUrl,
+  multiPlayerCount,
   showSourceLink,
   hideRewards,
 }) => {
@@ -68,6 +73,12 @@ export const SmallAppDetails = ({
           <>
             <br />
             Last update: {lastUpdate}
+          </>
+        )}
+        {multiPlayerCount && (
+          <>
+            <br />
+            Sharing Users: {countFormat.format(multiPlayerCount)}
           </>
         )}
       </Typography>

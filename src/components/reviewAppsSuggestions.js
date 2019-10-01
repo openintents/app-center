@@ -67,12 +67,12 @@ const ReviewAppsSuggestions = () => {
 
     if (sort === 'popular') {
       appList = data.allApps.edges
-        .filter(e => [945, 825, 1318].includes(e.node.appcoid))
+        .filter(e => [216, 945, 174, 825, 1318].includes(e.node.appcoid))
         .map(e => e.node)
     } else if (sort === 'usable') {
       const topUsable = data.allAppmining201909AuditXlsxAuditResults.edges
         .sort((a, b) => b.node.TMUI_Theta - a.node.TMUI_Theta)
-        .slice(0, 3)
+        .slice(0, 5)
         .map(e => e.node.App_ID)
       appList = data.allApps.edges
         .filter(e => topUsable.includes(String(e.node.appcoid)))
@@ -80,7 +80,7 @@ const ReviewAppsSuggestions = () => {
     } else if (sort === 'best') {
       const best = data.allAppmining201909AuditXlsxAuditResults.edges
         .sort((a, b) => b.node.Final_Score - a.node.Final_Score)
-        .slice(0, 3)
+        .slice(0, 5)
         .map(e => e.node.App_ID)
       appList = data.allApps.edges
         .filter(e => best.includes(String(e.node.appcoid)))
@@ -141,7 +141,7 @@ const ReviewAppsSuggestions = () => {
           </Container>
           {!checking && (
             <List>
-              {appList.slice(0, 3).map(function(d, idx) {
+              {appList.slice(0, 5).map(function(d, idx) {
                 return (
                   <App
                     key={d.appcoid}

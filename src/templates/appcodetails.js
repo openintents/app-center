@@ -626,7 +626,7 @@ class AppDetails extends Component {
           title={data.apps.name}
           description={data.apps.description}
           keywords={[data.apps.name, `application`, `blockstack`]}
-          meta
+          meta={meta}
         />
         <Card style={{ margin: 4, marginTop: 40 }}>
           <CardContent>
@@ -652,6 +652,7 @@ class AppDetails extends Component {
               lifetimeEarnings: data.apps.lifetimeEarnings,
               lastCommit: data.apps.fields && data.apps.fields.lastCommit,
               openSourceUrl: data.apps.openSourceUrl,
+              multiPlayerCount: data.theBlockstats && data.theBlockstats.count,
               hideRewards: false,
               showSourceLink: true,
             })}
@@ -861,7 +862,7 @@ class AppDetails extends Component {
 }
 
 export const query = graphql`
-  query($appcoid: Int) {
+  query($appcoid: Int, $authDomain: String) {
     apps(id__normalized: { eq: $appcoid }) {
       ...AppInformation
       ...AppBigIcon
@@ -875,6 +876,9 @@ export const query = graphql`
           }
         }
       }
+    }
+    theBlockstats: theblockstatsAppsAllCsvSheet1(name: { eq: $authDomain }) {
+      count
     }
     dec2018: allAppminingresultsXlsxDecember2018(
       filter: { Final_Score: { ne: null } }

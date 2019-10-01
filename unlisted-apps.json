@@ -1,0 +1,106 @@
+{
+  "apps": [
+    {
+      "category": "Documents & Storage",
+      "storageNetwork": "Gaia",
+      "authentication": "Blockstack",
+      "imgixImageUrl": "https://appco.imgix.net/apps/0ede3b38-c747-4613-bc8e-7c3a12689ba3",
+      "id": 216,
+      "name": "Graphite",
+      "categoryID": 11,
+      "website": "https://www.graphitedocs.com/",
+      "blockchainID": null,
+      "storageNetworkID": 0,
+      "authenticationID": 0,
+      "openSourceUrl": "https://github.com/Graphite-Docs/graphite",
+      "registrationIsOpen": true,
+      "trackingIsBlocked": null,
+      "description": "Encrypted, shareable, decentralized personal data.",
+      "twitterHandle": "@graphitedocs",
+      "gcsImagePath": "app.co/apps/0ede3b38-c747-4613-bc8e-7c3a12689ba3",
+      "BTCAddress": "3Gu2jrkkeoM3WSepajvjCr5fMhJugigghx",
+      "isSubmittingOwnApp": false,
+      "productionId": null,
+      "imageUrl": "https://i.imgur.com/mvJfwZb.png",
+      "createdAt": "2018-05-15T15:20:03.368Z",
+      "updatedAt": "2019-07-31T20:40:43.546Z",
+      "Slugs": [
+        {
+          "id": 114,
+          "default": true,
+          "value": "graphite",
+          "appId": 216,
+          "createdAt": "2018-06-21T14:59:22.412Z",
+          "updatedAt": "2018-06-21T14:59:22.412Z"
+        }
+      ],
+      "Rankings": [
+        {
+          "id": 100660,
+          "appId": 216,
+          "twitterMentions": 14,
+          "date": "2019-09-19",
+          "monthlyVisitsCount": null,
+          "monthlyBounceRate": null,
+          "monthlyPageViews": null,
+          "monthlyVisitDuration": null,
+          "createdAt": "2019-09-19T06:00:13.256Z",
+          "updatedAt": "2019-09-19T06:00:13.350Z"
+        }
+      ],
+      "miningReady": false,
+      "lifetimeEarnings": 138873.91340494
+    },
+    {
+      "category": "Chat",
+      "storageNetwork": "Gaia",
+      "authentication": "Blockstack",
+      "imgixImageUrl": "https://appco.imgix.net/apps/a4bde23f-8ae2-4f74-b290-0c195ff70da6",
+      "id": 174,
+      "name": "Stealthy",
+      "categoryID": 9,
+      "website": "https://stealthy.im",
+      "blockchainID": null,
+      "storageNetworkID": 0,
+      "authenticationID": 0,
+      "openSourceUrl": null,
+      "registrationIsOpen": true,
+      "trackingIsBlocked": null,
+      "description": "Decentralized communication platform on Blockstack.",
+      "twitterHandle": "@stealthyim",
+      "gcsImagePath": "app.co/apps/a4bde23f-8ae2-4f74-b290-0c195ff70da6",
+      "BTCAddress": "1CZq4FCJCatUbvXSwq1mcAMk4WB96k2eyC",
+      "isSubmittingOwnApp": false,
+      "productionId": null,
+      "imageUrl": "https://pbs.twimg.com/profile_images/970700560239218689/CBJ8wLhN_400x400.jpg",
+      "createdAt": "2018-05-15T15:19:48.642Z",
+      "updatedAt": "2019-07-31T20:40:43.485Z",
+      "Slugs": [
+        {
+          "id": 73,
+          "default": true,
+          "value": "stealthy",
+          "appId": 174,
+          "createdAt": "2018-06-21T14:59:22.383Z",
+          "updatedAt": "2018-06-21T14:59:22.383Z"
+        }
+      ],
+      "Rankings": [
+        {
+          "id": 98546,
+          "appId": 174,
+          "twitterMentions": 0,
+          "date": "2019-08-02",
+          "monthlyVisitsCount": null,
+          "monthlyBounceRate": null,
+          "monthlyPageViews": null,
+          "monthlyVisitDuration": null,
+          "createdAt": "2019-08-02T06:11:04.750Z",
+          "updatedAt": "2019-08-02T06:11:04.860Z"
+        }
+      ],
+      "miningReady": false,
+      "lifetimeEarnings": 23000.962063580002
+    }
+  ]
+}
