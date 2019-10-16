@@ -264,8 +264,8 @@ appcoDataPromise.then(appcoData => {
   })
 })
 
-function addPublisher(n, appcoid) {
-  appPublishers.push({ username: n, apps: [appcoid] })
+function addPublisher(username, appcoid) {
+  appPublishers.push({ username, apps: [appcoid] })
 }
 
 async function mergeAppPublishers() {
@@ -289,7 +289,7 @@ async function mergeAppPublishers() {
 function updateMetaData(metaData, publishers) {
   metaData.forEach(m => {
     m.authors = m.authors.concat(
-      publishers.filter(p => p.apps.indexOf(m.id) >= 0).map(p => p.username)
+      publishers.filter(p => p.apps.indexOf(m.id) >= 0 && m.authors.indexOf(p.username) < 0).map(p => p.username)
     )
   })
   return metaData

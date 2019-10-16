@@ -38,6 +38,10 @@
     },
     { "website": "https://huaren.news", "error": "invalid certificate" },
     { "website": "https://thunderstack.id", "error": "timeout" },
-    { "website": "https://avicenna.casa", "error": "timeout" }
+    { "website": "https://avicenna.casa", "error": "timeout" },
+    { "website": "https://blockright.moochain.com/", "error":"invalid certificate"},
+    { "website": "https://www.ourtopia.co", "error": "dns failed"},
+    { "website": "https://www.sendfriend.xyz/", "error": "invalid certificate"},
+    { "website": "https://blockstack.tokengazer.com/", "manifestUrl": "https://blockstack.tokengazer.com/resource/static-blockstack/manifest.json"}
   ]
 }
