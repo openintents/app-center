@@ -18,7 +18,7 @@
     "@material-ui/icons": "^4.2.1",
     "@material-ui/styles": "^4.2.1",
     "babel-plugin-styled-components": "^1.10.0",
-    "blockstack": "^19.2.1",
+    "blockstack": "^19.3.0",
     "bootstrap": "^4.3.1",
     "bootstrap-datepicker": "^1.9.0",
     "bootstrap-switch": "^3.4.0",

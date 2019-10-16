@@ -9,10 +9,11 @@ import {
   ListItem,
   ListItemText,
   ListItemAvatar,
-  Container,
 } from '@material-ui/core'
 import AppsIcon from '@material-ui/icons/Apps'
 import UserIcon from '@material-ui/icons/AccountCircle'
+import SEO from '../components/seo'
+import { APP_CENTER_URL } from '../components/constants'
 
 const Publisher = ({ data, allApps }) => {
   console.log(data)
