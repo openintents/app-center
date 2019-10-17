@@ -28,6 +28,7 @@ var appPublishers = [
   { username: 'juliet_oberding.id.blockstack', apps: [1720] },
   { username: 'friedger.id', apps: [676, 924, 1062, 1444, 1754] },
   { username: 'psgganesh.id.blockstack', apps: [] },
+  { username: 'brandon100.id.blockstack', apps: [1729] },
 ]
 
 async function fetchProfile(p) {
@@ -289,7 +290,11 @@ async function mergeAppPublishers() {
 function updateMetaData(metaData, publishers) {
   metaData.forEach(m => {
     m.authors = m.authors.concat(
-      publishers.filter(p => p.apps.indexOf(m.id) >= 0 && m.authors.indexOf(p.username) < 0).map(p => p.username)
+      publishers
+        .filter(
+          p => p.apps.indexOf(m.id) >= 0 && m.authors.indexOf(p.username) < 0
+        )
+        .map(p => p.username)
     )
   })
   return metaData
