@@ -27,7 +27,7 @@ var appPublishers = [
   { username: 'stealthy.id', apps: [174, 1445] },
   { username: 'juliet_oberding.id.blockstack', apps: [1720] },
   { username: 'friedger.id', apps: [676, 924, 1062, 1444, 1754] },
-  { username: 'psgganesh.id.blockstack', apps: [] },
+  { username: 'psgganesh.id.blockstack', apps: [1766] },
   { username: 'brandon100.id.blockstack', apps: [1729] },
 ]
 
