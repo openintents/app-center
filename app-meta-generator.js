@@ -31,6 +31,8 @@ var appPublishers = [
   { username: 'brandon100.id.blockstack', apps: [1729] },
   { username: 'ayushsubedi.id.blockstack', apps: [1595] },
   { username: 'dylanbathurst.id.blockstack', apps: [1855] },
+  { username: 'njordhov.id.blockstack', apps: [1723] },
+  { username: 'russfranky.id.blockstack', apps: [1250] },
 ]
 
 async function fetchProfile(p) {
