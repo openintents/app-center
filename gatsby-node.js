@@ -8,9 +8,18 @@ const listedApps = require('./appco')
 
 getLastCommit = openSourceUrl => {
   if (openSourceUrl.startsWith('https://github.com/')) {
-    if (openSourceUrl.startsWith('https://github.com/radicleart')) {
+    if (openSourceUrl == 'https://github.com/radicleart') {
       openSourceUrl = 'https://github.com/radicleart/brightblock-dbid'
+    } else if (openSourceUrl.startsWith('https://github.com/envelop-app')) {
+      openSourceUrl = 'https://github.com/envelop-app/envelop-web'
+    } else if (openSourceUrl == 'https://github.com/lannister-capital') {
+      openSourceUrl = 'https://github.com/lannister-capital/lannister-app'
+    } else if (openSourceUrl == 'https://github.com/Satoshis-Games') {
+      openSourceUlr = 'https://github.com/Satoshis-Games/Games'
+    } else if (openSourceUrl == 'https://github.com/blocksnacks') {
+      openSourceUrl = 'https://github.com/blocksnacks/snack-client'
     }
+
     const parts = openSourceUrl.substr(19).split('/')
     if (parts.length > 1) {
       const owner = parts[0]
@@ -87,11 +96,14 @@ getLastCommit = openSourceUrl => {
       )
         .then(r => r.json())
         .then(response => {
-          if (response && response.length > 0) {
-            return response[0].date
+          if (response.values && response.values.length > 0) {
+            return response.values[0].date
           } else {
-            return 'No commits found - ' + response.message
+            return 'No commits found - ' + response.error.message
           }
+        })
+        .catch(e => {
+          return Promise.resolve('Failure on bitbucket call ' + e)
         })
     } else {
       return Promise.resolve('Invalid bitbucket repo')
@@ -242,7 +254,7 @@ exports.onCreateNode = async ({
     if (node.openSourceUrl && node.openSourceUrl !== '') {
       const lastCommit =
         process.env.GATSBY_GITHUB_TOKEN === 'INVALID'
-          ? Promise.resolve('N/A')
+          ? getLastCommit(node.openSourceUrl) // Promise.resolve('N/A')
           : getLastCommit(node.openSourceUrl)
       try {
         commitString = await lastCommit
@@ -407,14 +419,14 @@ exports.createPages = async ({ graphql, actions }) => {
     .map(e => e.node)
     .filter(node => {
       return process.env.GATSBY_GITHUB_TOKEN === 'INVALID'
-        ? [924, 216].indexOf(node.appcoid) >= 0
+        ? [924, 216, 1832].indexOf(node.appcoid) >= 0
         : true
     })
   return Promise.all(
     apps.map(async node => {
       const authDomains = appMetas
         .filter(metaData => {
-          if (metaData.id === node.appcoid) {
+          if (metaData.id === node.appcoid && metaData.manifestUrl) {
             try {
               new URL(metaData.manifestUrl)
               return true

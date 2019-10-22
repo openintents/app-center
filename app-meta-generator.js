@@ -33,6 +33,7 @@ var appPublishers = [
   { username: 'dylanbathurst.id.blockstack', apps: [1855] },
   { username: 'njordhov.id.blockstack', apps: [1723] },
   { username: 'russfranky.id.blockstack', apps: [1250] },
+  { username: 'talhasch.id.blockstack', apps: [1183] },
 ]
 
 async function fetchProfile(p) {
@@ -97,16 +98,35 @@ async function findManifestData(domain) {
   return manifestData
 }
 
-async function getAppMeta(app) {
-  if (!app.website.startsWith('https://')) {
-    return {
-      id: app.id,
-      authors: [],
-      manifestUrl: '',
-    }
-  }
+function getNossReason(domain, openSourceUrl) {
+  const nossReasonList = appMeta.noss
+    .filter(d => d.website == domain)
+    .map(entry => {
+      if (entry.noss != openSourceUrl) {
+        console.log(`invalid noss ${domain} ${entry.noss} != ${openSourceUrl}`)
+        return undefined
+      } else {
+        return entry.reason
+      }
+    })
 
+  let nossReason = null
+  if (nossReasonList.length > 0 && nossReasonList[0]) {
+    nossReason = nossReasonList[0]
+  }
+  return nossReason
+}
+
+function normalizedWebsite(website) {
+  if (!website.endsWith('/')) {
+    return website + '/'
+  } else {
+    return website
+  }
+}
+async function getAppMeta(app) {
   var domain = app.website.trim()
+  const openSourceUrl = app.openSourceUrl
 
   if (domain == 'https://sarchy.co/TrustingTrust/pc/index.html') {
     domain = 'https://sarchy.co/'
@@ -124,6 +144,23 @@ async function getAppMeta(app) {
     domain = 'https://auth.piara.me/'
   } else if (domain == 'https://crosscheck.paradigma.global/') {
     domain = 'https://dappcrosscheck.paradigma.global/'
+  } else if (domain == 'http://www.blockcred.io/') {
+    domain = 'https://www.blockcred.io/'
+  }
+
+  if (!domain.startsWith('https://')) {
+    domain = normalizedWebsite(domain)
+    const nossReason = getNossReason(domain, openSourceUrl)
+
+    const meta = {
+      id: app.id,
+      authors: [],
+      manifestUrl: '',
+    }
+    if (nossReason) {
+      meta.nossReason = nossReason
+    }
+    return meta
   }
 
   var manifestData
@@ -137,9 +174,7 @@ async function getAppMeta(app) {
       manifestData = { error: authDomains[0].error }
     }
   } else {
-    if (!domain.endsWith('/')) {
-      domain = domain + '/'
-    }
+    domain = normalizedWebsite(domain)
 
     manifestData = await findManifestData(domain)
     if (!manifestData.manifestUrl) {
@@ -215,11 +250,29 @@ async function getAppMeta(app) {
     console.log(authors + ' ' + domain)
   }
 
-  return {
+  const nossReasonList = appMeta.noss
+    .filter(d => d.website == domain)
+    .map(entry => {
+      if (entry.noss != openSourceUrl) {
+        console.log(`invalid noss ${domain} ${entry.noss} != ${openSourceUrl}`)
+        return undefined
+      } else {
+        return entry.reason
+      }
+    })
+
+  const nossReason = getNossReason(domain, openSourceUrl)
+
+  const meta = {
     id: app.id,
     authors: authors,
     manifestUrl: manifestData.manifestUrl || '',
   }
+
+  if (nossReason) {
+    meta.nossReason = nossReason
+  }
+  return meta
 }
 
 console.log('start')
@@ -277,9 +330,11 @@ async function mergeAppPublishers() {
   mergedPublishers = {}
   appPublishers.forEach(publisher => {
     if (mergedPublishers.hasOwnProperty(publisher.username)) {
-      mergedPublishers[publisher.username].apps = mergedPublishers[
-        publisher.username
-      ].apps.concat(publisher.apps)
+      const apps = mergedPublishers[publisher.username].apps
+      const moreApps = publisher.apps.filter(
+        appcoid => apps.indexOf(appcoid) < 0
+      )
+      mergedPublishers[publisher.username].apps = apps.concat(moreApps)
     } else {
       mergedPublishers[publisher.username] = publisher
     }

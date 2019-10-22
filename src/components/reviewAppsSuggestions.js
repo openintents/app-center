@@ -14,19 +14,14 @@ import {
 import { LayoutContext } from './layout'
 import App from './app'
 
-const noss = [
-  '',
-  null,
-  'https://github.com/zincwork/contracts',
-  'https://github.com/kkomaz/debut',
-  'https://github.com/springrole',
-  'https://github.com/dmailonline',
-  'https://github.com/blockcred',
-  'https://github.com/blackholeorganization',
-  'https://github.com/danparamov/mila-crm',
-  'https://github.com/KevinNTH',
-  'https://gitlab.com/trovenow',
-]
+const noss = ['', null]
+
+const hasNossReason = (appNode, allAppMetaDataJson) => {
+  const filteredMetaData = allAppMetaDataJson.edges.filter(
+    e => parseInt(e.node.id) === appNode.appcoid && e.node.nossReason
+  )
+  return filteredMetaData.length > 0
+}
 
 const ReviewAppsSuggestions = () => {
   const { isSignedIn, checking } = useContext(LayoutContext)
@@ -41,7 +36,15 @@ const ReviewAppsSuggestions = () => {
           }
         }
       }
-      allAppmining201909AuditXlsxAuditResults(
+      allAppMetaDataJson {
+        edges {
+          node {
+            id
+            nossReason
+          }
+        }
+      }
+      thisMonthsResults: allAppmining201909AuditXlsxAuditResults(
         filter: { Final_Score: { ne: null } }
         sort: { fields: [Final_Score], order: [DESC] }
       ) {
@@ -70,7 +73,7 @@ const ReviewAppsSuggestions = () => {
         .filter(e => [216, 945, 174, 825, 1318].includes(e.node.appcoid))
         .map(e => e.node)
     } else if (sort === 'usable') {
-      const topUsable = data.allAppmining201909AuditXlsxAuditResults.edges
+      const topUsable = data.thisMonthsResults.edges
         .sort((a, b) => b.node.TMUI_Theta - a.node.TMUI_Theta)
         .slice(0, 5)
         .map(e => e.node.App_ID)
@@ -78,7 +81,7 @@ const ReviewAppsSuggestions = () => {
         .filter(e => topUsable.includes(String(e.node.appcoid)))
         .map(e => e.node)
     } else if (sort === 'best') {
-      const best = data.allAppmining201909AuditXlsxAuditResults.edges
+      const best = data.thisMonthsResults.edges
         .sort((a, b) => b.node.Final_Score - a.node.Final_Score)
         .slice(0, 5)
         .map(e => e.node.App_ID)
@@ -87,11 +90,19 @@ const ReviewAppsSuggestions = () => {
         .map(e => e.node)
     } else if (sort === 'foss') {
       appList = data.allApps.edges
-        .filter(e => !noss.includes(e.node.openSourceUrl))
+        .filter(
+          e =>
+            !noss.includes(e.node.openSourceUrl) &&
+            !hasNossReason(e.node, data.allAppMetaDataJson)
+        )
         .map(e => e.node)
     } else if (sort === 'noss') {
       appList = data.allApps.edges
-        .filter(e => noss.includes(e.node.openSourceUrl))
+        .filter(
+          e =>
+            noss.includes(e.node.openSourceUrl) ||
+            hasNossReason(e.node, data.allAppMetaDataJson)
+        )
         .map(e => e.node)
     } else if (sort === 'top') {
       appList = data.allApps.edges.map(e => e.node)

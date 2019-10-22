@@ -39,9 +39,89 @@
     { "website": "https://huaren.news", "error": "invalid certificate" },
     { "website": "https://thunderstack.id", "error": "timeout" },
     { "website": "https://avicenna.casa", "error": "timeout" },
-    { "website": "https://blockright.moochain.com/", "error":"invalid certificate"},
-    { "website": "https://www.ourtopia.co", "error": "dns failed"},
-    { "website": "https://www.sendfriend.xyz/", "error": "invalid certificate"},
-    { "website": "https://blockstack.tokengazer.com/", "manifestUrl": "https://blockstack.tokengazer.com/resource/static-blockstack/manifest.json"}
+    {
+      "website": "https://blockright.moochain.com/",
+      "error": "invalid certificate"
+    },
+    { "website": "https://www.ourtopia.co", "error": "dns failed" },
+    {
+      "website": "https://www.sendfriend.xyz/",
+      "error": "invalid certificate"
+    },
+    {
+      "website": "https://blockstack.tokengazer.com/",
+      "manifestUrl": "https://blockstack.tokengazer.com/resource/static-blockstack/manifest.json"
+    }
+  ],
+  "noss": [
+    {
+      "normalizedWebsite": "https://zinc.work/",
+      "noss": "https://github.com/zincwork/contracts",
+      "reason": "no app code"
+    },
+    {
+      "normalizedWebsite": "https://blockstack.springrole.com/",
+      "noss": "https://github.com/springrole",
+      "reason": "no app code"
+    },
+    {
+      "normalizedWebsite": "https://www.dmail.online/",
+      "noss": "https://github.com/dmailonline",
+      "reason": "no repos"
+    },
+    {
+      "normalizedWebsite": "https://www.blockcred.io/",
+      "noss": "https://github.com/blockcred",
+      "reason": "no repos"
+    },
+    {
+      "normalizedWebsite": "https://blackhole.run/",
+      "noss": "https://github.com/blackholeorganization",
+      "reason": "only libraries"
+    },
+    {
+      "normalizedWebsite": "https://milacrm.com/",
+      "noss": "https://github.com/danparamov/mila-crm",
+      "reason": "not found"
+    },
+    {
+      "website": "https://trovenow.com/",
+      "noss": "https://gitlab.com/trovenow",
+      "reason": "no app code"
+    },
+    {
+      "website": "https://blockstack.tokengazer.com/",
+      "noss": "https://github.com/tokengazer",
+      "reason": "no app code"
+    },
+    {
+      "website": "https://ethereal.market/",
+      "noss": "https://github.com/ethereal-market",
+      "reason": "no app code"
+    },
+    {
+      "website": "https://sportup.online/",
+      "noss": "https://github.com/x-bow/sportup",
+      "reason": "not found"
+    },
+    {
+      "website": "https://thedailyhabits.com/",
+      "noss": "https://github.com/psgganesh/atomichabits",
+      "reason": "not found"
+    }
+  ],
+  "sourceCode": [
+    {
+      "normalizedWebsite": "https://envelop.app/",
+      "openSourceUrl": "https://github.com/envelop-app/envelop-web"
+    },
+    {
+      "normalizedWebsite": "https://dbid.io/",
+      "openSourceUrl": "https://github.com/radicleart/brightblock-dbid"
+    },
+    {
+      "normalizedWebsite": "https://lannister.capital/",
+      "openSourceUrl": "https://github.com/lannister-capital/lannister-app"
+    }
   ]
 }

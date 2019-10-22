@@ -1,27 +1,10 @@
 import { graphql } from 'gatsby'
-import AppCoList from '../components/appcoList'
+import AppCoList, { hasNossReason } from '../components/appcoList'
 
 export const query = graphql`
   query noss {
     allApps(
-      filter: {
-        openSourceUrl: {
-          in: [
-            ""
-            null
-            "https://github.com/zincwork/contracts"
-            "https://github.com/kkomaz/debut"
-            "https://github.com/springrole"
-            "https://github.com/dmailonline"
-            "https://github.com/blockcred"
-            "https://github.com/blackholeorganization"
-            "https://github.com/danparamov/mila-crm"
-            "https://github.com/KevinNTH"
-            "https://gitlab.com/trovenow"
-          ]
-        }
-        miningReady: { eq: true }
-      }
+      filter: { openSourceUrl: { in: ["", null] }, miningReady: { eq: true } }
       sort: { fields: [name] }
     ) {
       totalCount
@@ -29,6 +12,14 @@ export const query = graphql`
         node {
           ...AppInformation
           ...AppIcon
+        }
+      }
+    }
+    allAppMetaDataJson {
+      edges {
+        node {
+          id
+          nossReason
         }
       }
     }
@@ -49,4 +40,5 @@ export const query = graphql`
 export default AppCoList({
   title: 'All Closed Source Blockstack Apps',
   showSourceLink: false,
+  filter: (appNode, data) => hasNossReason(appNode, data.allAppMetaDataJson),
 })

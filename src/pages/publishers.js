@@ -20,7 +20,7 @@ const Publisher = ({ data, allApps }) => {
   const name = (data.profile && data.profile.name) || data.username
   return (
     <ListItem>
-      <ListItemAvatar>
+      <ListItemAvatar style={{ margin: 8 }}>
         {data.localFile && (
           <Img
             style={{ borderRadius: '50%', margin: '0,4,0' }}
@@ -30,7 +30,9 @@ const Publisher = ({ data, allApps }) => {
         {!data.localFile && <UserIcon style={{ width: 64, height: 64 }} />}
       </ListItemAvatar>
       <ListItemText>
-        <Typography>{name}</Typography>
+        <Typography>
+          <a href={`/u/${data.username}`}>{name}</a>
+        </Typography>
         {data.apps &&
           data.apps.map(appcoid => {
             const apps = allApps.filter(app => app.appcoid === appcoid)
@@ -43,7 +45,7 @@ const Publisher = ({ data, allApps }) => {
                   fixed={apps[0].localFile.childImageSharp.fixed}
                 />
               ) : (
-                <AppsIcon style={{ margin: 4 }} style={styles.smallIcon} />
+                <AppsIcon style={{ margin: 4, width: 36, height: 36 }} />
               )
             return (
               <a href={`/appco/${appcoid}`} key={`${data.username}${appcoid}`}>

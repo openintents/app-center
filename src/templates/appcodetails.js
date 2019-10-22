@@ -1043,6 +1043,24 @@ export const query = graphql`
         }
       }
     }
+
+    oct2019: allAppmining201910AuditXlsxOctAudit(
+      filter: { Final_Score: { ne: null } }
+      sort: { fields: [Final_Score], order: [DESC] }
+    ) {
+      totalCount
+      edges {
+        node {
+          App_ID: App_Id
+          Final_Score
+          PH_Theta
+          TMUI_Theta
+          NIL_Theta
+          Awario_Theta
+        }
+      }
+    }
+
   }
 `
 

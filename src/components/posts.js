@@ -2,6 +2,14 @@ export const allPost = data => [
   {
     type: 'appCoMonth',
     post: {
+      title: 'Best Apps Awards (October 2019)',
+      path: '2019-10',
+      date: new Date('2019-10-22'),
+    },
+  },
+  {
+    type: 'appCoMonth',
+    post: {
       title: 'Best Apps Awards (September 2019)',
       path: '2019-09',
       date: new Date('2019-09-29'),
