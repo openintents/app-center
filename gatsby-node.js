@@ -18,6 +18,8 @@ getLastCommit = openSourceUrl => {
       openSourceUlr = 'https://github.com/Satoshis-Games/Games'
     } else if (openSourceUrl == 'https://github.com/blocksnacks') {
       openSourceUrl = 'https://github.com/blocksnacks/snack-client'
+    } else if (openSourceUrl == 'https://github.com/runkod') {
+      openSourceUrl = 'https://github.com/runkod/runkod-app'
     }
 
     const parts = openSourceUrl.substr(19).split('/')
@@ -91,7 +93,7 @@ getLastCommit = openSourceUrl => {
     if (parts.length == 2) {
       const username = parts[0]
       const repoSlug = parts[1]
-      fetch(
+      return fetch(
         `https://api.bitbucket.org/2.0/repositories/${username}/${repoSlug}/commits`
       )
         .then(r => r.json())
@@ -201,10 +203,9 @@ exports.onCreateNode = async ({
         _auth
       )
     } else if (
-      [1555, 1712].indexOf(node.id__normalized) < 0 &&
+      [1555, 1712].indexOf(node.id__normalized) < 0 && // wrong image format
       process.env.GATSBY_GITHUB_TOKEN !== 'INVALID'
     ) {
-      // wrong image format
       try {
         await addLocalFileNode(
           node,
@@ -254,7 +255,7 @@ exports.onCreateNode = async ({
     if (node.openSourceUrl && node.openSourceUrl !== '') {
       const lastCommit =
         process.env.GATSBY_GITHUB_TOKEN === 'INVALID'
-          ? getLastCommit(node.openSourceUrl) // Promise.resolve('N/A')
+          ? Promise.resolve('N/A')
           : getLastCommit(node.openSourceUrl)
       try {
         commitString = await lastCommit
