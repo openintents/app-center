@@ -206,12 +206,23 @@ async function getAppMeta(app) {
     } else {
       console.log('*** no manifest found for ' + app.website)
     }
-  } else if (
-    manifestData.manifest &&
-    Array.isArray(manifestData.manifest.did_authors)
-  ) {
+  } else if (manifestData.manifest) {
+    let didAuthors
+    if (Array.isArray(manifestData.manifest.did_authors)) {
+      didAuthors = manifestData.manifest.did_authors
+    } else if (
+      typeof manifestData.manifest.did_authors === 'string' ||
+      manifestData.manifest.did_authors instanceof String
+    ) {
+      didAuthors = [manifestData.manifest.did_authors]
+    } else {
+      if (manifestData.manifest.did_authors) {
+        console.log(`invalid did_authors ${manifestData.manifest.did_authors}`)
+      }
+      didAuthors = []
+    }
     authors = await Promise.all(
-      manifestData.manifest.did_authors.map(async a => {
+      didAuthors.map(async a => {
         var address
         if (a.startsWith('did:stack:')) {
           address = await nofetch(`https://core.blockstack.org/v1/dids/${a}`)

@@ -7,6 +7,7 @@ import { getApiServer } from '../app/services/blockstack'
 import { styles } from './layout'
 export default () => (
   <Container>
+    <hr/>
     <Grid container>
       <Grid item xs={12} sm={4}>
         <Typography variant="body2" style={{ fontSize: 'small' }}>
