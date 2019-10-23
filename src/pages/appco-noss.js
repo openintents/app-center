@@ -4,7 +4,7 @@ import AppCoList, { hasNossReason } from '../components/appcoList'
 export const query = graphql`
   query noss {
     allApps(
-      filter: { openSourceUrl: { in: ["", null] }, miningReady: { eq: true } }
+      filter: { miningReady: { eq: true } }
       sort: { fields: [name] }
     ) {
       totalCount
@@ -40,5 +40,5 @@ export const query = graphql`
 export default AppCoList({
   title: 'All Closed Source Blockstack Apps',
   showSourceLink: false,
-  filter: (appNode, data) => hasNossReason(appNode, data.allAppMetaDataJson),
+  filter: (appNode, data) => !appNode.openSourceUrl || hasNossReason(appNode, data.allAppMetaDataJson),
 })

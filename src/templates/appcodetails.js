@@ -631,10 +631,10 @@ class AppDetails extends Component {
         <Card style={{ margin: 4, marginTop: 40 }}>
           <CardContent>
             <Grid container alignItems="center" spacing={2}>
-              <Grid item xs={1} sm={1}>
+              <Grid item xs={12} sm={1} md={1}>
                 {icon}
               </Grid>
-              <Grid item xs={11} sm={7}>
+              <Grid item xs={12} sm={11} md={7}>
                 <Typography variant="h3" align="center">
                   {data.apps.name}
                 </Typography>
@@ -642,7 +642,7 @@ class AppDetails extends Component {
                   {renderAuthors(data.allAuthors)}
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={12} md={4}>
                 {appActions}
               </Grid>
             </Grid>
@@ -1060,7 +1060,6 @@ export const query = graphql`
         }
       }
     }
-
   }
 `
 

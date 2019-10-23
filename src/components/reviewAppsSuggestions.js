@@ -112,6 +112,8 @@ const ReviewAppsSuggestions = () => {
         items[Math.floor(Math.random() * items.length)],
         items[Math.floor(Math.random() * items.length)],
         items[Math.floor(Math.random() * items.length)],
+        items[Math.floor(Math.random() * items.length)],
+        items[Math.floor(Math.random() * items.length)],
       ].map(e => e.node)
     } else {
       throw new Error('Invalid sort value ' + sort)

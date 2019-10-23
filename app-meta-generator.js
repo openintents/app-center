@@ -100,7 +100,7 @@ async function findManifestData(domain) {
 
 function getNossReason(domain, openSourceUrl) {
   const nossReasonList = appMeta.noss
-    .filter(d => d.website == domain)
+    .filter(d => d.normalizedWebsite == domain)
     .map(entry => {
       if (entry.noss != openSourceUrl) {
         console.log(`invalid noss ${domain} ${entry.noss} != ${openSourceUrl}`)
@@ -117,13 +117,14 @@ function getNossReason(domain, openSourceUrl) {
   return nossReason
 }
 
-function normalizedWebsite(website) {
+function normalizeDomain(website) {
   if (!website.endsWith('/')) {
     return website + '/'
   } else {
     return website
   }
 }
+
 async function getAppMeta(app) {
   var domain = app.website.trim()
   const openSourceUrl = app.openSourceUrl
@@ -146,11 +147,13 @@ async function getAppMeta(app) {
     domain = 'https://dappcrosscheck.paradigma.global/'
   } else if (domain == 'http://www.blockcred.io/') {
     domain = 'https://www.blockcred.io/'
+  } else if (domain == 'http://invoice.x5engine.com') {
+    domain = 'https://invoice.x5engine.com'
   }
+  const normalizedWebsite = normalizeDomain(domain)
 
   if (!domain.startsWith('https://')) {
-    domain = normalizedWebsite(domain)
-    const nossReason = getNossReason(domain, openSourceUrl)
+    const nossReason = getNossReason(normalizedWebsite, openSourceUrl)
 
     const meta = {
       id: app.id,
@@ -165,7 +168,7 @@ async function getAppMeta(app) {
 
   var manifestData
 
-  const authDomains = appMeta.authDomains.filter(d => d.website == domain)
+  const authDomains = appMeta.authDomains.filter(d => d.website == normalizedWebsite)
   if (authDomains.length > 0) {
     const manifestUrl = authDomains[0].manifestUrl
     if (manifestUrl) {
@@ -174,24 +177,22 @@ async function getAppMeta(app) {
       manifestData = { error: authDomains[0].error }
     }
   } else {
-    domain = normalizedWebsite(domain)
-
-    manifestData = await findManifestData(domain)
+    manifestData = await findManifestData(normalizedWebsite)
     if (!manifestData.manifestUrl) {
-      if (domain.indexOf('www.') >= 0) {
-        const domain2 = domain.replace('www.', 'app.')
+      if (normalizedWebsite.indexOf('www.') >= 0) {
+        const domain2 = normalizedWebsite.replace('www.', 'app.')
         manifestData = await findManifestData(domain2)
       }
     }
     if (!manifestData.manifestUrl) {
-      if ((domain.match(/\./g) || []).length == 1) {
-        const domain2 = domain.replace('://', '://app.')
+      if ((normalizedWebsite.match(/\./g) || []).length == 1) {
+        const domain2 = normalizedWebsite.replace('://', '://app.')
         manifestData = await findManifestData(domain2)
       }
     }
     if (!manifestData.manifestUrl) {
-      if (domain.indexOf('://about.') >= 0) {
-        const domain2 = domain.replace('://about.', '://')
+      if (normalizedWebsite.indexOf('://about.') >= 0) {
+        const domain2 = normalizedWebsite.replace('://about.', '://')
         manifestData = await findManifestData(domain2)
       }
     }
@@ -258,21 +259,9 @@ async function getAppMeta(app) {
           })
       })
     )
-    console.log(authors + ' ' + domain)
   }
 
-  const nossReasonList = appMeta.noss
-    .filter(d => d.website == domain)
-    .map(entry => {
-      if (entry.noss != openSourceUrl) {
-        console.log(`invalid noss ${domain} ${entry.noss} != ${openSourceUrl}`)
-        return undefined
-      } else {
-        return entry.reason
-      }
-    })
-
-  const nossReason = getNossReason(domain, openSourceUrl)
+  const nossReason = getNossReason(normalizedWebsite, openSourceUrl)
 
   const meta = {
     id: app.id,
@@ -310,7 +299,6 @@ appcoDataPromise.then(appcoData => {
       return getAppMeta(app)
     })
   ).then(metaData => {
-    console.log(metaData)
     mergeAppPublishers().then(publishers => {
       fs.writeFile(
         'src/data/app-publishers.json',

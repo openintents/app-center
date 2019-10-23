@@ -85,27 +85,27 @@
       "reason": "not found"
     },
     {
-      "website": "https://trovenow.com/",
+      "normalizedWebsite": "https://trovenow.com/",
       "noss": "https://gitlab.com/trovenow",
       "reason": "no app code"
     },
     {
-      "website": "https://blockstack.tokengazer.com/",
+      "normalizedWebsite": "https://blockstack.tokengazer.com/",
       "noss": "https://github.com/tokengazer",
       "reason": "no app code"
     },
     {
-      "website": "https://ethereal.market/",
+      "normalizedWebsite": "https://ethereal.market/",
       "noss": "https://github.com/ethereal-market",
       "reason": "no app code"
     },
     {
-      "website": "https://sportup.online/",
+      "normalizedWebsite": "https://sportup.online/",
       "noss": "https://github.com/x-bow/sportup",
       "reason": "not found"
     },
     {
-      "website": "https://thedailyhabits.com/",
+      "normalizedWebsite": "https://thedailyhabits.com/",
       "noss": "https://github.com/psgganesh/atomichabits",
       "reason": "not found"
     }
