@@ -143,6 +143,6 @@
       "normalizedWebsite": "https://blockslack.io/",
       "package": "io.blockslack.app"
     },
-    { "normalizedWebsite": "https://piara.me/", "package": "com.piara" }
+    { "normalizedWebsite": "https://auth.piara.me/", "package": "com.piara" }
   ]
 }
