@@ -117,6 +117,17 @@ function getNossReason(domain, openSourceUrl) {
   return nossReason
 }
 
+function getAndroid(normalizedWebsite) {
+  const androidList = appMeta.android
+    .filter(app => app.normalizedWebsite == normalizedWebsite)
+    .map(app => app.package)
+  if (androidList.length > 0 && androidList[0]) {
+    return androidList[0]
+  } else {
+    return undefined
+  }
+}
+
 function normalizeDomain(website) {
   if (!website.endsWith('/')) {
     return website + '/'
@@ -154,7 +165,7 @@ async function getAppMeta(app) {
 
   if (!domain.startsWith('https://')) {
     const nossReason = getNossReason(normalizedWebsite, openSourceUrl)
-
+    const android = getAndroid(normalizedWebsite)
     const meta = {
       id: app.id,
       authors: [],
@@ -163,12 +174,17 @@ async function getAppMeta(app) {
     if (nossReason) {
       meta.nossReason = nossReason
     }
+    if (android) {
+      meta.android = android
+    }
     return meta
   }
 
   var manifestData
 
-  const authDomains = appMeta.authDomains.filter(d => d.website == normalizedWebsite)
+  const authDomains = appMeta.authDomains.filter(
+    d => d.website == normalizedWebsite
+  )
   if (authDomains.length > 0) {
     const manifestUrl = authDomains[0].manifestUrl
     if (manifestUrl) {
@@ -262,6 +278,7 @@ async function getAppMeta(app) {
   }
 
   const nossReason = getNossReason(normalizedWebsite, openSourceUrl)
+  const android = getAndroid(normalizedWebsite)
 
   const meta = {
     id: app.id,
@@ -271,6 +288,10 @@ async function getAppMeta(app) {
 
   if (nossReason) {
     meta.nossReason = nossReason
+  }
+
+  if (android) {
+    meta.android = android
   }
   return meta
 }

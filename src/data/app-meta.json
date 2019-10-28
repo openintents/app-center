@@ -123,5 +123,26 @@
       "normalizedWebsite": "https://lannister.capital/",
       "openSourceUrl": "https://github.com/lannister-capital/lannister-app"
     }
+  ],
+  "android": [
+    { "normalizedWebsite": "https://envelop.app/", "package": "app.envelop" },
+    { "normalizedWebsite": "https://stealthy.im/", "package": "com.stealthy" },
+    {
+      "normalizedWebsite": "https://cal.openintents.org/",
+      "package": "org.openintents.calendar.sync"
+    },
+    {
+      "normalizedWebsite": "https://block-photos.com/",
+      "package": "com.nerdiccoder.blockphotos"
+    },
+    {
+      "normalizedWebsite": "https://concord.z19.web.core.windows.net/",
+      "package": "com.concordblockstack"
+    },
+    {
+      "normalizedWebsite": "https://blockslack.io/",
+      "package": "io.blockslack.app"
+    },
+    { "normalizedWebsite": "https://piara.me/", "package": "com.piara" }
   ]
 }
