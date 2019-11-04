@@ -5,7 +5,6 @@ import {
   Typography,
   CardContent,
   Grid,
-  Container,
   CardActions,
   Button,
 } from '@material-ui/core'
@@ -74,15 +73,15 @@ const Explore = ({ data }) => (
       </Grid>
       <Grid item xs={12} sm={6}>
         <CategoryPage
-          path="/more-private-apps"
-          title="More private Apps"
+          path="/more-blockstacky-apps"
+          title="More Blockstacky Apps"
           description="These apps have received full score by the Digital Rights reviewer."
         />
       </Grid>
       <Grid item xs={12} sm={6}>
         <CategoryPage
-          path="/less-private-apps"
-          title="Less private Apps"
+          path="/less-blockstacky-apps"
+          title="Less Blockstacky Apps"
           description="These apps have NOT received full score by the Digital Rights reviewer."
         />
       </Grid>

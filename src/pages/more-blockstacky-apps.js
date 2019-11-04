@@ -2,7 +2,7 @@ import { graphql } from 'gatsby'
 import AppCoList from '../components/appcoList'
 
 export const query = graphql`
-  query lessPrivate {
+  query morePrivate {
     allApps(filter: { miningReady: { eq: true } }, sort: { fields: [name] }) {
       totalCount
       edges {
@@ -38,18 +38,21 @@ export const query = graphql`
   }
 `
 
-export const hasNotFullNILScore = (appNode, thisMonth, maxNILScore) => {
-  const maxNILScoreF = parseFloat(maxNILScore)
+export const hasFullNILScore = (appNode, thisMonth, maxNILScore) => {
   const filteredMetaData = thisMonth.edges.filter(
     e =>
       parseInt(e.node.App_ID) === appNode.appcoid &&
-      parseFloat(e.node.NIL_Theta) < maxNILScoreF
+      thisMonth.edges[0].node.NIL_Theta === maxNILScore
   )
   return filteredMetaData.length > 0
 }
 
 export default AppCoList({
-  title: 'Less private apps',
+  title: 'More Blockstacky apps',
   filter: (appNode, data) =>
-    hasNotFullNILScore(appNode, data.thisMonth, data.maxNILScore.edges[0].node.score),
+    hasFullNILScore(
+      appNode,
+      data.thisMonth,
+      data.maxNILScore.edges[0].node.score
+    ),
 })

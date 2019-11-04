@@ -39,7 +39,7 @@ export const query = graphql`
 
 export const hasNoAuthor = (appNode, allAppMetaDataJson) => {
   const filteredMetaData = allAppMetaDataJson.edges.filter(
-    e => parseInt(e.node.id) === appNode.appcoid && (!e.node.authors || e.node.authors.length == 0)
+    e => parseInt(e.node.id) === appNode.appcoid && (!e.node.authors || e.node.authors.length === 0)
   )
   return filteredMetaData.length > 0
 }
