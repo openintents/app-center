@@ -55,25 +55,30 @@ async function fetchProfile(p) {
     })
 }
 
+function log(url, msg) {
+  if (url.indexOf('xxxxxxxxx') >=0) {
+    console.log(url, msg)
+  }
+}
 async function fetchManifest(manifestUrl) {
+  log('trying ' + manifestUrl)
   var manifest
   try {
     response = await nofetch(manifestUrl, { timeout: 50000 })
   } catch (e) {
+    log(manifestUrl, e)
     response = { status: e }
   }
 
   if (response.status != 200) {
+    log(manifestUrl, response.status)
     manifestUrl = null
   } else {
     try {
       manifest = await response.json()
     } catch (e) {
+      log(manifestUrl, e)
       manifest = { start_url: undefined }
-    }
-
-    if (!manifest.hasOwnProperty('start_url')) {
-      manifestUrl = null
     }
   }
   return { manifestUrl, manifest }
@@ -221,7 +226,9 @@ async function getAppMeta(app) {
         'no manifest found for ' + app.website + ' (' + manifestData.error + ')'
       )
     } else {
-      console.log('*** no manifest found for ' + app.website)
+      console.log(
+        '*** no manifest found for ' + app.website + ' ' + normalizedWebsite
+      )
     }
   } else if (manifestData.manifest) {
     let didAuthors
@@ -299,6 +306,7 @@ async function getAppMeta(app) {
 console.log('start')
 
 // use live data
+
 const appcoDataPromise = fetch('https://api.app.co/api/app-mining-apps')
   .then(r => r.json())
   .then(response => {
@@ -309,8 +317,10 @@ const appcoDataPromise = fetch('https://api.app.co/api/app-mining-apps')
   })
 
 // use cached data
-//const appcoData = require('./appco.json')
-//const appcoDataPromise = Promise.resolve(appcoData)
+/*
+const appcoData = require('./appco.json')
+const appcoDataPromise = Promise.resolve(appcoData)
+*/
 
 appcoDataPromise.then(appcoData => {
   const allApps = appcoData.apps.concat(unlistedApps.apps)

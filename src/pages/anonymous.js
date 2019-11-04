@@ -2,8 +2,11 @@ import { graphql } from 'gatsby'
 import AppCoList from '../components/appcoList'
 
 export const query = graphql`
-  query android {
-    allApps {
+  query anonymous {
+    allApps(
+      filter: { miningReady: { eq: true } }
+      sort: { fields: [name] }
+    ) {
       totalCount
       edges {
         node {
@@ -16,7 +19,7 @@ export const query = graphql`
       edges {
         node {
           id
-          android
+          authors
         }
       }
     }
@@ -32,18 +35,16 @@ export const query = graphql`
       }
     }
   }
-`
+` 
 
-const hasAndroidPackage = (appNode, metaDataJson) => {
-  return (
-    metaDataJson.edges.filter(e => parseInt(e.node.id) === appNode.appcoid && e.node.android)
-      .length > 0
+export const hasNoAuthor = (appNode, allAppMetaDataJson) => {
+  const filteredMetaData = allAppMetaDataJson.edges.filter(
+    e => parseInt(e.node.id) === appNode.appcoid && (!e.node.authors || e.node.authors.length == 0)
   )
+  return filteredMetaData.length > 0
 }
 
 export default AppCoList({
-  title: 'All Android Blockstack Apps',
-  showSourceLink: false,
-  filter: (appNode, data) =>
-    hasAndroidPackage(appNode, data.allAppMetaDataJson),
+  title: 'Apps without known authors',
+  filter: (appNode, data) => hasNoAuthor(appNode, data.allAppMetaDataJson),
 })

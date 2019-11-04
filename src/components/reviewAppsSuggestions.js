@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { graphql, useStaticQuery } from 'gatsby'
+import { graphql, useStaticQuery, navigate } from 'gatsby'
 
 import {
   Typography,
@@ -10,8 +10,11 @@ import {
   List,
   FormControl,
   Select,
+  CardActions,
+  Button,
 } from '@material-ui/core'
-import { LayoutContext } from './layout'
+import SearchIcon from '@material-ui/icons/Search'
+import { LayoutContext, styles } from './layout'
 import App from './app'
 
 const noss = ['', null]
@@ -167,6 +170,12 @@ const ReviewAppsSuggestions = () => {
             </List>
           )}
         </CardContent>
+        <CardActions>
+          <Button color="primary" onClick={() => navigate("/explore")}>
+            <SearchIcon style={styles.smallIcon} />
+            Explore more apps
+          </Button>
+        </CardActions>
       </Card>
     )
   }
