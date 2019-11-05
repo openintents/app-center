@@ -3,6 +3,7 @@ const fs = require('fs')
 const blockstack = require('blockstack')
 const unlistedApps = require('./unlisted-apps')
 const appMeta = require('./src/data/app-meta')
+const csvtojson = require('csvtojson')
 
 var appPublishers = [
   { username: 'jehunter5811.id', apps: [216, 1748, 1538, 934] },
@@ -56,7 +57,7 @@ async function fetchProfile(p) {
 }
 
 function log(url, msg) {
-  if (url.indexOf('xxxxxxxxx') >=0) {
+  if (url.indexOf('xxxxxxxxx') >= 0) {
     console.log(url, msg)
   }
 }
@@ -133,6 +134,20 @@ function getAndroid(normalizedWebsite) {
   }
 }
 
+async function getNilDimensions(appcoid) {
+  const results = await csvtojson()
+    .fromFile('./review-results-2019-10.csv')
+    .then(resultJSON =>
+      resultJSON.find(app => {
+        return app['App Id'] == new String(appcoid)
+      })
+    )
+  if (results != null) {
+    return { gaia: parseInt(results.Gaia), auth: parseInt(results.Auth) }
+  }
+  return {}
+}
+
 function normalizeDomain(website) {
   if (!website.endsWith('/')) {
     return website + '/'
@@ -188,7 +203,7 @@ async function getAppMeta(app) {
   var manifestData
 
   const authDomains = appMeta.authDomains.filter(
-    d => d.website == normalizedWebsite
+    d => d.normalizedWebsite == normalizedWebsite
   )
   if (authDomains.length > 0) {
     const manifestUrl = authDomains[0].manifestUrl
@@ -249,12 +264,17 @@ async function getAppMeta(app) {
       didAuthors.map(async a => {
         var address
         if (a.startsWith('did:stack:')) {
-          address = await nofetch(`https://core.blockstack.org/v1/dids/${a}`)
-            .then(r => r.json())
-            .then(response => {
-              const publicKey = response.public_key
-              return blockstack.publicKeyToAddress(publicKey)
-            })
+          if (a.startsWith('did:stack:v0:ID-')) {
+            address = address = a.substr(16)
+          } else {
+            address = await nofetch(`https://core.blockstack.org/v1/dids/${a}`)
+              .then(r => r.json())
+              .then(response => {
+                const publicKey = response.public_key
+                return blockstack.publicKeyToAddress(publicKey)
+              })
+              .catch(e => console.log(`address lookup failed for ${a}: ${e}`))
+          }
         } else if (a.startsWith('did:btc-addr:')) {
           address = a.substr(13)
         } else {
@@ -286,11 +306,13 @@ async function getAppMeta(app) {
 
   const nossReason = getNossReason(normalizedWebsite, openSourceUrl)
   const android = getAndroid(normalizedWebsite)
+  const nilDimensions = await getNilDimensions(app.id)
 
   const meta = {
     id: app.id,
     authors: authors,
     manifestUrl: manifestData.manifestUrl || '',
+    nilDimensions: nilDimensions || {},
   }
 
   if (nossReason) {
@@ -321,7 +343,6 @@ const appcoDataPromise = fetch('https://api.app.co/api/app-mining-apps')
 const appcoData = require('./appco.json')
 const appcoDataPromise = Promise.resolve(appcoData)
 */
-
 appcoDataPromise.then(appcoData => {
   const allApps = appcoData.apps.concat(unlistedApps.apps)
 

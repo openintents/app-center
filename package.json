@@ -22,6 +22,7 @@
     "bootstrap": "^4.3.1",
     "bootstrap-datepicker": "^1.9.0",
     "bootstrap-switch": "^3.4.0",
+    "csvtojson": "^2.0.10",
     "formik": "^1.5.4",
     "gatsby": "^2.13.24",
     "gatsby-image": "^2.2.3",

@@ -1,55 +1,55 @@
 {
   "authDomains": [
     {
-      "website": "https://www.graphitedocs.com/",
+      "normalizedWebsite": "https://www.graphitedocs.com/",
       "manifestUrl": "https://app.graphitedocs.com/manifest.json"
     },
-    { "website": "https://wage.pm/", "error": "dns failed" },
-    { "website": "https://foodrover.info/", "error": "dns failed" },
-    { "website": "https://emilytlam.com", "error": "dns failed" },
+    { "normalizedWebsite": "https://wage.pm/", "error": "dns failed" },
+    { "normalizedWebsite": "https://foodrover.info/", "error": "dns failed" },
+    { "normalizedWebsite": "https://emilytlam.com/", "error": "dns failed" },
     {
-      "website": "https://joshhalvorson.dev/datenight.html",
+      "normalizedWebsite": "https://joshhalvorson.dev/datenight.html/",
       "manifestUrl": "https://joshhalvorson.github.io/manifest.json"
     },
     {
-      "website": "https://secure-photo.com/",
+      "normalizedWebsite": "https://secure-photo.com/",
       "error": "firebase site not found"
     },
-    { "website": "https://sensei.chat", "error": "dns failed" },
-    { "website": "https://elweather.com", "error": "dns failed" },
+    { "normalizedWebsite": "https://sensei.chat/", "error": "dns failed" },
+    { "normalizedWebsite": "https://elweather.com/", "error": "dns failed" },
     {
-      "website": "https://www.satoshivstheworld.com/",
+      "normalizedWebsite": "https://www.satoshivstheworld.com/",
       "error": "heroku app error"
     },
-    { "website": "https://timski.org/", "error": "ios app" },
+    { "normalizedWebsite": "https://timski.org/", "error": "ios app" },
     {
-      "website": "https://www.hihermes.co",
+      "normalizedWebsite": "https://www.hihermes.co/",
       "manifestUrl": "https://www.chat.hihermes.co/manifest.json"
     },
-    { "website": "https://kanstack.com", "error": "dns failed" },
+    { "normalizedWebsite": "https://kanstack.com/", "error": "dns failed" },
     {
-      "website": "https://www.blockcharity.space",
+      "normalizedWebsite": "https://www.blockcharity.space/",
       "error": "heroku app error"
     },
-    { "website": "https://pastebucket.io/", "error": "certifact expired" },
+    { "normalizedWebsite": "https://pastebucket.io/", "error": "certifact expired" },
     {
-      "website": "https://memoryswimlane.space",
+      "normalizedWebsite": "https://memoryswimlane.space/",
       "error": "redirect to netlify"
     },
-    { "website": "https://huaren.news", "error": "invalid certificate" },
-    { "website": "https://thunderstack.id", "error": "timeout" },
-    { "website": "https://avicenna.casa", "error": "timeout" },
+    { "normalizedWebsite": "https://huaren.news/", "error": "invalid certificate" },
+    { "normalizedWebsite": "https://thunderstack.id/", "error": "timeout" },
+    { "normalizedWebsite": "https://avicenna.casa/", "error": "timeout" },
     {
-      "website": "https://blockright.moochain.com/",
+      "normalizedWebsite": "https://blockright.moochain.com/",
       "error": "invalid certificate"
     },
-    { "website": "https://www.ourtopia.co", "error": "dns failed" },
+    { "normalizedWebsite": "https://www.ourtopia.co/", "error": "dns failed" },
     {
-      "website": "https://www.sendfriend.xyz/",
+      "normalizedWebsite": "https://www.sendfriend.xyz/",
       "error": "invalid certificate"
     },
     {
-      "website": "https://blockstack.tokengazer.com/",
+      "websnormalizedWebsiteite": "https://blockstack.tokengazer.com/",
       "manifestUrl": "https://blockstack.tokengazer.com/resource/static-blockstack/manifest.json"
     }
   ],
