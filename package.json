@@ -50,6 +50,7 @@
     "node-fetch": "^2.5.0",
     "nofetch": "^0.1.0",
     "prismjs": "^1.16.0",
+    "query-string": "^6.8.3",
     "radiks": "^0.3.0-beta.1",
     "radiks-server": "^1.1.0-beta.1",
     "react": "^16.8.1",
