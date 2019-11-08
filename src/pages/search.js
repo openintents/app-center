@@ -74,7 +74,7 @@ const Search = ({ data, location }) => {
   }, [location, data, index])
 
   return (
-    <Layout>
+    <Layout hideSearch>
       <SEO
         title="OI App Center"
         keywords={[`app center`, `application`, `blockstack`]}
