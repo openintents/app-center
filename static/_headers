@@ -1,3 +1,5 @@
+/*
+  cant-be-evil: true
 /index.html
   Access-Control-Allow-Origin: *
   Access-Control-Allow-Headers: "X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding"
