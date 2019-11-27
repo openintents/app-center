@@ -659,13 +659,7 @@ class AppDetails extends Component {
             {avgRating && (
               <>
                 <Typography variant="body2">
-                  <SmallRating
-                    fractions={10}
-                    component="span"
-                    readOnly
-                    value={avgRating.avgRating}
-                  />
-                  ({avgRating.count})
+                  {avgRating.count} reviews
                 </Typography>
               </>
             )}
