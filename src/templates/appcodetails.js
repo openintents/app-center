@@ -652,7 +652,7 @@ class AppDetails extends Component {
               lifetimeEarnings: data.apps.lifetimeEarnings,
               lastCommit: data.apps.fields && data.apps.fields.lastCommit,
               openSourceUrl: data.apps.openSourceUrl,
-              multiPlayerCount: data.theBlockstats && data.theBlockstats.count,
+              multiPlayerCount: undefined, //data.theBlockstats && data.theBlockstats.count,
               hideRewards: false,
               showSourceLink: true,
             })}
@@ -1060,6 +1060,23 @@ export const query = graphql`
         }
       }
     }
+
+    nov2019: allAppmining201911AuditXlsxResults(
+      filter: { Final_Score: { ne: null } }
+      sort: { fields: [Final_Score], order: [DESC] }
+    ) {
+      totalCount
+      edges {
+        node {
+          App_ID: App_Id
+          Final_Score
+          TMUI_Theta
+          NIL_Theta
+          Awario_Theta
+        }
+      }
+    }
+
   }
 `
 

@@ -20,6 +20,10 @@ getLastCommit = openSourceUrl => {
       openSourceUrl = 'https://github.com/blocksnacks/snack-client'
     } else if (openSourceUrl == 'https://github.com/runkod') {
       openSourceUrl = 'https://github.com/runkod/runkod-app'
+    } else if (openSourceUrl == 'https://github.com/pixus-tech') {
+      openSourceUrl = 'https://github.com/pixus-tech/webapp'
+    } else if (openSourceUrl == 'https://github.com/Satoshis-Games') {
+      openSourceUrl = 'https://github.com/Satoshis-Games/Games'
     }
 
     const parts = openSourceUrl.substr(19).split('/')

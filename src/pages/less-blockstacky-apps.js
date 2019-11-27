@@ -12,7 +12,7 @@ export const query = graphql`
         }
       }
     }
-    thisMonth: allAppmining201910AuditXlsxOctAudit(
+    thisMonth: allAppmining201911AuditXlsxResults(
       filter: { Final_Score: { ne: null } }
       sort: { fields: [NIL_Theta], order: [DESC] }
     ) {
@@ -24,7 +24,7 @@ export const query = graphql`
         }
       }
     }
-    maxNILScore: allAppmining201910AuditXlsxOctAudit(
+    maxNILScore: allAppmining201911AuditXlsxResults(
       limit: 1
       filter: { Final_Score: { ne: null } }
       sort: { fields: [NIL_Theta], order: [DESC] }

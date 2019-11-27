@@ -45,4 +45,4 @@ export const query = graphql`
   }
 `
 
-export default OutAppList({ month: 'August 2019' })
+export default OutAppList({ month: 'September 2019' })

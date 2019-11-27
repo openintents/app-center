@@ -2,8 +2,8 @@ import { graphql } from 'gatsby'
 import OutAppList from '../../components/outAppList'
 
 export const query = graphql`
-  query out201910 {
-    lastmonth: allAppmining201909AuditXlsxAuditResults(
+  query out201911 {
+    lastmonth: allAppmining201910AuditXlsxOctAudit(
       filter: { Final_Score: { ne: null } }
     ) {
       totalCount
@@ -15,7 +15,7 @@ export const query = graphql`
         }
       }
     }
-    thismonth: allAppmining201910AuditXlsxOctAudit(
+    thismonth: allAppmining201911AuditXlsxResults(
       filter: { Final_Score: { ne: null } }
     ) {
       edges {
@@ -45,4 +45,4 @@ export const query = graphql`
   }
 `
 
-export default OutAppList({ month: 'October 2019' })
+export default OutAppList({ month: 'November 2019' })
