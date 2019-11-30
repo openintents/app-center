@@ -1,7 +1,6 @@
 import React from 'react'
 import App from '../components/app'
 import Layout from '../components/layout'
-import { numberFormat } from '../components/app'
 import { Typography, List, ListItem, ListItemText } from '@material-ui/core'
 
 export const hasNossReason = (appNode, allAppMetaDataJson) => {
@@ -12,27 +11,17 @@ export const hasNossReason = (appNode, allAppMetaDataJson) => {
 }
 
 const AppCoList = ({ title, showSourceLink, filter }) => ({ data }) => {
-  const allApps = data.allApps.edges.filter(e => {
-    if (filter) {
-      return filter(e.node, data)
-    } else {
-      return true
-    }
-  })
+  const allApps = filter
+    ? data.allApps.edges.filter(e => {
+        return filter(e.node, data)
+      })
+    : data.allApps.edges
   return (
     <Layout>
       <Typography variant="h3">{title}</Typography>
       <List dense>
         <ListItem>
-          <ListItemText>Total number: {allApps.length}</ListItemText>
-        </ListItem>
-        <ListItem>
-          <ListItemText>
-            Total rewards:{' '}
-            {numberFormat.format(
-              allApps.reduce((sum, d) => sum + d.node.lifetimeEarnings, 0)
-            )}
-          </ListItemText>
+          <ListItemText>Number of apps: {allApps.length}</ListItemText>
         </ListItem>
       </List>
       <List>

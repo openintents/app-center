@@ -50,7 +50,7 @@ export const SmallAppDetails = ({
     <React.Fragment>
       <Typography component="span" variant="body2" color="textPrimary">
         {description}
-        {!hideRewards && (
+        {false && (
           <>
             <br />
             Rewards: {earnings}{' '}

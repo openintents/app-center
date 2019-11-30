@@ -45,6 +45,13 @@ const Explore = ({ data }) => (
     <Grid container>
       <Grid item xs={12} sm={6}>
         <CategoryPage
+          path="/editors-choice"
+          title="Editor's Choice"
+          description="Apps that the editor thinks bring value to the Blockstack ecosystem."
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <CategoryPage
           path="/appco-foss"
           title="Open Source Apps"
           description="These apps provide a link to the source code of the app. Note, there is no verification that the code is indeed the code that was deployed."
