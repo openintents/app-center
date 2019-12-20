@@ -31,12 +31,18 @@
       "normalizedWebsite": "https://www.blockcharity.space/",
       "error": "heroku app error"
     },
-    { "normalizedWebsite": "https://pastebucket.io/", "error": "certifact expired" },
+    {
+      "normalizedWebsite": "https://pastebucket.io/",
+      "error": "certifact expired"
+    },
     {
       "normalizedWebsite": "https://memoryswimlane.space/",
       "error": "redirect to netlify"
     },
-    { "normalizedWebsite": "https://huaren.news/", "error": "invalid certificate" },
+    {
+      "normalizedWebsite": "https://huaren.news/",
+      "error": "invalid certificate"
+    },
     { "normalizedWebsite": "https://thunderstack.id/", "error": "timeout" },
     { "normalizedWebsite": "https://avicenna.casa/", "error": "timeout" },
     {
@@ -49,8 +55,40 @@
       "error": "invalid certificate"
     },
     {
-      "websnormalizedWebsiteite": "https://blockstack.tokengazer.com/",
+      "normalizedWebsite": "https://blockstack.tokengazer.com/",
       "manifestUrl": "https://blockstack.tokengazer.com/resource/static-blockstack/manifest.json"
+    },
+    {
+      "normalizedWebsite": "https://sheety.app/",
+      "error": "invalid certificate"
+    },
+    {
+      "normalizedWebsite": "https://blkbreakout.herokuapp.com/",
+      "error": "no project"
+    },
+    {
+      "normalizedWebsite": "https://detacts.ga/",
+      "error": "timeout"
+    },
+    {
+      "normalizedWebsite": "https://summary.trovenow.com/",
+      "manifestUrl": "https://summaryapp.trovenow.com/manifest.json"
+    },
+    {
+      "normalizedWebsite": "https://www.jubrillo.work/",
+      "error": "invalid certificate"
+    },
+    {
+      "normalizedWebsite": "https://www.jubrillo.work/",
+      "error": "invalid certificate"
+    },
+    {
+      "normalizedWebsite": "https://apps.apple.com/us/app/vegan-scanner-is-it-vegan/id1403509762/",
+      "error": "app store url"
+    },
+    {
+      "normalizedWebsite": "https://nearhere.in-progress.com/",
+      "error": "tls failed"
     }
   ],
   "noss": [

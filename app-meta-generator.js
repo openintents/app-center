@@ -38,6 +38,29 @@ var appPublishers = [
   { username: 'suvorovalex.id.blockstack', apps: [2083] },
   { username: 'jefreybulla.id.blockstack', apps: [1350] },
   { username: 'david.id', apps: [2098] },
+  { username: 'sdsantos.id.blockstack', apps: [1453] },
+  { username: 'joaodiogocosta.id.blockstack', apps: [1453] },
+  { username: 'claudiaacabado.id.blockstack', apps: [1453] },
+  { username: 'jorishermans.blockstack.id', apps: [] },
+  {
+    username: 'arcane.id',
+    apps: [
+      1712,
+      1713,
+      1714,
+      1715,
+      1716,
+      1717,
+      1895,
+      1896,
+      2109,
+      2110,
+      2111,
+      2112,
+      2113,
+      2114,
+    ],
+  },
 ]
 
 async function fetchProfile(p) {
@@ -237,6 +260,23 @@ async function getAppMeta(app) {
     }
   }
 
+  var dids = []
+  if (manifestData.manifestUrl) {
+    const arr = manifestData.manifestUrl.split('/')
+    const didConfiguration =
+      arr[0] + '//' + arr[2] + '/.well-known/did-configuration'
+    dids = await nofetch(didConfiguration)
+      .then(r => r.json())
+      .then(response => {
+        // TODO verify entries
+        console.log(`found did configuration for ${manifestData.manifestUrl}`)
+        return response.entries.map(entry => entry.did)
+      })
+      .catch(err => {
+        return []
+      })
+  }
+
   var authors = []
   if (!manifestData.manifestUrl) {
     if (manifestData.error) {
@@ -250,7 +290,9 @@ async function getAppMeta(app) {
     }
   } else if (manifestData.manifest) {
     let didAuthors
-    if (Array.isArray(manifestData.manifest.did_authors)) {
+    if (dids.length > 0) {
+      didAuthors = dids
+    } else if (Array.isArray(manifestData.manifest.did_authors)) {
       didAuthors = manifestData.manifest.did_authors
     } else if (
       typeof manifestData.manifest.did_authors === 'string' ||
@@ -303,6 +345,7 @@ async function getAppMeta(app) {
               return a
             }
           })
+          .catch(err => console.log(`name lookup failed for ${address}`, err))
       })
     )
   }
@@ -316,6 +359,7 @@ async function getAppMeta(app) {
     authors: authors,
     manifestUrl: manifestData.manifestUrl || '',
     nilDimensions: nilDimensions || {},
+    dids,
   }
 
   if (nossReason) {
@@ -330,22 +374,31 @@ async function getAppMeta(app) {
 
 console.log('start')
 
+let useCache = false
+process.argv.forEach(function(val, index, array) {
+  console.log(index + ': ' + val)
+  if (val === '--cached') {
+    useCache = true
+  }
+})
+
 // use live data
 
-const appcoDataPromise = fetch('https://api.app.co/api/app-mining-apps')
+let appcoDataPromise = fetch('https://api.app.co/api/app-mining-apps')
   .then(r => r.json())
   .then(response => {
     fs.writeFile('appco.json', JSON.stringify(response), err => {
-      console.log(err)
+      console.log('written appco.json', err)
     })
     return response
   })
 
 // use cached data
-/*
-const appcoData = require('./appco.json')
-const appcoDataPromise = Promise.resolve(appcoData)
-*/
+if (useCache) {
+  const appcoData = require('./appco.json')
+  appcoDataPromise = Promise.resolve(appcoData)
+}
+
 appcoDataPromise.then(appcoData => {
   const allApps = appcoData.apps.concat(unlistedApps.apps)
 
@@ -359,7 +412,7 @@ appcoDataPromise.then(appcoData => {
         'src/data/app-publishers.json',
         JSON.stringify(publishers),
         err => {
-          console.log(err)
+          console.log('written app-publishers', err)
         }
       )
 
@@ -369,7 +422,7 @@ appcoDataPromise.then(appcoData => {
         'src/data/app-meta-data.json',
         JSON.stringify(metaData),
         err => {
-          console.log(err)
+          console.log('written app-meta-data', err)
         }
       )
     })
