@@ -146,6 +146,16 @@
       "normalizedWebsite": "https://thedailyhabits.com/",
       "noss": "https://github.com/psgganesh/atomichabits",
       "reason": "not found"
+    },
+    {
+      "normalizedWebsite": "https://crittertracker.space/",
+      "noss": "https://github.com/Franzferdinan51/crittertracker/tree/Conversion",
+      "reason": "not found"
+    },
+    {
+      "normalizedWebsite": "https://app.museprotocol.com/",
+      "noss": "https://www.github.com/museprotocol",
+      "reason": "only contracts"
     }
   ],
   "sourceCode": [
@@ -160,6 +170,14 @@
     {
       "normalizedWebsite": "https://lannister.capital/",
       "openSourceUrl": "https://github.com/lannister-capital/lannister-app"
+    },
+    {
+      "normalizedWebsite": "https://nextpass.co/",
+      "openSourceUrl": "https://github.com/next-pass/nextpass-app"
+    },
+    {
+      "normalizedWebsite": "https://satoshis.games/",
+      "openSourceUrl": "https://github.com/whiteyhat/legacy-satoshis-games"
     }
   ],
   "android": [
