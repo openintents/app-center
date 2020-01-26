@@ -26,18 +26,18 @@ var appPublishers = [
   { username: 'codedarkin.id.blockstack', apps: [1869] },
   { username: 'alexsopinka.id.blockstack', apps: [1464] },
   { username: 'stealthy.id', apps: [174, 1445] },
-  { username: 'juliet_oberding.id.blockstack', apps: [1720] },
+  { username: 'juliet_oberding.id.blockstack', apps: [1719, 1720] },
   { username: 'friedger.id', apps: [676, 924, 1062, 1444, 1754] },
   { username: 'psgganesh.id.blockstack', apps: [1766] },
   { username: 'brandon100.id.blockstack', apps: [1729] },
   { username: 'ayushsubedi.id.blockstack', apps: [1595] },
   { username: 'dylanbathurst.id.blockstack', apps: [1855] },
   { username: 'njordhov.id.blockstack', apps: [1723] },
-  { username: 'russfranky.id.blockstack', apps: [1250] },
+  { username: 'franklin.id', apps: [1250] },
   { username: 'talhasch.id.blockstack', apps: [1183, 2064] },
   { username: 'suvorovalex.id.blockstack', apps: [2083] },
   { username: 'jefreybulla.id.blockstack', apps: [1350] },
-  { username: 'david.id', apps: [2098] },
+  { username: 'david.id', apps: [2098, 2602] },
   { username: 'sdsantos.id.blockstack', apps: [1453] },
   { username: 'joaodiogocosta.id.blockstack', apps: [1453] },
   { username: 'claudiaacabado.id.blockstack', apps: [1453] },
@@ -316,9 +316,17 @@ async function getAppMeta(app) {
               .then(r => r.json())
               .then(response => {
                 const publicKey = response.public_key
-                return blockstack.publicKeyToAddress(publicKey)
+                if (publicKey) {
+                  return blockstack.publicKeyToAddress(publicKey)
+                } else {
+                  return Promise.reject(
+                    `couldn't resolve DID ${JSON.stringify(response)}`
+                  )
+                }
               })
-              .catch(e => console.log(`address lookup failed for ${a}: ${e}`))
+              .catch(e =>
+                console.log(`address lookup failed for ${a}: ${e}`, e)
+              )
           }
         } else if (a.startsWith('did:btc-addr:')) {
           address = a.substr(13)
@@ -328,24 +336,28 @@ async function getAppMeta(app) {
           }
           return Promise.resolve(a)
         }
-        console.log('get names for address ' + address)
-        return await nofetch(
-          `https://core.blockstack.org/v1/addresses/bitcoin/${address}`
-        )
-          .then(r => r.json())
-          .then(async response => {
-            if (Array.isArray(response.names)) {
-              response.names.forEach(async n => {
-                addPublisher(n, app.id)
-              })
-            }
-            if (response.names && response.names.length > 0) {
-              return response.names[0]
-            } else {
-              return a
-            }
-          })
-          .catch(err => console.log(`name lookup failed for ${address}`, err))
+        if (address) {
+          console.log('get names for address ' + address)
+          return await nofetch(
+            `https://core.blockstack.org/v1/addresses/bitcoin/${address}`
+          )
+            .then(r => r.json())
+            .then(async response => {
+              if (Array.isArray(response.names)) {
+                response.names.forEach(async n => {
+                  addPublisher(n, app.id)
+                })
+              }
+              if (response.names && response.names.length > 0) {
+                return response.names[0]
+              } else {
+                return a
+              }
+            })
+            .catch(err => console.log(`name lookup failed for ${address}`, err))
+        } else {
+          console.log(`Invalid author ${a}`)
+        }
       })
     )
   }
