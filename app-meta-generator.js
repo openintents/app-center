@@ -356,7 +356,7 @@ async function getAppMeta(app) {
             })
             .catch(err => console.log(`name lookup failed for ${address}`, err))
         } else {
-          console.log(`Invalid author ${a}`)
+          console.log(`Invalid author ${a} for ${app.website}`)
         }
       })
     )

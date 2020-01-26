@@ -8,6 +8,7 @@ import {
   Card,
   CardHeader,
   CardContent,
+  Typography,
 } from '@material-ui/core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import { config as faConfig } from '@fortawesome/fontawesome-svg-core'
@@ -178,22 +179,67 @@ class Publisher extends Component {
   renderSocialAccounts(data) {
     if (data.appPublishersJson.profile.account) {
       return social.map(socialService => {
-        return data.appPublishersJson.profile.account
-          .filter(a => a.service.toLowerCase() === socialService)
-          .map(a => {
-            return (
-              <a
-                key={a.service}
-                href={this.accountAsLink(a)}
-                rel="noopener noreferrer"
-                target="_blank"
-                style={{ margin: 4 }}
-              >
-                {this.accountAsText(a)}
-              </a>
-            )
-          })
+        const socialAccount = data.appPublishersJson.profile.account.find(
+          a => a.service.toLowerCase() === socialService
+        )
+        if (socialAccount) {
+          return (
+            <a
+              key={socialAccount.service}
+              href={this.accountAsLink(socialAccount)}
+              rel="noopener noreferrer"
+              target="_blank"
+              style={{ margin: 4 }}
+            >
+              {this.accountAsText(socialAccount)}
+            </a>
+          )
+        } else {
+          return null
+        }
       })
+    } else {
+      return null
+    }
+  }
+
+  renderDonate(data) {
+    if (data.appPublishersJson.profile.account) {
+      const bitcoinAccount = data.appPublishersJson.profile.account.find(
+        a => a.service.toLowerCase() === 'bitcoin'
+      )
+      const donateButtons = []
+      if (bitcoinAccount) {
+        donateButtons.push(
+          <a
+            key={bitcoinAccount.service}
+            href={`https://blockchain.info/address/${bitcoinAccount.identifier}`}
+            rel="noopener noreferrer"
+            target="_blank"
+            style={{ margin: 4 }}
+          >
+            Donate BTC
+          </a>
+        )
+      }
+
+      const etherumAccount = data.appPublishersJson.profile.account.find(
+        a => a.service.toLowerCase() === 'ethereum'
+      )
+      if (etherumAccount) {
+        donateButtons.push(
+          <a
+            key={etherumAccount.service}
+            href={`https://etherscan.io/address/${etherumAccount.identifier}`}
+            rel="noopener noreferrer"
+            target="_blank"
+            style={{ margin: 4 }}
+          >
+            Donate ETH
+          </a>
+        )
+      }
+      return <Typography>{donateButtons}</Typography>
     } else {
       return null
     }
@@ -228,7 +274,7 @@ class Publisher extends Component {
     const { data } = this.props
     const accounts = this.renderSocialAccounts(data)
     const contacts = this.renderContactApps(data)
-
+    const donateButtons = this.renderDonate(data)
     const meta =
       data.appPublishersJson.localFile &&
       data.appPublishersJson.localFile.childImageSharp
@@ -262,7 +308,7 @@ class Publisher extends Component {
               subheader={data.appPublishersJson.username}
             />
             <CardContent>
-              {contacts} {accounts}
+              {contacts} {accounts} {donateButtons}
             </CardContent>
           </Card>
           <List>
