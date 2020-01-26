@@ -6,6 +6,17 @@ const appMetas = require('./src/data/app-meta-data')
 const unlistedApps = require('./unlisted-apps')
 const listedApps = require('./appco')
 
+function slugify(text) {
+  return text
+    .toString()
+    .toLowerCase()
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+    .replace(/^-+/, '') // Trim - from start of text
+    .replace(/-+$/, '') // Trim - from end of text
+}
+
 getLastCommit = openSourceUrl => {
   if (openSourceUrl.startsWith('https://github.com/')) {
     if (openSourceUrl == 'https://github.com/radicleart') {
@@ -407,7 +418,7 @@ exports.createPages = async ({ graphql, actions }) => {
   await createPosts(graphql, actions)
   await createAppPublishers(graphql, actions)
 
-  const { createPage } = actions
+  const { createPage, createRedirect } = actions
   const result = await graphql(`
     {
       allApps {
@@ -469,6 +480,30 @@ exports.createPages = async ({ graphql, actions }) => {
           appname: node.name,
         },
       })
+
+      createRedirect({
+        fromPath: `/a/${slugify(node.name)}`,
+        toPath: `/appco/${node.appcoid}`,
+        isPermanent: true,
+      })
+      createRedirect({
+        fromPath: `/a/${slugify(node.name)}/review`,
+        toPath: `/appco/${node.appcoid}/review`,
+        isPermanent: true,
+      })
+
+      if (authDomains.length > 0) {
+        createRedirect({
+          fromPath: `/a/${authDomains[0]}`,
+          toPath: `/appco/${node.appcoid}`,
+          isPermanent: true,
+        })
+        createRedirect({
+          fromPath: `/a/${authDomains[0]}/review`,
+          toPath: `/appco/${node.appcoid}/review`,
+          isPermanent: true,
+        })
+      }
     })
   )
 }
