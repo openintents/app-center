@@ -27,7 +27,7 @@ var appPublishers = [
   { username: 'alexsopinka.id.blockstack', apps: [1464] },
   { username: 'stealthy.id', apps: [174, 1445] },
   { username: 'juliet_oberding.id.blockstack', apps: [1719, 1720] },
-  { username: 'friedger.id', apps: [676, 924, 1062, 1444, 1754] },
+  { username: 'friedger.id', apps: [676, 924, 1062, 1444, 1754, 2687] },
   { username: 'psgganesh.id.blockstack', apps: [1766] },
   { username: 'brandon100.id.blockstack', apps: [1729] },
   { username: 'ayushsubedi.id.blockstack', apps: [1595] },
@@ -43,7 +43,7 @@ var appPublishers = [
   { username: 'claudiaacabado.id.blockstack', apps: [1453] },
   { username: 'jorishermans.blockstack.id', apps: [] },
   {
-    username: 'arcane.id',
+    username: 'group.arcane',
     apps: [
       1712,
       1713,
@@ -59,6 +59,23 @@ var appPublishers = [
       2112,
       2113,
       2114,
+    ],
+  },
+  {
+    username: 'group.vinicius',
+    apps: [
+      1991,
+      1999,
+      2001,
+      2096,
+      2097,
+      2100,
+      2288,
+      2389,
+      2404,
+      2425,
+      2289,
+      2290,
     ],
   },
 ]

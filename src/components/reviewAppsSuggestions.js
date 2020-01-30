@@ -73,7 +73,7 @@ const ReviewAppsSuggestions = () => {
 
     if (sort === 'popular') {
       appList = data.allApps.edges
-        .filter(e => [216, 945, 174, 825, 1318].includes(e.node.appcoid))
+        .filter(e => [216, 945, 1092, 825, 1318].includes(e.node.appcoid))
         .map(e => e.node)
     } else if (sort === 'usable') {
       const topUsable = data.thisMonthsResults.edges
@@ -171,7 +171,7 @@ const ReviewAppsSuggestions = () => {
           )}
         </CardContent>
         <CardActions>
-          <Button color="primary" onClick={() => navigate("/explore")}>
+          <Button color="primary" onClick={() => navigate('/explore')}>
             <SearchIcon style={styles.smallIcon} />
             Explore more apps
           </Button>

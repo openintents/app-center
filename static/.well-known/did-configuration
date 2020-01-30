@@ -1,0 +1,8 @@
+{
+  "entries": [
+    {
+      "did": "did:btcr:13DQ5vdrHkAE4xNt9FFeBcjVq8JNuWMjeJ",
+      "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NksifQ.eyJpc3MiOiJkaWQ6YnRjcjoxM0RRNXZkckhrQUU0eE50OUZGZUJjalZxOEpOdVdNamVKIiwiZG9tYWluIjoiYXBwLWNlbnRlci5vcGVuaW50ZW50cy5vcmciLCJleHAiOiIyMDIwLTEyLTAyVDEzOjA5OjA5LjQ3NFoifQ.nk_FXiGzbcM_Duk8cDghpiyjFIHCBKHbv8xrvnM5w4MKTTK-12yFaxrtbM9WgBTueUIFhf_6ls6JDJckX4Y4OQ"
+    }
+  ]
+}

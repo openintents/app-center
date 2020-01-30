@@ -1087,6 +1087,21 @@ export const query = graphql`
       }
     }
 
+    jan2020: allAppmining202001AuditXlsxResults(
+      filter: { Final_Score: { ne: null } }
+      sort: { fields: [Final_Score], order: [DESC] }
+    ) {
+      totalCount
+      edges {
+        node {
+          App_ID: App_Id
+          Final_Score
+          TMUI_Theta
+          NIL_Theta
+          Awario_Theta
+        }
+      }
+    }
   }
 `
 

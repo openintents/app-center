@@ -89,7 +89,27 @@
     {
       "normalizedWebsite": "https://nearhere.in-progress.com/",
       "error": "tls failed"
-    }
+    },
+    { "normalizedWebsite": "https://huddle.group/", "error": "dns failed" },
+    { "normalizedWebsite": "https://www.referenda.io/", "error": "dns failed" },
+    { "normalizedWebsite": "https://simpleco.in/", "error": "dns failed" },
+    {
+      "normalizedWebsite": "https://blockstackboard.org/",
+      "error": "dns failed"
+    },
+    { "normalizedWebsite": "https://wagerup.io/", "error": "dns failed" },
+    {
+      "normalizedWebsite": "https://www.blockcred.io/",
+      "error": "app removed"
+    },
+    { "normalizedWebsite": "https://dclouds.online/", "error": "tls failed" },
+    { "normalizedWebsite": "https://radicle.art/", "error": "tls failed" },
+    { "normalizedWebsite": "https://dbid.io/", "error": "tls failed" },
+    {
+      "normalizedWebsite": "https://getstacks.xyz/",
+      "manifestUrl": "https://getstacks.xyz/auth/blockstack?manifest=true"
+    },
+    { "normalizedWebsite": "https://ziggy.website/", "error": "dns failed" }
   ],
   "noss": [
     {
