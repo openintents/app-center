@@ -1,0 +1,198 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string"
+    },
+    "storageNetwork": {
+      "type": "string"
+    },
+    "authentication": {
+      "type": "string"
+    },
+    "imgixImageUrl": {
+      "type": "string"
+    },
+    "id": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "categoryID": {
+      "type": "integer"
+    },
+    "website": {
+      "type": "string"
+    },
+    "blockchainID": {
+      "type": "null"
+    },
+    "storageNetworkID": {
+      "type": "integer"
+    },
+    "authenticationID": {
+      "type": "integer"
+    },
+    "openSourceUrl": {
+      "type": "string"
+    },
+    "registrationIsOpen": {
+      "type": "null"
+    },
+    "trackingIsBlocked": {
+      "type": "null"
+    },
+    "description": {
+      "type": "string"
+    },
+    "twitterHandle": {
+      "type": "string"
+    },
+    "gcsImagePath": {
+      "type": "string"
+    },
+    "BTCAddress": {
+      "type": "string"
+    },
+    "isSubmittingOwnApp": {
+      "type": "boolean"
+    },
+    "productionId": {
+      "type": "null"
+    },
+    "imageUrl": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    },
+    "Slugs": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "default": {
+              "type": "boolean"
+            },
+            "value": {
+              "type": "string"
+            },
+            "appId": {
+              "type": "integer"
+            },
+            "createdAt": {
+              "type": "string"
+            },
+            "updatedAt": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "default",
+            "value",
+            "appId",
+            "createdAt",
+            "updatedAt"
+          ]
+        }
+      ]
+    },
+    "Rankings": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "appId": {
+              "type": "integer"
+            },
+            "twitterMentions": {
+              "type": "integer"
+            },
+            "date": {
+              "type": "string"
+            },
+            "monthlyVisitsCount": {
+              "type": "null"
+            },
+            "monthlyBounceRate": {
+              "type": "null"
+            },
+            "monthlyPageViews": {
+              "type": "null"
+            },
+            "monthlyVisitDuration": {
+              "type": "null"
+            },
+            "createdAt": {
+              "type": "string"
+            },
+            "updatedAt": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "appId",
+            "twitterMentions",
+            "date",
+            "monthlyVisitsCount",
+            "monthlyBounceRate",
+            "monthlyPageViews",
+            "monthlyVisitDuration",
+            "createdAt",
+            "updatedAt"
+          ]
+        }
+      ]
+    },
+    "miningReady": {
+      "type": "boolean"
+    },
+    "lifetimeEarnings": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "category",
+    "storageNetwork",
+    "authentication",
+    "imgixImageUrl",
+    "id",
+    "name",
+    "categoryID",
+    "website",
+    "blockchainID",
+    "storageNetworkID",
+    "authenticationID",
+    "openSourceUrl",
+    "registrationIsOpen",
+    "trackingIsBlocked",
+    "description",
+    "twitterHandle",
+    "gcsImagePath",
+    "BTCAddress",
+    "isSubmittingOwnApp",
+    "productionId",
+    "imageUrl",
+    "createdAt",
+    "updatedAt",
+    "Slugs",
+    "Rankings",
+    "miningReady",
+    "lifetimeEarnings"
+  ]
+}
