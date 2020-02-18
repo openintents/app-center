@@ -67,6 +67,24 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-plugin-netlify`,
+      options: {
+        allPageHeaders: ['cant-be-evil: true'],
+        headers: {
+          '/index.html': [
+            'Access-Control-Allow-Origin: *',
+            'Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding',
+            '  Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT',
+          ],
+          '/manifest.webmanifest': [
+            'Access-Control-Allow-Origin: *',
+            'Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding',
+            '  Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT',
+          ],
+        },
+      },
+    },
+    {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `OI App Center for Blockstack`,

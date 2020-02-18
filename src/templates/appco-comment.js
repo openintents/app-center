@@ -19,7 +19,6 @@ class AppComment extends Component {
     userUpdate: '',
     userData: null,
     comments: [],
-    visibility: 'private',
     privateComments: [],
     loadingComments: false,
     loadingPrivateComments: false,
@@ -70,10 +69,6 @@ class AppComment extends Component {
     })
   }
 
-  handleChangeVisibility = event => {
-    this.setState({ visibility: event.target.value })
-  }
-
   handleCloseUpdate = () => {
     window.location.replace(window.location.origin + '/review-thanks')
   }
@@ -86,9 +81,9 @@ class AppComment extends Component {
     this.setState({ rating: value })
   }
 
-  postComment = async () => {
+  postComment = async ({ visibility }) => {
     this.setState({ updating: true })
-    const { userUpdate, visibility, rating } = this.state
+    const { userUpdate, rating } = this.state
     const comment =
       visibility === 'public'
         ? new UserComment({
@@ -108,14 +103,7 @@ class AppComment extends Component {
 
   render() {
     const { data } = this.props
-    const {
-      visibility,
-      rating,
-      userUpdate,
-      updating,
-      isSignedIn,
-      loadingUser,
-    } = this.state
+    const { rating, userUpdate, updating, isSignedIn, loadingUser } = this.state
     const icon =
       data.apps.localFile && data.apps.localFile.childImageSharp ? (
         <Img fixed={data.apps.localFile.childImageSharp.fixed} />
@@ -155,10 +143,8 @@ class AppComment extends Component {
           userUpdate,
           showUpdateDialog: true,
           updating,
-          visibility,
           rating,
           handleCloseUpdate: this.handleCloseUpdate,
-          handleChangeVisibility: this.handleChangeVisibility,
           handleChangeText: this.handleChangeText,
           handleChangeRating: this.handleChangeRating,
           postComment: this.postComment,
@@ -178,7 +164,7 @@ export const query = graphql`
       ...AppInformation
       ...AppBigIcon
     }
-    allAuthors:allAppPublishersJson(filter:{apps:{eq: $appcoid } }) {
+    allAuthors: allAppPublishersJson(filter: { apps: { eq: $appcoid } }) {
       edges {
         node {
           username
@@ -188,7 +174,6 @@ export const query = graphql`
         }
       }
     }
-
   }
 `
 

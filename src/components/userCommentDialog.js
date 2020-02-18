@@ -4,9 +4,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
   TextField,
   DialogActions,
   Button,
@@ -20,10 +17,8 @@ const UserCommentDialog = ({
   userUpdate,
   showUpdateDialog,
   updating,
-  visibility,
   rating,
   handleCloseUpdate,
-  handleChangeVisibility,
   handleChangeText,
   handleChangeRating,
   postComment,
@@ -31,12 +26,6 @@ const UserCommentDialog = ({
   isSignedIn,
   loadingUser,
 }) => {
-  let postAction
-  if (visibility === 'public') {
-    postAction = 'Post Publicly'
-  } else {
-    postAction = 'Post Privately'
-  }
   return (
     <Dialog
       disableBackdropClick={modal}
@@ -73,24 +62,6 @@ const UserCommentDialog = ({
             {!isSignedIn && <BlockstackProfile variant="blue" redirectToHere />}
             {(!modal || isSignedIn) && (
               <>
-                <RadioGroup
-                  aria-label="Visibility"
-                  name="visibility"
-                  value={visibility}
-                  onChange={e => handleChangeVisibility(e)}
-                >
-                  <FormControlLabel
-                    value="public"
-                    control={<Radio />}
-                    label="Visible for all"
-                  />
-
-                  <FormControlLabel
-                    value="private"
-                    control={<Radio />}
-                    label="Visible only for me"
-                  />
-                </RadioGroup>
                 <Rating
                   onChange={value => handleChangeRating(value)}
                   value={rating}
@@ -125,8 +96,17 @@ const UserCommentDialog = ({
         <Button onClick={() => handleCloseUpdate()} color="secondary">
           Cancel
         </Button>
-        <Button onClick={() => postComment()} color="primary">
-          {postAction}
+        <Button
+          onClick={() => postComment({ visibility: 'private' })}
+          color="secondary"
+        >
+          Save draft
+        </Button>
+        <Button
+          onClick={() => postComment({ visibililty: 'public' })}
+          color="primary"
+        >
+          Post publicly
         </Button>
       </DialogActions>
     </Dialog>

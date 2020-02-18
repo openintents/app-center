@@ -1,7 +1,7 @@
 {
   "name": "oi-app-center",
   "description": "Decentralized Feedback Center",
-  "version": "2.21.1",
+  "version": "2.22.0",
   "author": "friedger <friedger@dontemailme.com>",
   "dependencies": {
     "@babel/core": "^7.3.4",
@@ -29,6 +29,7 @@
     "gatsby-plugin-create-client-paths": "^2.0.2",
     "gatsby-plugin-manifest": "^2.1.1",
     "gatsby-plugin-material-ui": "^2.1.4",
+    "gatsby-plugin-netlify": "^2.1.32",
     "gatsby-plugin-offline": "^2.2.4",
     "gatsby-plugin-react-helmet": "^3.0.2",
     "gatsby-plugin-sharp": "^2.2.1",

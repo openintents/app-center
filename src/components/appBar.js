@@ -121,7 +121,7 @@ export default function PrimaryAppBar({
     >
       <MenuItem onClick={() => navigate('/data/#reviews')}>Reviews</MenuItem>
       <MenuItem onClick={() => navigate('/data/#apps')}>Apps</MenuItem>
-      {isSignedIn && <MenuItem onClick={() => logout()}>Logout</MenuItem>}
+      <MenuItem onClick={() => logout()}>Logout</MenuItem>
     </Menu>
   )
 
@@ -178,7 +178,7 @@ export default function PrimaryAppBar({
               <Search
                 searchIndex={siteSearchIndex.index}
                 suggestionSelectedCallback={suggestion => {
-                  if (suggestion.category === "App Publisher") {
+                  if (suggestion.category === 'App Publisher') {
                     navigate('/u/' + suggestion.username)
                   } else {
                     navigate('/appco/' + suggestion.appcoid)
@@ -217,7 +217,9 @@ export default function PrimaryAppBar({
             </>
           )}
           {!isSignedIn && !checking && (
-            <BlockstackButton onClick={() => redirectToSignIn()} />
+            <div className={classes.sectionDesktop}>
+              <BlockstackButton onClick={() => redirectToSignIn()} />
+            </div>
           )}
         </Toolbar>
       </AppBar>

@@ -239,7 +239,10 @@ class Publisher extends Component {
           </a>
         )
       }
-      return <Typography>{donateButtons}</Typography>
+      // for now, do not show donate buttons as blockstack browser
+      // does not support editing crypto addresses
+      //return <Typography>{donateButtons}</Typography>
+      return null
     } else {
       return null
     }

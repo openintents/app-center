@@ -173,11 +173,7 @@ class MyComments extends React.Component {
         ].includes(c.modelName()) ? (
           <>
             <br />
-            <SmallRating
-              component="span"
-              readOnly
-              value={c.attrs.rating}
-            />
+            <SmallRating component="span" readOnly value={c.attrs.rating} />
           </>
         ) : null
 
@@ -246,9 +242,9 @@ class MyComments extends React.Component {
     this.setState({ showUpdateDialog: false, showCommentDialog: false })
   }
 
-  postComment = async () => {
+  postComment = async ({ visibility: currentVisibility }) => {
     this.setState({ updating: true })
-    const { userUpdate, rating, currentVisibility, currentComment } = this.state
+    const { userUpdate, rating, currentComment } = this.state
     if (currentVisibility === 'public') {
       await saveUserComment(userUpdate, rating, currentComment)
     } else {
@@ -343,10 +339,8 @@ class MyComments extends React.Component {
               showUpdateDialog: showCommentDialog,
               updating,
               rating,
-              visibility: currentVisibility,
               isSignedIn,
               handleCloseUpdate: this.handleCloseUpdate,
-              handleChangeVisibility: this.handleChangeVisibility,
               handleChangeText: this.handleChangeText,
               handleChangeRating: this.handleChangeRating,
               postComment: this.postComment,
@@ -355,13 +349,11 @@ class MyComments extends React.Component {
               userUpdate,
               showUpdateDialog: showUpdateDialog,
               updating,
-              visibility: currentVisibility,
               isSignedIn,
               handleCloseUpdate: this.handleCloseUpdate,
-              handleChangeVisibility: this.handleChangeVisibility,
               handleChangeText: this.handleChangeText,
               saveDraftUpdate: this.saveDraftUpdate,
-              postComment: this.postUpdate,
+              postUpdate: this.postUpdate,
             })}
           </>
         )}

@@ -17,7 +17,7 @@ const OwnerCommentDialog = ({
   handleCloseUpdate,
   handleChangeText,
   saveDraftUpdate,
-  postComment,
+  postUpdate,
 }) => {
   return (
     <Dialog
@@ -29,7 +29,7 @@ const OwnerCommentDialog = ({
       <DialogContent>
         <DialogContentText>
           Updates are shown to all users onced published
-        </DialogContentText>        
+        </DialogContentText>
         <TextField
           margin="normal"
           id="userUpdate"
@@ -51,7 +51,7 @@ const OwnerCommentDialog = ({
         <Button onClick={() => saveDraftUpdate()} color="secondary">
           Save Draft
         </Button>
-        <Button onClick={() => postComment()} color="primary">
+        <Button onClick={() => postUpdate()} color="primary">
           Post
         </Button>
       </DialogActions>

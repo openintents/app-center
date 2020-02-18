@@ -442,10 +442,6 @@ class AppDetails extends Component {
     this.setState({ showUndoAction: false })
   }
 
-  handleChangeVisibility = event => {
-    this.setState({ visibility: event.target.value })
-  }
-
   handleCloseUpdate = () => {
     this.setState({ showUpdateDialog: false })
   }
@@ -458,9 +454,9 @@ class AppDetails extends Component {
     this.setState({ rating: value })
   }
 
-  postComment = async () => {
+  postComment = async ({ visibility }) => {
     this.setState({ updating: true })
-    const { userUpdate, visibility, rating } = this.state
+    const { userUpdate, rating } = this.state
     const comment =
       visibility === 'public'
         ? new UserComment({
@@ -819,11 +815,9 @@ class AppDetails extends Component {
             userUpdate,
             showUpdateDialog,
             updating,
-            visibility,
             rating,
             isSignedIn,
             handleCloseUpdate: this.handleCloseUpdate,
-            handleChangeVisibility: this.handleChangeVisibility,
             handleChangeText: this.handleChangeText,
             handleChangeRating: this.handleChangeRating,
             postComment: this.postComment,
@@ -836,10 +830,9 @@ class AppDetails extends Component {
             updating,
             visibility,
             handleCloseUpdate: this.handleCloseUpdate,
-            handleChangeVisibility: this.handleChangeVisibility,
             handleChangeText: this.handleChangeText,
             saveDraftUpdate: this.saveDraftUpdate,
-            postComment: this.postUpdate,
+            postUpdate: this.postUpdate,
           })}
 
         <ClaimAppDialog
