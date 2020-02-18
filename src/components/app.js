@@ -144,7 +144,7 @@ const App = ({ data, hideRewards, showSourceLink, allAuthors }) => {
       button={!hideDetailsLink}
       onClick={() => {
         if (!hideDetailsLink) {
-          navigate(`/appco/${data.appcoid}#reviews`)
+          navigate(`/appco/${data.appcoid}/#reviews`)
         }
       }}
     >

@@ -1,3 +1,33 @@
 {
-  "apps": []
+  "apps": [
+    {
+      "category": "Utilities & Productivity",
+      "storageNetwork": "Gaia",
+      "authentication": "Blockstack",
+      "imgixImageUrl": null,
+      "id": -100,
+      "name": "Guidle me",
+      "categoryID": 10,
+      "website": "https://app.guidle.me/",
+      "blockchainID": null,
+      "storageNetworkID": 0,
+      "authenticationID": 0,
+      "openSourceUrl": null,
+      "registrationIsOpen": null,
+      "trackingIsBlocked": null,
+      "description": "Your interactive learning platform",
+      "twitterHandle": "@dmailonline",
+      "gcsImagePath": "",
+      "BTCAddress": null,
+      "isSubmittingOwnApp": true,
+      "productionId": null,
+      "imageUrl": "http://app.guidle.me/img/icons/android-icon-192x192.png",
+      "createdAt": "2020-02-18T19:11:40.651Z",
+      "updatedAt": "2020-02-18T19:11:40.651Z",
+      "Slugs": [],
+      "Rankings": [],
+      "miningReady": false,
+      "lifetimeEarnings": 0
+    }
+  ]
 }
