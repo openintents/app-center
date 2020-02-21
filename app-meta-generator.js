@@ -32,7 +32,7 @@ var appPublishers = [
   { username: 'brandon100.id.blockstack', apps: [1729] },
   { username: 'ayushsubedi.id.blockstack', apps: [1595] },
   { username: 'dylanbathurst.id.blockstack', apps: [1855] },
-  { username: 'njordhov.id.blockstack', apps: [1723] },
+  { username: 'njordhov.id.blockstack', apps: [1723, 2296, 2829] },
   { username: 'franklin.id', apps: [1250] },
   { username: 'talhasch.id.blockstack', apps: [1183, 2064] },
   { username: 'suvorovalex.id.blockstack', apps: [2083] },
@@ -41,7 +41,8 @@ var appPublishers = [
   { username: 'sdsantos.id.blockstack', apps: [1453] },
   { username: 'joaodiogocosta.id.blockstack', apps: [1453] },
   { username: 'claudiaacabado.id.blockstack', apps: [1453] },
-  { username: 'jorishermans.blockstack.id', apps: [] },
+  { username: 'jorishermans.blockstack.id', apps: [-100] },
+  { username: 'jessicaanhdao.id.blockstack', apps: [2082, 2395] },
   {
     username: 'group.arcane',
     apps: [
@@ -62,22 +63,30 @@ var appPublishers = [
     ],
   },
   {
-    username: 'group.vinicius',
+    username: 'group.brazil',
     apps: [
+      1480,
+      1765,
       1991,
       1999,
       2001,
+      2094,
       2096,
       2097,
       2100,
       2288,
+      2289,
+      2290,
       2389,
       2404,
       2425,
-      2289,
-      2290,
+      2790,
     ],
   },
+  { username: 'group.pierregilles', apps: [830] },
+  { username: 'id.viniciusmelo', apps: [1117] },
+  { username: 'id.thiagomva', apps: [1480, 1765, 1999, 2001] },
+  { username: 'id.jackvega', apps: [825, 1439] },
 ]
 
 async function fetchProfile(p) {
