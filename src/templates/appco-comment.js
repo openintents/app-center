@@ -6,12 +6,10 @@ import { getUser, checkIsSignedIn } from '../app/services/blockstack'
 import { Container, Typography } from '@material-ui/core'
 
 import { UserComment, PrivateUserComment } from '../components/model'
-import Img from 'gatsby-image'
 import UserCommentDialog from '../components/userCommentDialog'
 import SEO from '../components/seo'
 import { SmallAppDetails, renderAuthors } from '../components/app'
-import AppsIcon from '@material-ui/icons/Apps'
-import { styles } from '../components/layout'
+import AppIcon from '../components/appIcon'
 
 class AppComment extends Component {
   state = {
@@ -104,12 +102,7 @@ class AppComment extends Component {
   render() {
     const { data } = this.props
     const { rating, userUpdate, updating, isSignedIn, loadingUser } = this.state
-    const icon =
-      data.apps.localFile && data.apps.localFile.childImageSharp ? (
-        <Img fixed={data.apps.localFile.childImageSharp.fixed} />
-      ) : (
-        <AppsIcon style={styles.smallIcon} />
-      )
+    const icon = <AppIcon app={data.apps} />
     const authors = renderAuthors(data.allAuthors)
     return (
       <Layout>

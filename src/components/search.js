@@ -5,9 +5,9 @@ import { withStyles } from '@material-ui/core/styles'
 import { graphql, StaticQuery } from 'gatsby'
 import { Typography, TextField, InputAdornment, Box } from '@material-ui/core'
 import { Apps } from '@material-ui/icons'
-import Img from 'gatsby-image'
 import Autosuggest from 'react-autosuggest'
 import AppsIcon from '@material-ui/icons/Apps'
+import AppIcon from './appIcon'
 import { styles } from './layout'
 
 const searchStyles = theme => {
@@ -52,14 +52,7 @@ class Search extends Component {
               edges {
                 node {
                   appcoid: id__normalized
-                  localFile {
-                    id
-                    childImageSharp {
-                      fixed(width: 36, height: 36) {
-                        ...GatsbyImageSharpFixed
-                      }
-                    }
-                  }
+                  ...AppIcon
                 }
               }
             }
@@ -138,10 +131,8 @@ class Search extends Component {
       e => e.node.appcoid === suggestion.appcoid
     )
     const icon =
-      appNodes.length > 0 &&
-      appNodes[0].node.localFile &&
-      appNodes[0].node.localFile.childImageSharp ? (
-        <Img fixed={appNodes[0].node.localFile.childImageSharp.fixed} />
+      appNodes.length > 0 ? (
+        <AppIcon app={appNodes[0].node} />
       ) : (
         <AppsIcon style={styles.smallIcon} />
       )

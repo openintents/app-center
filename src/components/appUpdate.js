@@ -73,7 +73,7 @@ export default ({ link, title, date, description, appcoId, apiComment }) => {
               subheader={date}
               avatar={
                 <Link to={`/appco/${appcoid}`}>
-                  <AppIcon app={app} />
+                  <AppIcon app={app ? app.node : app} />
                 </Link>
               }
             />

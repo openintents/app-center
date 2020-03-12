@@ -3,11 +3,17 @@ import Img from 'gatsby-image'
 import AppsIcon from '@material-ui/icons/Apps'
 import { styles } from './layout'
 
-const AppIcon = ({ app }) => {
-  if (app && app.node && app.node.localFile) {
-    return <Img fixed={app.node.localFile.childImageSharp.fixed} />
+const AppIcon = ({ app, component, style, big }) => {
+  if (app.localFile && app.localFile.childImageSharp) {
+    return (
+      <Img
+        fixed={app.localFile.childImageSharp.fixed}
+        component={component}
+        style={style}
+      />
+    )
   } else {
-    return <AppsIcon style={styles.smallIcon} />
+    return <AppsIcon style={big ? styles.bigIcon : styles.smallIcon} />
   }
 }
 

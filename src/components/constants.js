@@ -30,6 +30,7 @@ export const monthsLabels = {
   nov2019: 'Nov 2019',
   dec2019: 'Dec 2019',
   jan2020: 'Jan 2020',
+  feb2020: 'Feb 2020',
 }
 
 export const monthStrings = [

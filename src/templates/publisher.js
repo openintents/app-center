@@ -8,7 +8,6 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Typography,
 } from '@material-ui/core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import { config as faConfig } from '@fortawesome/fontawesome-svg-core'
@@ -170,7 +169,7 @@ class Publisher extends Component {
       edge => edge.node.appcoid === app.appcoid
     )
     if (contactApp && contactApp.length > 0) {
-      return <AppIcon app={contactApp[0]} />
+      return <AppIcon app={contactApp[0].node} />
     } else {
       return <AppIcon />
     }
@@ -336,28 +335,8 @@ export const query = graphql`
       }
     }
     appPublishersJson(username: { eq: $username }) {
-      username
-      profile {
-        name
-        account {
-          service
-          identifier
-        }
-        apps {
-          https___chat_openintents_org
-          https___app_dmail_online
-          https___www_stealthy_im
-          https___debutapp_social
-          https___app_gitix_org
-        }
-      }
-      localFile {
-        childImageSharp {
-          fixed(width: 100, height: 100) {
-            ...GatsbyImageSharpFixed
-          }
-        }
-      }
+      ...PublisherProfile
+      ...PublisherBigIcon
     }
     contactApps: allApps(
       filter: { id__normalized: { in: [924, 1318, 174, 955, 1754] } }
@@ -365,13 +344,7 @@ export const query = graphql`
       edges {
         node {
           appcoid: id__normalized
-          localFile {
-            childImageSharp {
-              fixed(width: 16, height: 16) {
-                ...GatsbyImageSharpFixed
-              }
-            }
-          }
+          ...AppTinyIcon
         }
       }
     }

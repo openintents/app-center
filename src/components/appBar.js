@@ -25,7 +25,6 @@ const useStyles = makeStyles(theme => ({
   title: {
     display: 'none',
     cursor: 'pointer',
-    color: theme.palette.common.white,
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
@@ -74,6 +73,9 @@ const useStyles = makeStyles(theme => ({
   },
   websiteTitle: {
     cursor: 'pointer',
+  },
+  appBar: {
+    background: 'rgb(238, 238, 238)',
   },
 }))
 
@@ -144,7 +146,7 @@ export default function PrimaryAppBar({
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           <IconButton
             onClick={() => navigate('/')}
@@ -211,7 +213,7 @@ export default function PrimaryAppBar({
                   onClick={handleMobileMenuOpen}
                   color="inherit"
                 >
-                  <MoreIcon style={{ ...styles.smallIcon, color: `#fff` }} />
+                  <MoreIcon style={{ ...styles.smallIcon, color: `#000` }} />
                 </IconButton>
               </div>
             </>

@@ -8,7 +8,7 @@
     { "normalizedWebsite": "https://foodrover.info/", "error": "dns failed" },
     { "normalizedWebsite": "https://emilytlam.com/", "error": "dns failed" },
     {
-      "normalizedWebsite": "https://joshhalvorson.dev/datenight.html/",
+      "normalizedWebsite": "https://joshhalvorson.dev/datenight.html",
       "manifestUrl": "https://joshhalvorson.github.io/manifest.json"
     },
     {
@@ -176,6 +176,36 @@
       "normalizedWebsite": "https://app.museprotocol.com/",
       "noss": "https://www.github.com/museprotocol",
       "reason": "only contracts"
+    },
+    {
+      "normalizedWebsite": "https://calorie.fit/",
+      "noss": "https://calorie.fit/thumbnail.png",
+      "reason": "img url only"
+    },
+    {
+      "normalizedWebsite": "https://calorie.fit/",
+      "noss": "https://calorie.fit/thumbnail.png",
+      "reason": "img url only"
+    },
+    {
+      "normalizedWebsite": "https://imgedit.online/",
+      "noss": "https://imgedit.netlify.com",
+      "reason": "no source code"
+    },
+    {
+      "normalizedWebsite": "https://animo.farm/",
+      "noss": "https://gitlab.com/steve-dejo/animo",
+      "reason": "no public repo"
+    },
+    {
+      "normalizedWebsite": "https://rtasks.app/",
+      "noss": "https://github.com/datagangstar/rtasks-web",
+      "reason": "no public repo"
+    },
+    {
+      "normalizedWebsite": "https://www.mysmalltalks.com/",
+      "noss": "https://github.com/psgganesh/mysmalltalks",
+      "reason": "no public repo"
     }
   ],
   "sourceCode": [

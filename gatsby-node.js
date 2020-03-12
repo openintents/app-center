@@ -78,6 +78,18 @@ getLastCommit = openSourceUrl => {
       openSourceUrl.startsWith('https://gitlab.com/CodeDarkin/aroundtheblock')
     ) {
       projectId = 13870632
+    } else if (
+      openSourceUrl.startsWith('https://gitlab.com/marassifrancesco/atoms')
+    ) {
+      projectId = 16088164
+    } else if (
+      openSourceUrl.startsWith('https://gitlab.com/marassifrancesco/cozyreader')
+    ) {
+      projectId = 15752295
+    } else if (
+      openSourceUrl.startsWith('https://gitlab.com/vaultilo/vaultilo-app')
+    ) {
+      projectId = 16632883
     } else {
       projectId = 0
     }
@@ -218,8 +230,8 @@ exports.onCreateNode = async ({
         _auth
       )
     } else if (
-      [1555, 1712].indexOf(node.id__normalized) < 0 && // wrong image format
-      process.env.GATSBY_GITHUB_TOKEN !== 'INVALID'
+      [1555, 1712].indexOf(node.id__normalized) < 0 // wrong image format
+      //&& process.env.GATSBY_GITHUB_TOKEN !== 'INVALID'
     ) {
       try {
         await addLocalFileNode(
@@ -435,7 +447,7 @@ exports.createPages = async ({ graphql, actions }) => {
     .map(e => e.node)
     .filter(node => {
       return process.env.GATSBY_GITHUB_TOKEN === 'INVALID'
-        ? [924, 216, 1832].indexOf(node.appcoid) >= 0
+        ? [924, 216, 1832, 2296].indexOf(node.appcoid) >= 0
         : true
     })
   return Promise.all(

@@ -14,6 +14,7 @@ import AppsIcon from '@material-ui/icons/Apps'
 import UserIcon from '@material-ui/icons/AccountCircle'
 import SEO from '../components/seo'
 import { APP_CENTER_URL } from '../components/constants'
+import AppIcon from '../components/appIcon'
 
 const Publisher = ({ data, allApps }) => {
   console.log(data)
@@ -37,13 +38,8 @@ const Publisher = ({ data, allApps }) => {
           data.apps.map(appcoid => {
             const apps = allApps.filter(app => app.appcoid === appcoid)
             const icon =
-              apps.length > 0 &&
-              apps[0].localFile &&
-              apps[0].localFile.childImageSharp ? (
-                <Img
-                  style={{ margin: 4 }}
-                  fixed={apps[0].localFile.childImageSharp.fixed}
-                />
+              apps.length > 0 ? (
+                <AppIcon app={apps[0].node} style={{ margin: 4 }} />
               ) : (
                 <AppsIcon style={{ margin: 4, width: 36, height: 36 }} />
               )
@@ -99,29 +95,9 @@ export const query = graphql`
       totalCount
       edges {
         node {
-          username
-          profile {
-            name
-            account {
-              service
-              identifier
-            }
-            apps {
-              https___chat_openintents_org
-              https___app_dmail_online
-              https___www_stealthy_im
-              https___debutapp_social
-              https___app_gitix_org
-            }
-          }
+          ...PublisherProfile
           apps
-          localFile {
-            childImageSharp {
-              fixed(width: 64, height: 64) {
-                ...GatsbyImageSharpFixed
-              }
-            }
-          }
+          ...PublisherIcon
         }
       }
     }
@@ -140,13 +116,7 @@ export const query = graphql`
       edges {
         node {
           appcoid: id__normalized
-          localFile {
-            childImageSharp {
-              fixed(width: 16, height: 16) {
-                ...GatsbyImageSharpFixed
-              }
-            }
-          }
+          ...AppTinyIcon
         }
       }
     }

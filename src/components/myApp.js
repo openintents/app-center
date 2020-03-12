@@ -26,19 +26,23 @@ const MyApp = ({ data, hideRewards, removeApp }) => {
         }
       }}
     >
-      {data.localFile && data.localFile.childImageSharp && data.localFile.childImageSharp.fixed && (
+      {data.localFile && data.localFile.childImageSharp && (
         <ListItemAvatar>
           <Img fixed={data.localFile.childImageSharp.fixed} />
         </ListItemAvatar>
       )}
-      {(!data.localFile || !data.localFile.childImageSharp || !data.localFile.childImageSharp.fixed) && (
+      {(!data.localFile || !data.localFile.childImageSharp) && (
         <ListItemAvatar>
           <AppsIcon style={styles.smallIcon} />
         </ListItemAvatar>
       )}
 
       <ListItemText
-        primary={<><b>{data.name}</b></>}
+        primary={
+          <>
+            <b>{data.name}</b>
+          </>
+        }
         secondary={SmallAppDetails({
           description: data.description,
           authors: data.fields && data.fields.authors,

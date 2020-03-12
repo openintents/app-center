@@ -35,7 +35,7 @@ import { User } from 'radiks/lib'
 import UserCommentDialog from '../components/userCommentDialog'
 import OwnerCommentDialog from '../components/ownerCommentDialog'
 import { styles, LayoutContext } from '../components/layout'
-import Img from 'gatsby-image'
+import AppIcon from '../components/appIcon'
 
 const smallStyles = {
   iconButton: {
@@ -178,10 +178,8 @@ class MyComments extends React.Component {
         ) : null
 
         const icon =
-          apps.length > 0 &&
-          apps[0].node.localFile &&
-          apps[0].node.localFile.childImageSharp ? (
-            <Img fixed={apps[0].node.localFile.childImageSharp.fixed} />
+          apps.length > 0 ? (
+            <AppIcon app={apps[0].node} />
           ) : (
             <AppsIcon style={styles.smallIcon} />
           )
@@ -291,7 +289,6 @@ class MyComments extends React.Component {
       userUpdate,
       showCommentDialog,
       showUpdateDialog,
-      currentVisibility,
       updating,
     } = this.state
 

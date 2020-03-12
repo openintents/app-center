@@ -45,7 +45,6 @@ import {
   RADIKS_SERVER_URL,
   APP_CENTER_URL,
 } from '../components/constants'
-import Img from 'gatsby-image'
 import UserCommentDialog from '../components/userCommentDialog'
 import OwnerCommentDialog from '../components/ownerCommentDialog'
 import SEO from '../components/seo'
@@ -53,6 +52,7 @@ import { SmallAppDetails, renderAuthors } from '../components/app'
 import { styles } from '../components/layout'
 import { SmallRating } from '../app/mycomments'
 import ClaimAppDialog from '../components/claimAppDialog'
+import AppIcon from '../components/appIcon'
 
 const StyledRoot = styled.div`
   flexgrow: 1;
@@ -71,9 +71,9 @@ const Rank = (data, key) => {
   })
   const index = monthData.findIndex(e => {
     if (e.node.hasOwnProperty('App_Name')) {
-      return e.node.App_Name === data.apps.name
+      return e.node.App_Name === data.appDetails.name
     } else {
-      return e.node.App_ID === data.apps.appcoid.toString()
+      return e.node.App_ID === data.appDetails.appcoid.toString()
     }
   })
   if (index >= 0) {
@@ -289,8 +289,8 @@ class AppDetails extends Component {
         loadMyData().then(content => {
           const isClaimedApp =
             content.myApps &&
-            content.myApps.hasOwnProperty(`app-${data.apps.appcoid}`) &&
-            content.myApps[`app-${data.apps.appcoid}`]
+            content.myApps.hasOwnProperty(`app-${data.appDetails.appcoid}`) &&
+            content.myApps[`app-${data.appDetails.appcoid}`]
 
           this.setState({
             isClaimedApp,
@@ -327,14 +327,14 @@ class AppDetails extends Component {
 
   loadComments() {
     const { data } = this.props
-    this.loadAverage(data.apps.website)
+    this.loadAverage(data.appDetails.website)
 
     this.setState({
       loadingComments: true,
       loadingUpdates: true,
     })
     OwnerComment.fetchList({
-      object: data.apps.website,
+      object: data.appDetails.website,
       sort: '-createdAt',
     }).then(comments => {
       const monthlyUpdates = {}
@@ -358,7 +358,7 @@ class AppDetails extends Component {
     })
 
     UserComment.fetchList({
-      object: data.apps.website,
+      object: data.appDetails.website,
       sort: '-createdAt',
     }).then(comments => {
       this.setState({
@@ -370,7 +370,7 @@ class AppDetails extends Component {
   }
 
   launchApp() {
-    window.open(this.props.data.apps.website, '_blank', 'noopener')
+    window.open(this.props.data.appDetails.website, '_blank', 'noopener')
   }
 
   showClaimAppDialog(showClaimAppDialog) {
@@ -384,7 +384,7 @@ class AppDetails extends Component {
         if (!content.myApps) {
           content.myApps = {}
         }
-        content.myApps[`app-${this.props.data.apps.appcoid}`] = true
+        content.myApps[`app-${this.props.data.appDetails.appcoid}`] = true
         saveMyData(content).then(() => {
           this.setState({
             isClaimedApp: true,
@@ -410,7 +410,7 @@ class AppDetails extends Component {
     if (this.state.isSignedIn) {
       this.setState({ isClaimingApp: true })
       loadMyData().then(content => {
-        content.myApps[`app-${this.props.data.apps.appcoid}`] = false
+        content.myApps[`app-${this.props.data.appDetails.appcoid}`] = false
         saveMyData(content).then(() => {
           this.setState({
             isClaimedApp: false,
@@ -462,12 +462,12 @@ class AppDetails extends Component {
         ? new UserComment({
             comment: userUpdate,
             rating,
-            object: this.props.data.apps.website,
+            object: this.props.data.appDetails.website,
           })
         : new PrivateUserComment({
             comment: userUpdate,
             rating,
-            object: this.props.data.apps.website,
+            object: this.props.data.appDetails.website,
           })
     await comment.save()
     await this.loadComments()
@@ -479,7 +479,7 @@ class AppDetails extends Component {
     const { userUpdate } = this.state
     await new OwnerComment({
       comment: userUpdate,
-      object: this.props.data.apps.website,
+      object: this.props.data.appDetails.website,
     }).save()
 
     await this.loadComments()
@@ -491,7 +491,7 @@ class AppDetails extends Component {
     const { userUpdate } = this.state
     await new DraftOwnerComment({
       comment: userUpdate,
-      object: this.props.data.apps.website,
+      object: this.props.data.appDetails.website,
     }).save()
     this.setState({ updating: false })
   }
@@ -520,7 +520,7 @@ class AppDetails extends Component {
     const appActions = isClaimedApp ? (
       <>
         <Button
-          disabled={!data.apps.website}
+          disabled={!data.appDetails.website}
           onClick={() => this.launchApp()}
           color="primary"
         >
@@ -546,7 +546,7 @@ class AppDetails extends Component {
     ) : (
       <>
         <Button
-          disabled={!data.apps.website}
+          disabled={!data.appDetails.website}
           onClick={() => this.launchApp()}
           color="primary"
         >
@@ -600,18 +600,13 @@ class AppDetails extends Component {
         }
       }
     }
-    const icon =
-      data.apps.localFile && data.apps.localFile.childImageSharp ? (
-        <Img fixed={data.apps.localFile.childImageSharp.fixed} />
-      ) : (
-        <AppsIcon style={styles.bigIcon} />
-      )
+
     const meta =
-      data.apps.localFile && data.apps.localFile.childImageSharp
+      data.appDetails.localFile && data.appDetails.localFile.childImageSharp
         ? [
             {
               name: 'og:image',
-              content: `${APP_CENTER_URL}/${data.apps.localFile.childImageSharp.fixed.src}`,
+              content: `${APP_CENTER_URL}/${data.appDetails.localFile.childImageSharp.fixed.src}`,
             },
           ]
         : []
@@ -619,20 +614,20 @@ class AppDetails extends Component {
     return (
       <Layout>
         <SEO
-          title={data.apps.name}
-          description={data.apps.description}
-          keywords={[data.apps.name, `application`, `blockstack`]}
+          title={data.appDetails.name}
+          description={data.appDetails.description}
+          keywords={[data.appDetails.name, `application`, `blockstack`]}
           meta={meta}
         />
-        <Card style={{ margin: 4, marginTop: 40 }}>
+        <Card style={{ margin: 4, marginTop: 4 }}>
           <CardContent>
             <Grid container alignItems="center" spacing={2}>
               <Grid item xs={12} sm={1} md={1}>
-                {icon}
+                <AppIcon app={data.appDetails} big />
               </Grid>
               <Grid item xs={12} sm={11} md={7}>
                 <Typography variant="h3" align="center">
-                  {data.apps.name}
+                  {data.appDetails.name}
                 </Typography>
                 <Typography variant="body1" align="center">
                   {renderAuthors(data.allAuthors)}
@@ -644,10 +639,11 @@ class AppDetails extends Component {
             </Grid>
 
             {SmallAppDetails({
-              description: data.apps.description,
-              lifetimeEarnings: data.apps.lifetimeEarnings,
-              lastCommit: data.apps.fields && data.apps.fields.lastCommit,
-              openSourceUrl: data.apps.openSourceUrl,
+              description: data.appDetails.description,
+              lifetimeEarnings: data.appDetails.lifetimeEarnings,
+              lastCommit:
+                data.appDetails.fields && data.appDetails.fields.lastCommit,
+              openSourceUrl: data.appDetails.openSourceUrl,
               multiPlayerCount: undefined, //data.theBlockstats && data.theBlockstats.count,
               hideRewards: false,
               showSourceLink: true,
@@ -667,8 +663,8 @@ class AppDetails extends Component {
               <Typography>
                 Use this link to ask users for a review:{' '}
                 <a
-                  href={`${APP_CENTER_URL}/appco/${data.apps.appcoid}/review`}
-                >{`${APP_CENTER_URL}/appco/${data.apps.appcoid}/review`}</a>
+                  href={`${APP_CENTER_URL}/appco/${data.appDetails.appcoid}/review`}
+                >{`${APP_CENTER_URL}/appco/${data.appDetails.appcoid}/review`}</a>
               </Typography>
             </CardContent>
           </Card>
@@ -839,7 +835,7 @@ class AppDetails extends Component {
           show={showClaimAppDialog}
           claimApp={() => this.claimApp()}
           canClaim={canClaim}
-          appName={data.apps.name}
+          appName={data.appDetails.name}
           handleCloseDialog={() => this.setState({ showClaimAppDialog: false })}
         />
         <hr />
@@ -850,7 +846,7 @@ class AppDetails extends Component {
 
 export const query = graphql`
   query($appcoid: Int, $authDomain: String) {
-    apps(id__normalized: { eq: $appcoid }) {
+    appDetails: apps(id__normalized: { eq: $appcoid }) {
       ...AppInformation
       ...AppBigIcon
     }
@@ -1081,6 +1077,22 @@ export const query = graphql`
     }
 
     jan2020: allAppmining202001AuditXlsxResults(
+      filter: { Final_Score: { ne: null } }
+      sort: { fields: [Final_Score], order: [DESC] }
+    ) {
+      totalCount
+      edges {
+        node {
+          App_ID: App_Id
+          Final_Score
+          TMUI_Theta
+          NIL_Theta
+          Awario_Theta
+        }
+      }
+    }
+
+    feb2020: allAppmining202002AuditXlsxResults(
       filter: { Final_Score: { ne: null } }
       sort: { fields: [Final_Score], order: [DESC] }
     ) {

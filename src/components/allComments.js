@@ -13,10 +13,10 @@ import {
   Card,
 } from '@material-ui/core'
 import { SmallRating } from '../app/mycomments'
-import Img from 'gatsby-image'
 import AppsIcon from '@material-ui/icons/Apps'
 import { styles } from './layout'
 import { RADIKS_SERVER_URL } from './constants'
+import AppIcon from './appIcon'
 
 class AllComments extends React.Component {
   state = {
@@ -82,13 +82,8 @@ class AllComments extends React.Component {
         const apps = data.allApps.edges.filter(e => e.node.website === c.object)
         const isAppInAppCenter = apps.length === 1
         const icon =
-          isAppInAppCenter > 0 &&
-          apps[0].node.localFile &&
-          apps[0].node.localFile.childImageSharp ? (
-            <Img
-              component="span"
-              fixed={apps[0].node.localFile.childImageSharp.fixed}
-            />
+          isAppInAppCenter > 0 ? (
+            <AppIcon app={apps[0].node} component="span" />
           ) : (
             <AppsIcon style={styles.smallIcon} />
           )

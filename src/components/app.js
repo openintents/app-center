@@ -211,6 +211,8 @@ export const query = graphql`
 
   fragment AppIcon on apps {
     localFile {
+      extension
+      publicURL
       childImageSharp {
         fixed(width: 36, height: 36) {
           ...GatsbyImageSharpFixed
@@ -221,8 +223,22 @@ export const query = graphql`
 
   fragment AppBigIcon on apps {
     localFile {
+      extension
+      publicURL
       childImageSharp {
         fixed(width: 100, height: 100) {
+          ...GatsbyImageSharpFixed
+        }
+      }
+    }
+  }
+
+  fragment AppTinyIcon on apps {
+    localFile {
+      extension
+      publicURL
+      childImageSharp {
+        fixed(width: 16, height: 16) {
           ...GatsbyImageSharpFixed
         }
       }
@@ -235,6 +251,48 @@ export const query = graphql`
       name
     }
     apps
+  }
+
+  fragment PublisherProfile on AppPublishersJson {
+    username
+    profile {
+      name
+      account {
+        service
+        identifier
+      }
+      apps {
+        https___chat_openintents_org
+        https___app_dmail_online
+        https___www_stealthy_im
+        https___debutapp_social
+        https___app_gitix_org
+      }
+    }
+  }
+
+  fragment PublisherIcon on AppPublishersJson {
+    localFile {
+      extension
+      publicURL
+      childImageSharp {
+        fixed(width: 64, height: 64) {
+          ...GatsbyImageSharpFixed
+        }
+      }
+    }
+  }
+
+  fragment PublisherBigIcon on AppPublishersJson {
+    localFile {
+      extension
+      publicURL
+      childImageSharp {
+        fixed(width: 100, height: 100) {
+          ...GatsbyImageSharpFixed
+        }
+      }
+    }
   }
 `
 

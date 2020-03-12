@@ -72,12 +72,12 @@ const Layout = ({ children, hideSearch }) => {
             siteSearchIndex {
               index
             }
-            file(
+            icon: file(
               sourceInstanceName: { eq: "images" }
-              relativePath: { eq: "icon_text.png" }
+              relativePath: { eq: "icon.png" }
             ) {
               childImageSharp {
-                fixed(width: 36, height: 64) {
+                fixed(width: 64, height: 64) {
                   ...GatsbyImageSharpFixed
                 }
               }
@@ -88,7 +88,7 @@ const Layout = ({ children, hideSearch }) => {
           <ThemeProvider theme={theme}>
             <PrimaryAppBar
               siteSearchIndex={data.siteSearchIndex}
-              fixedIcon={data.file.childImageSharp.fixed}
+              fixedIcon={data.icon.childImageSharp.fixed}
               hideSearch={hideSearch}
             />
             <Container
