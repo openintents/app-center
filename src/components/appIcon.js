@@ -4,7 +4,7 @@ import AppsIcon from '@material-ui/icons/Apps'
 import { styles } from './layout'
 
 const AppIcon = ({ app, component, style, big }) => {
-  if (app.localFile && app.localFile.childImageSharp) {
+  if (app && app.localFile && app.localFile.childImageSharp) {
     return (
       <Img
         fixed={app.localFile.childImageSharp.fixed}
