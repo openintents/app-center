@@ -16,7 +16,7 @@
       "registrationIsOpen": null,
       "trackingIsBlocked": null,
       "description": "Your interactive learning platform",
-      "twitterHandle": "@dmailonline",
+      "twitterHandle": "@guidleme",
       "gcsImagePath": "",
       "BTCAddress": null,
       "isSubmittingOwnApp": true,
@@ -26,7 +26,7 @@
       "updatedAt": "2020-02-18T19:11:40.651Z",
       "Slugs": [],
       "Rankings": [],
-      "miningReady": false,
+      "miningReady": true,
       "lifetimeEarnings": 0
     },
     {
@@ -41,7 +41,7 @@
       "blockchainID": null,
       "storageNetworkID": 0,
       "authenticationID": 0,
-      "openSourceUrl": null,
+      "openSourceUrl": "https://github.com/cerebrowallet/cerebro-wallet",
       "registrationIsOpen": null,
       "trackingIsBlocked": null,
       "description": "Perhaps the safest way to manage multiple cryptocurrency assets",
@@ -55,7 +55,7 @@
       "updatedAt": "2020-09-09T19:11:40.651Z",
       "Slugs": [],
       "Rankings": [],
-      "miningReady": false,
+      "miningReady": true,
       "lifetimeEarnings": 0
     }
   ]
