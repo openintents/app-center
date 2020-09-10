@@ -1,5 +1,12 @@
 export const allPost = data => [
   {
+    type: 'post',
+    post: {
+      date: new Date('2020-09-10'),
+      node: data.allMarkdownRemark.edges[1].node,
+    },
+  },
+  {
     type: 'appCoMonth',
     post: {
       title: 'Apps Awards (Feburary 2020)',

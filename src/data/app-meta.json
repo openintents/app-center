@@ -282,7 +282,15 @@
     { "normalizedWebsite": "https://proofs.tech/", "error": "dns failed" },
     { "normalizedWebsite": "https://shinewallet.net/", "error": "timeout" },
     { "normalizedWebsite": "https://www.notit.org/", "error": "timeout" },
-    { "normalizedWebsite": "https://securetodo.com/", "error": "timeout" }
+    { "normalizedWebsite": "https://securetodo.com/", "error": "timeout" },
+    {
+      "normalizedWebsite": "https://www.usepow.app/",
+      "error": "no blockstack auth"
+    },
+    {
+      "normalizedWebsite": "https://alpha.paras.id/",
+      "error": "no blockstack auth"
+    }
   ],
   "noss": [
     {
