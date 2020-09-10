@@ -59,11 +59,6 @@ const contactApps = [
     appcoid: 955,
     url: 'https://debutapp.social/%USERNAME%',
   },
-  {
-    key: 'https___app_gitix_org',
-    appcoid: 1754,
-    url: 'https://app.gitix.org/#/u/%USERNAME%',
-  },
 ]
 
 class Publisher extends Component {
@@ -72,7 +67,7 @@ class Publisher extends Component {
   }
 
   componentDidMount() {
-    checkIsSignedIn().then(isSignedIn => {
+    checkIsSignedIn().then((isSignedIn) => {
       if (isSignedIn) {
         this.setState({
           loadingUser: false,
@@ -166,7 +161,7 @@ class Publisher extends Component {
 
   contactAsText(app) {
     const contactApp = this.props.data.contactApps.edges.filter(
-      edge => edge.node.appcoid === app.appcoid
+      (edge) => edge.node.appcoid === app.appcoid
     )
     if (contactApp && contactApp.length > 0) {
       return <AppIcon app={contactApp[0].node} />
@@ -177,9 +172,9 @@ class Publisher extends Component {
 
   renderSocialAccounts(data) {
     if (data.appPublishersJson.profile.account) {
-      return social.map(socialService => {
+      return social.map((socialService) => {
         const socialAccount = data.appPublishersJson.profile.account.find(
-          a => a.service.toLowerCase() === socialService
+          (a) => a.service.toLowerCase() === socialService
         )
         if (socialAccount) {
           return (
@@ -205,7 +200,7 @@ class Publisher extends Component {
   renderDonate(data) {
     if (data.appPublishersJson.profile.account) {
       const bitcoinAccount = data.appPublishersJson.profile.account.find(
-        a => a.service.toLowerCase() === 'bitcoin'
+        (a) => a.service.toLowerCase() === 'bitcoin'
       )
       const donateButtons = []
       if (bitcoinAccount) {
@@ -223,7 +218,7 @@ class Publisher extends Component {
       }
 
       const etherumAccount = data.appPublishersJson.profile.account.find(
-        a => a.service.toLowerCase() === 'ethereum'
+        (a) => a.service.toLowerCase() === 'ethereum'
       )
       if (etherumAccount) {
         donateButtons.push(
@@ -249,7 +244,7 @@ class Publisher extends Component {
 
   renderContactApps(data) {
     if (data.appPublishersJson.profile.apps) {
-      return contactApps.map(app => {
+      return contactApps.map((app) => {
         const isUsingApp = data.appPublishersJson.profile.apps[app.key]
         if (isUsingApp) {
           return (
@@ -314,7 +309,7 @@ class Publisher extends Component {
             </CardContent>
           </Card>
           <List>
-            {data.allApps.edges.map(e => {
+            {data.allApps.edges.map((e) => {
               return <App key={e.node.appcoid} data={e.node} />
             })}
           </List>

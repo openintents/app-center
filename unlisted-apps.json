@@ -28,6 +28,35 @@
       "Rankings": [],
       "miningReady": false,
       "lifetimeEarnings": 0
+    },
+    {
+      "category": "Utilities & Productivity",
+      "storageNetwork": "Gaia",
+      "authentication": "Blockstack",
+      "imgixImageUrl": null,
+      "id": -101,
+      "name": "Cerebro Wallet",
+      "categoryID": 3,
+      "website": "https://app.cerebrowallet.com/",
+      "blockchainID": null,
+      "storageNetworkID": 0,
+      "authenticationID": 0,
+      "openSourceUrl": null,
+      "registrationIsOpen": null,
+      "trackingIsBlocked": null,
+      "description": "Perhaps the safest way to manage multiple cryptocurrency assets",
+      "twitterHandle": "@cerebrowallet",
+      "gcsImagePath": "",
+      "BTCAddress": null,
+      "isSubmittingOwnApp": true,
+      "productionId": null,
+      "imageUrl": "https://app.cerebrowallet.com/logo192.png",
+      "createdAt": "2020-09-09T19:11:40.651Z",
+      "updatedAt": "2020-09-09T19:11:40.651Z",
+      "Slugs": [],
+      "Rankings": [],
+      "miningReady": false,
+      "lifetimeEarnings": 0
     }
   ]
 }

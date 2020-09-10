@@ -2,7 +2,7 @@
   "authDomains": [
     {
       "normalizedWebsite": "https://www.graphitedocs.com/",
-      "manifestUrl": "https://app.graphitedocs.com/manifest.json"
+      "error": "dns failed"
     },
     { "normalizedWebsite": "https://wage.pm/", "error": "dns failed" },
     { "normalizedWebsite": "https://foodrover.info/", "error": "dns failed" },
@@ -24,7 +24,7 @@
     { "normalizedWebsite": "https://timski.org/", "error": "ios app" },
     {
       "normalizedWebsite": "https://www.hihermes.co/",
-      "manifestUrl": "https://www.chat.hihermes.co/manifest.json"
+      "error": "dns failed"
     },
     { "normalizedWebsite": "https://kanstack.com/", "error": "dns failed" },
     {
@@ -109,7 +109,180 @@
       "normalizedWebsite": "https://getstacks.xyz/",
       "manifestUrl": "https://getstacks.xyz/auth/blockstack?manifest=true"
     },
-    { "normalizedWebsite": "https://ziggy.website/", "error": "dns failed" }
+    { "normalizedWebsite": "https://ziggy.website/", "error": "dns failed" },
+    {
+      "normalizedWebsite": "https://blockstack.springrole.com/",
+      "error": "dns failed"
+    },
+
+    {
+      "normalizedWebsite": "https://app.trymumble.com/",
+      "error": "bad gateway"
+    },
+    {
+      "normalizedWebsite": "https://car-assistant.ai-valley.com/",
+      "error": "tls failed"
+    },
+    {
+      "normalizedWebsite": "https://nyoos.mklm.xyz/",
+      "error": "dns failed"
+    },
+    {
+      "normalizedWebsite": "https://cryptolator.mklm.xyz/",
+      "error": "dns failed"
+    },
+    {
+      "normalizedWebsite": "https://app.gitix.org/",
+      "error": "dns failed"
+    },
+    {
+      "normalizedWebsite": "https://dappcrosscheck.paradigma.global/",
+      "error": "tls failed"
+    },
+    {
+      "normalizedWebsite": "https://bitcionary.mklm.xyz/",
+      "error": "dns failed"
+    },
+    {
+      "normalizedWebsite": "https://quizzical.mklm.xyz/",
+      "error": "dns failed"
+    },
+    {
+      "normalizedWebsite": "https://make-a-difference.technology-valley.com/",
+      "error": "dns failed"
+    },
+    {
+      "normalizedWebsite": "https://bitchat.mklm.xyz/",
+      "error": "dns failed"
+    },
+    {
+      "normalizedWebsite": "https://healthy-living.technology-valley.com/",
+      "error": "dns failed"
+    },
+    { "normalizedWebsite": "https://app.yobi.xyz/", "error": "dns failed" },
+    {
+      "normalizedWebsite": "https://ares.hankstoever.com/",
+      "error": "tls failed"
+    },
+    {
+      "normalizedWebsite": "https://bitcamp.blockboardapp.com/",
+      "error": "dns failed"
+    },
+    { "normalizedWebsite": "https://app.benison.xyz/", "error": "dns failed" },
+    {
+      "normalizedWebsite": "https://aroundtheblock.jumpstartups.io/",
+      "error": "timeout"
+    },
+    { "normalizedWebsite": "https://auth.piara.me/", "error": "timeout" },
+    { "normalizedWebsite": "https://mypodium.net/", "error": "dns failed" },
+    {
+      "normalizedWebsite": "https://www.scannieapp.com/",
+      "error": "dns failed"
+    },
+    { "normalizedWebsite": "https://blockusign.co/", "error": "404" },
+    { "normalizedWebsite": "https://entaxy.io/", "error": "tls failed" },
+    { "normalizedWebsite": "https://sundly.co/", "error": "dns failed" },
+    {
+      "normalizedWebsite": "https://www.travelstack.club/",
+      "error": "dns failed"
+    },
+    {
+      "normalizedWebsite": "https://closetpassword.com/",
+      "error": "dns failed"
+    },
+    { "normalizedWebsite": "https://www.dmail.online/", "error": "dns failed" },
+    { "normalizedWebsite": "https://dphone.app/", "error": "dns failed" },
+    { "normalizedWebsite": "https://satshi.tv/", "error": "dns failed" },
+    {
+      "normalizedWebsite": "https://dailybookmark.app/",
+      "error": "dns failed"
+    },
+    { "normalizedWebsite": "https://blockogram.com/", "error": "dns failed" },
+    { "normalizedWebsite": "https://theinnerpeace.me/", "error": "tls failed" },
+    { "normalizedWebsite": "https://www.dhcs.live/", "error": "dns failed" },
+    { "normalizedWebsite": "https://ezresize.tech/", "error": "dns failed" },
+    { "normalizedWebsite": "https://simpleform.xyz/", "error": "dns failed" },
+    { "normalizedWebsite": "https://mailr.email/", "error": "dns failed" },
+    { "normalizedWebsite": "https://flashbrain.io/", "error": "dns failed" },
+    { "normalizedWebsite": "https://milacrm.com/", "error": "dns failed" },
+    { "normalizedWebsite": "https://dauth.top/", "error": "dns failed" },
+    { "normalizedWebsite": "https://updoot.org/", "error": "dns failed" },
+    {
+      "normalizedWebsite": "https://lightningreader.club/",
+      "error": "dns failed"
+    },
+    { "normalizedWebsite": "https://www.dmyblog.co/", "error": "tls failed" },
+    { "normalizedWebsite": "https://blocktrivia.co/", "error": "tls failed" },
+    {
+      "normalizedWebsite": "https://www.planbetter.org/",
+      "error": "dns failed"
+    },
+    { "normalizedWebsite": "https://properpass.top/", "error": "dns failed" },
+    {
+      "normalizedWebsite": "https://codecoderevolution.com/",
+      "error": "dns failed"
+    },
+    { "normalizedWebsite": "https://darchive.org/", "error": "dns failed" },
+    { "normalizedWebsite": "https://sportup.online/", "error": "dns failed" },
+    { "normalizedWebsite": "https://agaze.co/", "error": "dns failed" },
+    { "normalizedWebsite": "https://thepaise.com/", "error": "dns failed" },
+    { "normalizedWebsite": "https://relayable.io/", "error": "dns failed" },
+    { "normalizedWebsite": "https://sarchy.co/", "error": "dns failed" },
+    {
+      "normalizedWebsite": "https://sarchy.co/notepad/",
+      "error": "dns failed"
+    },
+    { "normalizedWebsite": "https://blockgag.co/", "error": "dns failed" },
+    { "normalizedWebsite": "https://www.reclaim.gg/", "error": "no app" },
+    { "normalizedWebsite": "https://dpage.io/", "error": "dns failed" },
+    { "normalizedWebsite": "https://earthdata.info/", "error": "dns failed" },
+    {
+      "normalizedWebsite": "https://www.spectrenotes.com/",
+      "error": "heroku app error"
+    },
+    {
+      "normalizedWebsite": "https://www.encryptedbox.co/",
+      "error": "tls failed"
+    },
+    { "normalizedWebsite": "https://dappgames.online/", "error": "tls failed" },
+    { "normalizedWebsite": "https://verifybar.com/", "error": "dns failed" },
+    {
+      "normalizedWebsite": "https://www.linkee.red/",
+      "error": "heroku app error"
+    },
+    { "normalizedWebsite": "https://animo.farm/", "error": "dns failed" },
+    { "normalizedWebsite": "https://cineflick.net/", "error": "dns failed" },
+    { "normalizedWebsite": "https://www.datasetstudio.com/", "error": "404" },
+    { "normalizedWebsite": "https://stealthy.im/", "error": "404" },
+    { "normalizedWebsite": "https://marvinflix.com/", "error": "dns failed" },
+    { "normalizedWebsite": "https://www.sentify.org/", "error": "dns failed" },
+    {
+      "normalizedWebsite": "https://www.jobsincrypto.tech/",
+      "error": "tls failed"
+    },
+    { "normalizedWebsite": "https://www.postly.co/", "error": "dns failed" },
+    { "normalizedWebsite": "https://dscussion.xyz/", "error": "tls failed" },
+    {
+      "normalizedWebsite": "https://www.superchatbot.net/",
+      "error": "dns failed"
+    },
+    {
+      "normalizedWebsite": "https://lightningvoip.com/",
+      "error": "dns failed"
+    },
+    { "normalizedWebsite": "https://blocknote.xyz/", "error": "timeout" },
+    { "normalizedWebsite": "https://mulla.finance/", "error": "timeout" },
+    { "normalizedWebsite": "https://decentus.com/", "error": "dns failed" },
+    { "normalizedWebsite": "https://composenotes.com/", "error": "timeout" },
+    { "normalizedWebsite": "https://searx.world/", "error": "dns failed" },
+    {
+      "normalizedWebsite": "https://www.locallightning.net/",
+      "error": "dns failed"
+    },
+    { "normalizedWebsite": "https://proofs.tech/", "error": "dns failed" },
+    { "normalizedWebsite": "https://shinewallet.net/", "error": "timeout" },
+    { "normalizedWebsite": "https://www.notit.org/", "error": "timeout" },
+    { "normalizedWebsite": "https://securetodo.com/", "error": "timeout" }
   ],
   "noss": [
     {
