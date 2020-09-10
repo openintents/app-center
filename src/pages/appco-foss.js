@@ -4,7 +4,11 @@ import AppCoList, { hasNossReason } from '../components/appcoList'
 export const query = graphql`
   query foss {
     allApps(
-      filter: { openSourceUrl: { nin: ["", null] }, miningReady: { eq: true } }
+      filter: {
+        openSourceUrl: { nin: ["", null] }
+        miningReady: { eq: true }
+        fields: { error: { in: ["", null] } }
+      }
       sort: { fields: [fields___lastCommit, name], order: [DESC, ASC] }
     ) {
       totalCount

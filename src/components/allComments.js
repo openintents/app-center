@@ -148,7 +148,10 @@ class AllComments extends React.Component {
       <StaticQuery
         query={graphql`
           query AllCommentsQuery {
-            allApps(sort: { fields: [name] }) {
+            allApps(
+              filter: { fields: { error: { in: ["", null] } } }
+              sort: { fields: [name] }
+            ) {
               edges {
                 node {
                   ...AppInformation

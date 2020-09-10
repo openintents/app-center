@@ -3,7 +3,13 @@ import AppCoList from '../components/appcoList'
 
 export const query = graphql`
   query lessPrivate {
-    allApps(filter: { miningReady: { eq: true } }, sort: { fields: [name] }) {
+    allApps(
+      filter: {
+        miningReady: { eq: true }
+        fields: { error: { in: ["", null] } }
+      }
+      sort: { fields: [name] }
+    ) {
       totalCount
       edges {
         node {
@@ -51,5 +57,9 @@ export const hasNotFullNILScore = (appNode, thisMonth, maxNILScore) => {
 export default AppCoList({
   title: 'Less Blockstacky apps',
   filter: (appNode, data) =>
-    hasNotFullNILScore(appNode, data.thisMonth, data.maxNILScore.edges[0].node.score),
+    hasNotFullNILScore(
+      appNode,
+      data.thisMonth,
+      data.maxNILScore.edges[0].node.score
+    ),
 })

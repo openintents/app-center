@@ -4,7 +4,10 @@ import AppCoList from '../components/appcoList'
 export const query = graphql`
   query anonymous {
     allApps(
-      filter: { miningReady: { eq: true } }
+      filter: {
+        miningReady: { eq: true }
+        fields: { error: { in: ["", null] } }
+      }
       sort: { fields: [name] }
     ) {
       totalCount
@@ -35,11 +38,13 @@ export const query = graphql`
       }
     }
   }
-` 
+`
 
 export const hasNoAuthor = (appNode, allAppMetaDataJson) => {
   const filteredMetaData = allAppMetaDataJson.edges.filter(
-    e => parseInt(e.node.id) === appNode.appcoid && (!e.node.authors || e.node.authors.length === 0)
+    e =>
+      parseInt(e.node.id) === appNode.appcoid &&
+      (!e.node.authors || e.node.authors.length === 0)
   )
   return filteredMetaData.length > 0
 }

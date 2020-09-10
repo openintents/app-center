@@ -398,6 +398,7 @@ async function getAppMeta(app) {
     manifestUrl: manifestData.manifestUrl || '',
     nilDimensions: nilDimensions || {},
     dids,
+    error: manifestData.error || '',
   }
 
   if (nossReason) {
@@ -426,7 +427,7 @@ let appcoDataPromise = fetch('https://api.app.co/api/app-mining-apps')
   .then(r => r.json())
   .then(response => {
     fs.writeFile('appco.json', JSON.stringify(response), err => {
-      console.log('written appco.json', err)
+      console.log('written appco.json', err || 'no errors')
     })
     return response
   })
@@ -450,7 +451,7 @@ appcoDataPromise.then(appcoData => {
         'src/data/app-publishers.json',
         JSON.stringify(publishers),
         err => {
-          console.log('written app-publishers', err)
+          console.log('written app-publishers', err || 'no errors')
         }
       )
 
@@ -460,7 +461,7 @@ appcoDataPromise.then(appcoData => {
         'src/data/app-meta-data.json',
         JSON.stringify(metaData),
         err => {
-          console.log('written app-meta-data', err)
+          console.log('written app-meta-data', err || 'no errors')
         }
       )
     })

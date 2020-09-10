@@ -627,7 +627,13 @@ class AppDetails extends Component {
               </Grid>
               <Grid item xs={12} sm={11} md={7}>
                 <Typography variant="h3" align="center">
-                  {data.appDetails.name}
+                  {data.appDetails.fields && data.appDetails.fields.error && (
+                    <s>{data.appDetails.name}</s>
+                  )}
+                  {(!data.appDetails.fields ||
+                    !data.appDetails.fields.error) && (
+                    <>{data.appDetails.name}</>
+                  )}
                 </Typography>
                 <Typography variant="body1" align="center">
                   {renderAuthors(data.allAuthors)}

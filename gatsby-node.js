@@ -17,7 +17,7 @@ function slugify(text) {
     .replace(/-+$/, '') // Trim - from end of text
 }
 
-getLastCommit = (openSourceUrl) => {
+getLastCommit = openSourceUrl => {
   if (openSourceUrl.startsWith('https://github.com/')) {
     if (openSourceUrl == 'https://github.com/radicleart') {
       openSourceUrl = 'https://github.com/radicleart/brightblock-dbid'
@@ -46,12 +46,9 @@ getLastCommit = (openSourceUrl) => {
       return fetch(url, {
         headers: { Authorization: 'token ' + process.env.GATSBY_GITHUB_TOKEN },
       })
+        .then(response => response.json(), () => 'No json')
         .then(
-          (response) => response.json(),
-          () => 'No json'
-        )
-        .then(
-          (response) => {
+          response => {
             if (
               response &&
               response.length > 0 &&
@@ -102,12 +99,9 @@ getLastCommit = (openSourceUrl) => {
         projectId +
         '/repository/commits'
       return fetch(url)
+        .then(response => response.json(), () => 'No json')
         .then(
-          (response) => response.json(),
-          () => 'No json'
-        )
-        .then(
-          (response) => {
+          response => {
             if (response && response.length > 0) {
               return response[0].authored_date
             } else {
@@ -129,15 +123,15 @@ getLastCommit = (openSourceUrl) => {
       return fetch(
         `https://api.bitbucket.org/2.0/repositories/${username}/${repoSlug}/commits`
       )
-        .then((r) => r.json())
-        .then((response) => {
+        .then(r => r.json())
+        .then(response => {
           if (response.values && response.values.length > 0) {
             return response.values[0].date
           } else {
             return 'No commits found - ' + response.error.message
           }
         })
-        .catch((e) => {
+        .catch(e => {
           return Promise.resolve('Failure on bitbucket call ' + e)
         })
     } else {
@@ -235,6 +229,16 @@ exports.onCreateNode = async ({
         createNodeId,
         _auth
       )
+    } else if (node.id__normalized === 1571) {
+      await addLocalFileNodeByUrl(
+        'https://blocksurvey.io/assets/images/blocksurvey-favicon-color.svg',
+        node,
+        store,
+        cache,
+        createNode,
+        createNodeId,
+        _auth
+      )
     } else if (
       [1555, 1712].indexOf(node.id__normalized) < 0 // wrong image format
       //&& process.env.GATSBY_GITHUB_TOKEN !== 'INVALID'
@@ -306,7 +310,7 @@ exports.onCreateNode = async ({
     }
 
     var appMeta
-    const appMetaList = appMetas.filter((m) => m.id === node.id__normalized)
+    const appMetaList = appMetas.filter(m => m.id === node.id__normalized)
     if (appMetaList.length > 0) {
       appMeta = appMetaList[0]
     }
@@ -322,6 +326,13 @@ exports.onCreateNode = async ({
         node,
         name: 'authors',
         value: JSON.stringify(appMeta.authors),
+        type: 'String',
+      })
+
+      await createNodeField({
+        node,
+        name: 'error',
+        value: appMeta.error,
         type: 'String',
       })
     }
@@ -389,7 +400,7 @@ createPosts = async (graphql, actions) => {
         }
       }
     `
-  ).then((result) => {
+  ).then(result => {
     if (result.errors) {
       throw result.errors
     }
@@ -420,7 +431,7 @@ async function createAppPublishers(graphql, actions) {
   const { createPage } = actions
   const publishers = require('./src/data/app-publishers.json')
   Promise.all(
-    publishers.map((p) => {
+    publishers.map(p => {
       return createPage({
         path: `/u/${p.username}/`,
         component: require.resolve('./src/templates/publisher.js'),
@@ -450,16 +461,16 @@ exports.createPages = async ({ graphql, actions }) => {
     }
   `)
   const apps = result.data.allApps.edges
-    .map((e) => e.node)
-    .filter((node) => {
+    .map(e => e.node)
+    .filter(node => {
       return process.env.GATSBY_GITHUB_TOKEN === 'INVALID'
         ? [924, 216, 1832, 2296].indexOf(node.appcoid) >= 0
         : true
     })
   return Promise.all(
-    apps.map(async (node) => {
+    apps.map(async node => {
       const authDomains = appMetas
-        .filter((metaData) => {
+        .filter(metaData => {
           if (metaData.id === node.appcoid && metaData.manifestUrl) {
             try {
               new URL(metaData.manifestUrl)
@@ -474,7 +485,7 @@ exports.createPages = async ({ graphql, actions }) => {
             return false
           }
         })
-        .map((metaData) => new URL(metaData.manifestUrl).origin)
+        .map(metaData => new URL(metaData.manifestUrl).origin)
 
       await createPage({
         path: '/appco/' + node.appcoid,
@@ -557,7 +568,7 @@ exports.sourceNodes = async ({
   const { createNode } = actions
   const allApps = unlistedApps.apps.concat(listedApps.apps)
   await Promise.all(
-    allApps.map((app) => {
+    allApps.map(app => {
       createAppsNodes(app, createNodeId, createContentDigest, createNode)
     })
   )

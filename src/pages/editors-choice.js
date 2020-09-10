@@ -8,8 +8,9 @@ export const query = graphql`
         id__normalized: {
           in: [1595, 1571, 1183, 1453, 2098, 1858, 1459, 2064, 1439, 1744]
         }
+        fields: { error: { in: ["", null] } }
       }
-      sort: { fields: [name], order: [ASC] }  
+      sort: { fields: [name], order: [ASC] }
     ) {
       totalCount
       edges {

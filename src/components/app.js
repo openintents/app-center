@@ -166,7 +166,8 @@ const App = ({ data, hideRewards, showSourceLink, allAuthors }) => {
       <ListItemText
         primary={
           <>
-            <b>{data.name}</b>{' '}
+            {data.fields && data.fields.error && <s>{data.name} </s>}
+            {(!data.fields || !data.fields.error) && <b>{data.name} </b>}
             <Typography component="span" variant="body2">
               <em>{authors}</em>
             </Typography>
@@ -205,6 +206,7 @@ export const query = graphql`
     fields {
       lastCommit
       authors
+      error
     }
     description
   }

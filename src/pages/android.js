@@ -3,7 +3,12 @@ import AppCoList from '../components/appcoList'
 
 export const query = graphql`
   query android {
-    allApps {
+    allApps(
+      filter: {
+        miningReady: { eq: true }
+        fields: { error: { in: ["", null] } }
+      }
+    ) {
       totalCount
       edges {
         node {
@@ -36,8 +41,9 @@ export const query = graphql`
 
 const hasAndroidPackage = (appNode, metaDataJson) => {
   return (
-    metaDataJson.edges.filter(e => parseInt(e.node.id) === appNode.appcoid && e.node.android)
-      .length > 0
+    metaDataJson.edges.filter(
+      e => parseInt(e.node.id) === appNode.appcoid && e.node.android
+    ).length > 0
   )
 }
 

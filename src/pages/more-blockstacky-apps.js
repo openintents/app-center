@@ -3,7 +3,13 @@ import AppCoList from '../components/appcoList'
 
 export const query = graphql`
   query morePrivate {
-    allApps(filter: { miningReady: { eq: true } }, sort: { fields: [name] }) {
+    allApps(
+      filter: {
+        miningReady: { eq: true }
+        fields: { error: { in: ["", null] } }
+      }
+      sort: { fields: [name] }
+    ) {
       totalCount
       edges {
         node {
