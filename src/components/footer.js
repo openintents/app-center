@@ -74,14 +74,6 @@ export default () => {
             <SupportIcon style={styles.tinyIcon} /> Support
             <br />
             <a
-              href="https://app.dmail.online/compose?to=openintents.id&subject=OI%20App%20Center"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Dmail
-            </a>
-            <br />
-            <a
               href="https://www.twitter.com/OIAppCenter"
               target="_blank"
               rel="noopener noreferrer"
