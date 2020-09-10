@@ -1,5 +1,5 @@
 ---
-title: Comparing Blockstack Blogging Apps
+title: App Curation
 date: '2020-09-10T22:12:03.284Z'
 cover_image: './filter.jpg'
 ---
