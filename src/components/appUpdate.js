@@ -35,7 +35,6 @@ export default ({ link, title, date, description, appcoId, apiComment }) => {
         let app, actionName, appcoid, icon
         if (apiComment) {
           description = apiComment.comment.toString()
-          date = new Date(apiComment.createdAt).toLocaleDateString()
           apps = data.apps.edges.filter(
             e => e.node.website === apiComment.object
           )

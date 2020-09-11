@@ -32,6 +32,13 @@ To generate all meta with the edited data run
 yarn generate
 ```
 
+### Posts
+
+- **src/components/posts.js**
+  contains the list of static posts that will be mixed with updates from verified authors. The date is not taken from the front matter.
+- **content/blog/&lt;blog-folder&gt;**
+  contains a blog, needs to be added to posts.js
+
 ### Run
 
 1. Launch Radiks server

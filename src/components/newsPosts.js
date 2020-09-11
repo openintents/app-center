@@ -5,6 +5,14 @@ import Post from './post'
 import { allPost } from '../components/posts'
 import { RADIKS_SERVER_URL } from '../components/constants'
 
+function toDateString(date) {
+  return date.toLocaleDateString('default', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  })
+}
+
 export const NewsPosts = ({ size, data }) => {
   const [state, setState] = useState({
     loading: true,
@@ -69,25 +77,37 @@ export const NewsPosts = ({ size, data }) => {
           key={p.post.path}
           title={p.post.title}
           path={p.post.path}
-          date={p.post.date.toLocaleDateString()}
+          date={toDateString(p.post.date)}
           newOnly={p.post.newOnly}
         />
       )
     } else if (p.type === 'post') {
-      return <Post key={'post' + p.post.date} node={p.post.node} />
+      return (
+        <Post
+          key={'post' + p.post.date}
+          node={p.post.node}
+          date={toDateString(p.post.date)}
+        />
+      )
     } else if (p.type === 'appUpdate') {
       return (
         <AppUpdate
           key={p.post.link}
           link={p.post.link}
           title={p.post.title}
-          date={p.post.date.toLocaleDateString()}
+          date={toDateString(p.post.date)}
           description={p.post.description}
           appcoId={p.post.appcoId}
         />
       )
     } else if (p.type === 'apiUpdate') {
-      return <AppUpdate key={p.post._id} apiComment={p.post} />
+      return (
+        <AppUpdate
+          key={p.post._id}
+          apiComment={p.post}
+          date={toDateString(new Date(p.post.createdAt))}
+        />
+      )
     } else {
       return null
     }
