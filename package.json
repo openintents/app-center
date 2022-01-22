@@ -48,7 +48,7 @@
     "gatsby-transformer-remark": "^2.8.34",
     "gatsby-transformer-sharp": "^2.5.13",
     "material-ui-rating": "^4.2.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.1.1",
     "nofetch": "^0.1.0",
     "prismjs": "^1.21.0",
     "query-string": "^6.13.1",
