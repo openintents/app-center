@@ -45,7 +45,7 @@
     "gatsby-source-google-sheets": "^1.1.1",
     "gatsby-transformer-excel": "^2.4.1",
     "gatsby-transformer-json": "^2.4.2",
-    "gatsby-transformer-remark": "^2.8.34",
+    "gatsby-transformer-remark": "^5.25.1",
     "gatsby-transformer-sharp": "^2.5.13",
     "material-ui-rating": "^4.2.0",
     "node-fetch": "^2.6.1",
